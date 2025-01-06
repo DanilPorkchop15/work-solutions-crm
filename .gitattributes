@@ -1,0 +1,2 @@
+# use `git diff --text package-lock.json` to force git to show changes
+package-lock.json binary

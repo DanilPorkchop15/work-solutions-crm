@@ -1,0 +1,81 @@
+{
+  "name": "backend",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/backend/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/packages/backend",
+        "main": "packages/backend/src/main.ts",
+        "tsConfig": "packages/backend/tsconfig.app.json",
+        "assets": ["packages/backend/src/assets"],
+        "webpackConfig": "packages/backend/webpack.config.js"
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "backend:build",
+        "runBuildTargetDependencies": true
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "backend:build:development"
+        },
+        "production": {
+          "buildTarget": "backend:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "packages/backend/jest.config.ts"
+      }
+    },
+    "typeorm-create": {
+      "executor": "nx:run-commands",
+      "options": {
+        "parallel": false,
+        "commands": [
+          "/bin/bash -c \"if [[ \\\"{args.name}\\\" == '' ]]; then echo -e '\\033[35m[ERROR] Please specify migration name: --name migration-name\\033[0m'; exit 1; else exit 0; fi\"",
+          "npx ts-node node_modules/typeorm/cli.js migration:create packages/backend/src/database/migrations/{args.name}"
+        ]
+      }
+    },
+    "typeorm-migrate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "parallel": false,
+        "commands": [
+          "npx ts-node node_modules/typeorm/cli.js migration:run --dataSource packages/backend/src/typeorm.datasource.ts"
+        ]
+      }
+    },
+    "typeorm-revert": {
+      "executor": "nx:run-commands",
+      "options": {
+        "parallel": false,
+        "commands": [
+          "npx ts-node node_modules/typeorm/cli.js migration:revert --dataSource packages/backend/src/typeorm.datasource.ts"
+        ]
+      }
+    }
+  },
+  "tags": ["scope:backend", "scope:package"]
+}
