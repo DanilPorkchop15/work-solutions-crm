@@ -4,7 +4,6 @@ import { CustomerDTO, CustomerPreviewDTO } from "./customers.dto";
 
 export interface CustomerCreateRequestDTO {
   name: string;
-  description?: string;
   email?: string;
   phone?: string;
   inn?: string;
@@ -15,7 +14,7 @@ export type CustomerUpdateRequestDTO = Partial<CustomerCreateRequestDTO>;
 
 export interface CustomersApi {
   findAll: () => Promise<CustomerPreviewDTO[]>;
-  findOne: (customerId: string) => CustomerDTO;
+  findOne: (customerId: string) => Promise<CustomerDTO>;
   create: (dto: CustomerCreateRequestDTO) => Promise<void>;
   update: (customerId: string, dto: CustomerUpdateRequestDTO) => Promise<void>;
   delete: (customerId: string) => Promise<void>;

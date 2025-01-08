@@ -3,7 +3,6 @@ import { UserPreviewDTO } from "../users/users.dto";
 export interface CustomerDTO {
   id: string;
   name: string;
-  description?: string;
   email?: string;
   phone?: string;
   inn?: string;
