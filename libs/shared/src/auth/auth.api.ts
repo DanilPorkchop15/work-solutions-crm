@@ -11,11 +11,9 @@ export interface LoginRequestDTO {
 export interface AuthApi {
   me(): Promise<UserDTO>;
   login(dto: LoginRequestDTO): Promise<LoginDTO>;
-  logout(): Promise<void>;
 }
 
 export const AUTH_ROUTES: APIRoutes<AuthApi> = {
   me: () => `/auth/me`,
-  login: () => `/auth/login`,
-  logout: () => `/auth/logout`
+  login: () => `/auth/login`
 };
