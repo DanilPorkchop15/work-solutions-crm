@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 import { User } from "./user.entity";
 
@@ -16,4 +16,7 @@ export class UserLog {
   @ManyToOne(() => User, user => user.user_id, { onDelete: "CASCADE" })
   @JoinColumn({ name: "user_id" })
   user: User;
+
+  @CreateDateColumn({ type: "timestamp" })
+  created_at: Date;
 }

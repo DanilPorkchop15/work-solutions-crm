@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 import { Task } from "./task.entity";
 import { User } from "./user.entity";
@@ -21,4 +21,7 @@ export class TaskLog {
   @ManyToOne(() => Task, task => task.task_id, { onDelete: "CASCADE" })
   @JoinColumn({ name: "task_id" })
   task: Task;
+
+  @CreateDateColumn({ type: "timestamp" })
+  created_at: Date;
 }
