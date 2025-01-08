@@ -1,0 +1,36 @@
+import { APIRoutes } from "../api-routes";
+
+import { ProjectDTO, ProjectPreviewDTO, ProjectStatus } from "./projects.dto";
+
+export interface ProjectCreateRequestDTO {
+  name: string;
+  description?: string;
+  start_date: Date;
+  end_date: Date;
+  budget?: number;
+  customer_id: string;
+  users_accountable: {
+    id: string;
+  }[];
+  status?: ProjectStatus;
+}
+
+export type ProjectUpdateRequestDTO = Partial<ProjectCreateRequestDTO>;
+
+export interface ProjectsApi {
+  findAll: () => Promise<ProjectPreviewDTO[]>;
+  findOne: (projectId: string) => Promise<ProjectDTO>;
+  create: (dto: ProjectCreateRequestDTO) => Promise<ProjectDTO>;
+  update: (projectId: string, dto: ProjectUpdateRequestDTO) => Promise<ProjectDTO>;
+  delete: (projectId: string) => Promise<void>;
+  restore: (projectId: string) => Promise<void>;
+}
+
+export const PROJECTS_ROUTES: APIRoutes<ProjectsApi> = {
+  findAll: () => "/projects",
+  findOne: (projectId: string) => `/projects/${projectId}`,
+  create: () => "/projects",
+  update: (projectId: string) => `/projects/${projectId}`,
+  delete: (projectId: string) => `/projects/${projectId}`,
+  restore: (projectId: string) => `/projects/${projectId}/restore`
+};
