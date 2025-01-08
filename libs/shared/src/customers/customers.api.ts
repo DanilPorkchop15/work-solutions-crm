@@ -15,7 +15,7 @@ export type CustomerUpdateRequestDTO = Partial<CustomerCreateRequestDTO>;
 
 export interface CustomersApi {
   findAll: () => Promise<CustomerPreviewDTO[]>;
-  findOne: () => CustomerDTO;
+  findOne: (customerId: string) => CustomerDTO;
   create: (dto: CustomerCreateRequestDTO) => Promise<void>;
   update: (customerId: string, dto: CustomerUpdateRequestDTO) => Promise<void>;
   delete: (customerId: string) => Promise<void>;
@@ -23,9 +23,10 @@ export interface CustomersApi {
 }
 
 export const CUSTOMERS_ROUTES: APIRoutes<CustomersApi> = {
-  findAll: (customerId: string) => `/customers/${customerId}/comments`,
-  create: (customerId: string, text: string) => `/customers/${customerId}/comments`,
-  update: (customerCommentId: string, text: string) => `/customer-comments/${customerCommentId}`,
-  delete: (customerCommentId: string) => `/customer-comments/${customerCommentId}`,
-  restore: (customerCommentId: string) => `/customer-comments/${customerCommentId}/restore`
+  findAll: () => `/customers`,
+  findOne: (customerId: string) => `/customers/${customerId}`,
+  create: () => `/customers`,
+  update: (customerId: string) => `/customers/${customerId}`,
+  delete: (customerId: string) => `/customers/${customerId}`,
+  restore: (customerId: string) => `/customers/${customerId}/restore`
 };
