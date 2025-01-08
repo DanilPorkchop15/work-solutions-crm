@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
 import {
   CustomerCreateRequestDTO,
   CUSTOMERS_ROUTES,
@@ -7,41 +7,39 @@ import {
 } from "@work-solutions-crm/libs/shared/customers/customers.api";
 import { CustomerDTO, CustomerPreviewDTO } from "@work-solutions-crm/libs/shared/customers/customers.dto";
 
-@Controller() // No base route since CUSTOMERS_ROUTES handles path definitions
+import { CustomersService } from "./customers.service";
+
+@Controller()
 export class CustomersController implements CustomersApi {
+  constructor(private readonly customersService: CustomersService) {}
+
   @Get(CUSTOMERS_ROUTES.findAll())
-  findAll(@Query("filter") filter?: string): Promise<CustomerPreviewDTO[]> {
-    // TODO: Add service call for fetching all customers with optional filtering
-    return Promise.resolve([]);
+  findAll(): Promise<CustomerPreviewDTO[]> {
+    return this.customersService.findAll();
   }
 
   @Get(CUSTOMERS_ROUTES.findOne(":customerId"))
-  findOne(@Param("customerId") customerId: string): CustomerDTO {
-    // TODO: Add service call to fetch a specific customer by ID
-    return undefined;
+  findOne(@Param("customerId") customerId: string): Promise<CustomerDTO> {
+    return this.customersService.findOne(customerId);
   }
 
   @Post(CUSTOMERS_ROUTES.create())
   create(@Body() dto: CustomerCreateRequestDTO): Promise<void> {
-    // TODO: Add service call to create a new customer
-    return Promise.resolve(undefined);
+    return this.customersService.create(dto);
   }
 
   @Patch(CUSTOMERS_ROUTES.update(":customerId"))
   update(@Param("customerId") customerId: string, @Body() dto: CustomerUpdateRequestDTO): Promise<void> {
-    // TODO: Add service call to update a specific customer by ID
-    return Promise.resolve(undefined);
+    return this.customersService.update(customerId, dto);
   }
 
   @Delete(CUSTOMERS_ROUTES.delete(":customerId"))
   delete(@Param("customerId") customerId: string): Promise<void> {
-    // TODO: Add service call to delete a specific customer by ID
-    return Promise.resolve(undefined);
+    return this.customersService.delete(customerId);
   }
 
   @Patch(CUSTOMERS_ROUTES.restore(":customerId"))
   restore(@Param("customerId") customerId: string): Promise<void> {
-    // TODO: Add service call to restore a specific customer by ID
-    return Promise.resolve(undefined);
+    return this.customersService.restore(customerId);
   }
 }

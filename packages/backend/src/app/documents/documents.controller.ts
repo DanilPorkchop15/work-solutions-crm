@@ -7,41 +7,39 @@ import {
 } from "@work-solutions-crm/libs/shared/documents/documents.api";
 import { DocumentDTO, DocumentPreviewDTO } from "@work-solutions-crm/libs/shared/documents/documents.dto";
 
+import { DocumentsService } from "./documents.service";
+
 @Controller()
 export class DocumentsController implements DocumentsApi {
+  constructor(private readonly documentsService: DocumentsService) {}
+
   @Get(DOCUMENTS_ROUTES.findAll())
-  findAll(): Promise<DocumentPreviewDTO[]> {
-    // TODO: Add service call to fetch all documents
-    return Promise.resolve([]);
+  async findAll(): Promise<DocumentPreviewDTO[]> {
+    return this.documentsService.findAll();
   }
 
   @Get(DOCUMENTS_ROUTES.findOne(":documentId"))
-  findOne(@Param("documentId") documentId: string): Promise<DocumentDTO> {
-    // TODO: Add service call to fetch a specific document by ID
-    return Promise.resolve(undefined);
+  async findOne(@Param("documentId") documentId: string): Promise<DocumentDTO> {
+    return this.documentsService.findOne(documentId);
   }
 
   @Post(DOCUMENTS_ROUTES.create())
-  create(@Body() dto: DocumentCreateRequestDTO): Promise<DocumentDTO> {
-    // TODO: Add service call to create a document
-    return Promise.resolve(undefined);
+  async create(@Body() dto: DocumentCreateRequestDTO): Promise<DocumentDTO> {
+    return this.documentsService.create(dto);
   }
 
   @Patch(DOCUMENTS_ROUTES.update(":documentId"))
-  update(@Param("documentId") documentId: string, @Body() dto: DocumentUpdateRequestDTO): Promise<DocumentDTO> {
-    // TODO: Add service call to update a specific document by ID
-    return Promise.resolve(undefined);
+  async update(@Param("documentId") documentId: string, @Body() dto: DocumentUpdateRequestDTO): Promise<DocumentDTO> {
+    return this.documentsService.update(documentId, dto);
   }
 
   @Delete(DOCUMENTS_ROUTES.delete(":documentId"))
-  delete(@Param("documentId") documentId: string): Promise<void> {
-    // TODO: Add service call to delete a document by ID
-    return Promise.resolve(undefined);
+  async delete(@Param("documentId") documentId: string): Promise<void> {
+    return this.documentsService.delete(documentId);
   }
 
   @Patch(DOCUMENTS_ROUTES.restore(":documentId"))
-  restore(@Param("documentId") documentId: string): Promise<void> {
-    // TODO: Add service call to restore a specific document by ID
-    return Promise.resolve(undefined);
+  async restore(@Param("documentId") documentId: string): Promise<void> {
+    return this.documentsService.restore(documentId);
   }
 }

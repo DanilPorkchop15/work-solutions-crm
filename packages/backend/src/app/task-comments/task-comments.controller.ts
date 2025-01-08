@@ -2,35 +2,35 @@ import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/commo
 import { TASK_COMMENTS_ROUTES, TaskCommentsApi } from "@work-solutions-crm/libs/shared/task-comments/task-comments.api";
 import { TaskCommentDTO } from "@work-solutions-crm/libs/shared/task-comments/task-comments.dto";
 
+import { TaskCommentsService } from "./task-comments.service";
+
 @Controller()
 export class TaskCommentsController implements TaskCommentsApi {
+  constructor(private readonly taskCommentsService: TaskCommentsService) {}
+
   @Get(TASK_COMMENTS_ROUTES.findAll(":taskId"))
-  findAll(@Param("taskId") taskId: string): Promise<TaskCommentDTO[]> {
-    // TODO: Add service logic to fetch all comments for a task
-    return Promise.resolve([]);
+  async findAll(@Param("taskId") taskId: string): Promise<TaskCommentDTO[]> {
+    return this.taskCommentsService.findAll(taskId);
   }
 
   @Post(TASK_COMMENTS_ROUTES.create(":taskId"))
-  create(@Param("taskId") taskId: string, @Body("text") text: string): Promise<void> {
-    // TODO: Add service logic to create a comment for a task
-    return Promise.resolve(undefined);
+  async create(@Param("taskId") taskId: string, @Body("text") text: string): Promise<void> {
+    // TODO get user id from auth
+    return this.taskCommentsService.create(taskId, "userId", text);
   }
 
   @Patch(TASK_COMMENTS_ROUTES.update(":taskCommentId"))
-  update(@Param("taskCommentId") taskCommentId: string, @Body("text") text: string): Promise<void> {
-    // TODO: Add service logic to update a task comment by ID
-    return Promise.resolve(undefined);
+  async update(@Param("taskCommentId") taskCommentId: string, @Body("text") text: string): Promise<void> {
+    return this.taskCommentsService.update(taskCommentId, text);
   }
 
   @Delete(TASK_COMMENTS_ROUTES.delete(":taskCommentId"))
-  delete(@Param("taskCommentId") taskCommentId: string): Promise<void> {
-    // TODO: Add service logic to delete a task comment by ID
-    return Promise.resolve(undefined);
+  async delete(@Param("taskCommentId") taskCommentId: string): Promise<void> {
+    return this.taskCommentsService.delete(taskCommentId);
   }
 
   @Patch(TASK_COMMENTS_ROUTES.restore(":taskCommentId"))
-  restore(@Param("taskCommentId") taskCommentId: string): Promise<void> {
-    // TODO: Add service logic to restore a task comment by ID
-    return Promise.resolve(undefined);
+  async restore(@Param("taskCommentId") taskCommentId: string): Promise<void> {
+    return this.taskCommentsService.restore(taskCommentId);
   }
 }
