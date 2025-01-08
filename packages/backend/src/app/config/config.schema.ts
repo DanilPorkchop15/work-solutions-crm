@@ -24,6 +24,12 @@ export class DatabaseConfig {
   readonly password: string = "";
 }
 
+export class AuthenticationConfig {
+  @IsString()
+  @IsNotEmpty()
+  readonly secret: string = "secret";
+}
+
 export class ApplicationConfig {
   @IsDefined()
   @ValidateNested()
@@ -33,6 +39,11 @@ export class ApplicationConfig {
   @IsBoolean()
   @IsDefined()
   readonly corsEnabled: boolean = false;
+
+  @IsDefined()
+  @ValidateNested()
+  @Type(() => AuthenticationConfig)
+  readonly authentication: AuthenticationConfig;
 }
 
 export interface Version {

@@ -1,13 +1,15 @@
 import { existsSync, readFileSync } from "fs";
-import { join, resolve } from "path";
+import { resolve } from "path";
 
 import { Injectable } from "@nestjs/common";
 import { plainToClass } from "class-transformer";
 import { validateSync, ValidationError } from "class-validator";
 import { EventEmitter2 } from "eventemitter2";
 import { load } from "js-yaml";
+import { join } from "lodash";
+import * as process from "node:process";
 
-import { ApplicationConfig, DatabaseConfig, Version } from "./config.schema";
+import { ApplicationConfig, AuthenticationConfig, DatabaseConfig, Version } from "./config.schema";
 
 @Injectable()
 export class ConfigService implements ApplicationConfig {
@@ -24,6 +26,10 @@ export class ConfigService implements ApplicationConfig {
 
   get corsEnabled(): boolean {
     return this.config.corsEnabled;
+  }
+
+  get authentication(): AuthenticationConfig {
+    return this.config.authentication;
   }
 
   get version(): Version {
