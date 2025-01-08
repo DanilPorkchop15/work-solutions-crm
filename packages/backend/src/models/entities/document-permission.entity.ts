@@ -3,7 +3,7 @@ import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Unique }
 import { SQL_CONSTRAINTS } from "../../common/sql-conststrints.enum";
 
 import { Document } from "./document.entity";
-import { UserRole } from "./role_permission.entity";
+import { UserRole } from "./role-permission.entity";
 
 @Entity("document_permissions")
 @Unique(SQL_CONSTRAINTS.UNIQUE_ROLE_AND_DOCUMENT, (documentPermission: DocumentPermission) => [

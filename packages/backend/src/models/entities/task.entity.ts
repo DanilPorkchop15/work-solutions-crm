@@ -13,8 +13,8 @@ import {
 } from "typeorm";
 
 import { Project } from "./project.entity";
-import { TaskComment } from "./task_comment.entity";
-import { TaskLog } from "./task_log.entity";
+import { TaskComment } from "./task-comment.entity";
+import { TaskLog } from "./task-log.entity";
 import { User } from "./user.entity";
 
 enum TaskStatus {

@@ -10,7 +10,7 @@ import {
   UpdateDateColumn
 } from "typeorm";
 
-import { CustomerLog } from "./customer_log.entity";
+import { CustomerLog } from "./customer-log.entity";
 import { Project } from "./project.entity";
 import { User } from "./user.entity";
 

@@ -10,10 +10,10 @@ import {
   UpdateDateColumn
 } from "typeorm";
 
-import { DocumentComment } from "./document_comment.entity";
-import { DocumentLog } from "./document_log.entity";
-import { DocumentPermission } from "./document_permission.entity";
-import { DocumentVersion } from "./document_version.entity";
+import { DocumentComment } from "./document-comment.entity";
+import { DocumentLog } from "./document-log.entity";
+import { DocumentPermission } from "./document-permission.entity";
+import { DocumentVersion } from "./document-version.entity";
 import { User } from "./user.entity";
 
 @Entity("documents")

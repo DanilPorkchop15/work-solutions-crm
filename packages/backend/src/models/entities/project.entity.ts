@@ -13,8 +13,8 @@ import {
 } from "typeorm";
 
 import { Customer } from "./customer.entity";
-import { ProjectComment } from "./project_comment.entity";
-import { ProjectLog } from "./project_log.entity";
+import { ProjectComment } from "./project-comment.entity";
+import { ProjectLog } from "./project-log.entity";
 import { User } from "./user.entity";
 
 enum ProjectStatus {

@@ -10,19 +10,19 @@ import {
 } from "typeorm";
 
 import { Customer } from "./customer.entity";
-import { CustomerLog } from "./customer_log.entity";
+import { CustomerLog } from "./customer-log.entity";
 import { Document } from "./document.entity";
-import { DocumentComment } from "./document_comment.entity";
-import { DocumentLog } from "./document_log.entity";
-import { DocumentVersion } from "./document_version.entity";
+import { DocumentComment } from "./document-comment.entity";
+import { DocumentLog } from "./document-log.entity";
+import { DocumentVersion } from "./document-version.entity";
 import { Project } from "./project.entity";
-import { ProjectComment } from "./project_comment.entity";
-import { ProjectLog } from "./project_log.entity";
-import { UserRole } from "./role_permission.entity";
+import { ProjectComment } from "./project-comment.entity";
+import { ProjectLog } from "./project-log.entity";
+import { UserRole } from "./role-permission.entity";
 import { Task } from "./task.entity";
-import { TaskComment } from "./task_comment.entity";
-import { TaskLog } from "./task_log.entity";
-import { UserLog } from "./user_log.entity";
+import { TaskComment } from "./task-comment.entity";
+import { TaskLog } from "./task-log.entity";
+import { UserLog } from "./user-log.entity";
 
 @Entity("users")
 export class User {
