@@ -49,3 +49,5 @@ export class UsersService {
     await this.userRepository.restore(userId);
   }
 }
+
+//TODO add changeRole method
