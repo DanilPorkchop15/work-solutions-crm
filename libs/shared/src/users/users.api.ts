@@ -6,7 +6,7 @@ export interface UserCreateRequestDTO {
   fullName: string;
   email: string;
   position?: string;
-  avatarUrl?: string | null;
+  avatarUrl?: string;
   role: UserRole;
 }
 
@@ -17,7 +17,7 @@ export interface UsersApi {
   update: (userId: string, dto: UserUpdateRequestDTO) => Promise<UserDTO>;
   delete: (userId: string) => Promise<void>;
   restore: (userId: string) => Promise<void>;
-  bulkCreate: (dto: UserCreateRequestDTO) => Promise<UserPreviewDTO[]>;
+  bulkCreate: (dto: UserCreateRequestDTO[]) => Promise<UserPreviewDTO[]>;
 }
 
 export const USERS_ROUTES: APIRoutes<UsersApi> = {

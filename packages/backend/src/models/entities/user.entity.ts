@@ -45,7 +45,7 @@ export class User {
   role: UserRole;
 
   @Column({ type: "varchar", length: 500, nullable: true })
-  avatarUrl?: string;
+  avatar_url?: string;
 
   @OneToMany(() => Document, document => document.user_created)
   documents: Document[];
