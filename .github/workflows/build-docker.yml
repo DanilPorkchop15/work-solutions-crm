@@ -1,0 +1,49 @@
+name: Build Docker Compose
+
+on:
+  pull_request:
+    branches:
+      - "**"
+  push:
+    branches:
+      - "**"
+    paths-ignore:
+      - "**.md"
+      - ".dockerignore"
+      - ".gitignore"
+      - "LICENSE"
+      - ".gihub /**"
+
+jobs:
+  docker-compose-build:
+
+    if: github.event_name == 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Docker
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      # Step 3: Build Docker Compose
+      - name: Build Docker Compose Services
+        run: |
+          docker-compose -f docker-compose.yml config  # Validate the configuration
+          docker-compose -f docker-compose.yml up -d --build --remove-orphans
+
+      # Step 4: Verify containers are running
+      - name: Verify Running Containers
+        run: |
+          docker ps
+          docker-compose ps
+
+      # Step 5: Clean up
+      - name: Stop and Remove Docker Containers
+        if: always()
+        run: |
+          docker-compose down
+
