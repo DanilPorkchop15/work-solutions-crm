@@ -38,8 +38,8 @@ jobs:
       # Step 4: Build Docker Compose
       - name: Build Docker Compose Services
         run: |
-          docker-compose -f docker-compose.yml config  # Validate the configuration
-          docker-compose -f docker-compose.yml up -d --build --remove-orphans
+          docker-compose -f docker-compose.yaml config  # Validate the configuration
+          docker-compose -f docker-compose.yaml up -d --build --remove-orphans
 
       # Step 5: Verify containers are running
       - name: Verify Running Containers
