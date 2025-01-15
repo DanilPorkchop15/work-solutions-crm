@@ -35,13 +35,19 @@ jobs:
           sudo curl -L "https://github.com/docker/compose/releases/download/v2.17.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
           sudo chmod +x /usr/local/bin/docker-compose
 
-      # Step 4: Build Docker Compose
+      # Step 4: Build Docker Compose Services
       - name: Build Docker Compose Services
         run: |
-          docker-compose -f docker-compose.yaml config  # Validate the configuration
-          docker-compose -f docker-compose.yaml up -d --build --remove-orphans
+          # Сборка образов и ожидание завершения
+          docker-compose -f docker-compose.yaml build --no-cache
 
-      # Step 5: Verify containers are running
+      # Step 5: Start Docker Compose Services
+      - name: Start Docker Compose Services
+        run: |
+          # Запуск контейнеров после завершения сборки
+          docker-compose -f docker-compose.yaml up -d --remove-orphans
+
+      # Step 6: Verify containers are running
       - name: Verify Running Containers
         run: |
           docker ps
@@ -49,7 +55,7 @@ jobs:
           docker-compose logs
 
 
-      # Step 6: Clean up
+      # Step 7: Clean up
       - name: Stop and Remove Docker Containers
         if: always()
         run: |
