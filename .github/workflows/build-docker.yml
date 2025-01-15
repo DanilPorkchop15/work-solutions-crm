@@ -46,6 +46,8 @@ jobs:
         run: |
           docker ps
           docker-compose ps
+          docker-compose logs
+
 
       # Step 6: Clean up
       - name: Stop and Remove Docker Containers
