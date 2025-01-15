@@ -1,5 +1,6 @@
 import { UserCreateRequestDTO, UserUpdateRequestDTO } from "@work-solutions-crm/libs/shared/users/users.api";
 import { UserDTO, UserPreviewDTO } from "@work-solutions-crm/libs/shared/users/users.dto";
+import * as bcrypt from "bcrypt";
 import { DeepPartial } from "typeorm";
 
 import { User } from "../../models/entities/user.entity";
@@ -36,10 +37,11 @@ export function mapUpdateRequestDTOToUser(dto: UserUpdateRequestDTO): DeepPartia
   };
 }
 
-export function mapCreateRequestDTOToUser(dto: UserCreateRequestDTO): DeepPartial<User> {
+export async function mapCreateRequestDTOToUser(dto: UserCreateRequestDTO): Promise<DeepPartial<User>> {
   return {
     avatar_url: dto.avatarUrl,
     email: dto.email,
+    password: await bcrypt.hash(dto.password, 10),
     full_name: dto.fullName,
     position: dto.position,
     role: dto.role

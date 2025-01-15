@@ -9,7 +9,7 @@ export interface LoginRequestDTO {
 }
 
 export interface AuthApi {
-  me(): Promise<UserDTO>;
+  me(user?: UserDTO): UserDTO;
   login(dto: LoginRequestDTO): Promise<LoginDTO>;
 }
 

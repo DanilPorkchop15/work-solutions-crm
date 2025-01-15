@@ -18,6 +18,10 @@ export class UsersController implements UsersApi {
     return this.usersService.findAll();
   }
 
+  create(dto: UserCreateRequestDTO): Promise<UserDTO> {
+    return this.usersService.create(dto);
+  }
+
   @Post(USERS_ROUTES.bulkCreate())
   bulkCreate(@Body() dto: UserCreateRequestDTO[]): Promise<UserPreviewDTO[]> {
     return this.usersService.bulkCreate(dto);

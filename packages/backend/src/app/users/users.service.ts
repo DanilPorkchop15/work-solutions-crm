@@ -25,8 +25,22 @@ export class UsersService {
     return users.map(mapUserToPreviewDTO);
   }
 
+  async findByEmail(email: string): Promise<User | null> {
+    const user: User | null = await this.userRepository.findOne({ where: { email } });
+    if (!user) {
+      return null;
+    }
+    return user;
+  }
+
+  async create(dto: UserCreateRequestDTO): Promise<UserDTO> {
+    const user: DeepPartial<User> = await mapCreateRequestDTOToUser(dto);
+    const createdUser: User = await this.userRepository.save(user);
+    return mapUserToDTO(createdUser);
+  }
+
   async bulkCreate(dto: UserCreateRequestDTO[]): Promise<UserPreviewDTO[]> {
-    const users: DeepPartial<User[]> = dto.map(mapCreateRequestDTOToUser);
+    const users: DeepPartial<User[]> = await Promise.all(dto.map(mapCreateRequestDTOToUser));
     const createdUsers: User[] = await this.userRepository.save(users);
     return createdUsers.map(mapUserToPreviewDTO);
   }
