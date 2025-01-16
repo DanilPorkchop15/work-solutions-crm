@@ -2,6 +2,7 @@ ARG NODE_VERSION="node:20-alpine"
 
 FROM $NODE_VERSION AS base
 WORKDIR /app
+RUN touch ~/.npmrc
 COPY . .
 RUN npm ci --include=dev
 
