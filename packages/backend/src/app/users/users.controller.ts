@@ -18,7 +18,8 @@ export class UsersController implements UsersApi {
     return this.usersService.findAll();
   }
 
-  create(dto: UserCreateRequestDTO): Promise<UserDTO> {
+  @Post(USERS_ROUTES.create())
+  create(@Body() dto: UserCreateRequestDTO): Promise<UserDTO> {
     return this.usersService.create(dto);
   }
 
