@@ -1,6 +1,6 @@
 import { UserCreateRequestDTO, UserUpdateRequestDTO } from "@work-solutions-crm/libs/shared/users/users.api";
 import { UserDTO, UserPreviewDTO } from "@work-solutions-crm/libs/shared/users/users.dto";
-import * as bcrypt from "bcrypt";
+import * as bcrypt from "bcryptjs";
 import { DeepPartial } from "typeorm";
 
 import { User } from "../../models/entities/user.entity";
