@@ -1,13 +1,11 @@
 import { existsSync, readFileSync } from "fs";
-import { resolve } from "path";
+import { join, resolve } from "path";
 
 import { Injectable } from "@nestjs/common";
 import { plainToClass } from "class-transformer";
 import { validateSync, ValidationError } from "class-validator";
 import { EventEmitter2 } from "eventemitter2";
 import { load } from "js-yaml";
-import { join } from "lodash";
-import * as process from "node:process";
 
 import { ApplicationConfig, AuthenticationConfig, DatabaseConfig, Version } from "./config.schema";
 
