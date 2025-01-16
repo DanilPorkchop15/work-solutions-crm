@@ -1,3 +1,5 @@
+import { AuthModule } from "@backend/app/auth/auth.module";
+import { UsersModule } from "@backend/app/users/users.module";
 import { Module } from "@nestjs/common";
 import { EventEmitterModule } from "@nestjs/event-emitter";
 import { TypeOrmModule, TypeOrmModuleOptions } from "@nestjs/typeorm";
@@ -10,7 +12,8 @@ import { entitiesAndMigrations } from "./app.migrations";
   imports: [
     ConfigModule,
     EventEmitterModule.forRoot({ global: true }),
-
+    AuthModule,
+    UsersModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
