@@ -10,7 +10,7 @@ export class CreateUsers1736118954040 implements MigrationInterface {
         "password" varchar(255) NOT NULL,
         "position" varchar(255),
         "role" "user_role_enum" NOT NULL DEFAULT 'user',
-        "avatarUrl" varchar(500),
+        "avatar_url" varchar(500),
         "created_at" timestamp NOT NULL DEFAULT now(),
         "updated_at" timestamp NOT NULL DEFAULT now(),
         "deleted_at" timestamp,

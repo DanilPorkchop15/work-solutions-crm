@@ -1,6 +1,10 @@
 import { UserDTO } from "../users/users.dto";
 
-export interface LoginDTO {
-  token: string;
+export interface TokenDTO {
+  accessToken: string;
+  refreshToken: string;
+}
+
+export interface LoginDTO extends TokenDTO {
   user: UserDTO;
 }

@@ -77,7 +77,7 @@ services:
     volumes:
       - database_data:/var/lib/postgresql/data
     ports:
-      - 5432:5432
+      - ${DB_PORT:-5432}:5432
   frontend-user:
     image: node:20.11.0-slim
     volumes:
