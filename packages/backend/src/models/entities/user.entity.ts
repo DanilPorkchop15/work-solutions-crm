@@ -18,11 +18,17 @@ import { DocumentVersion } from "./document-version.entity";
 import { Project } from "./project.entity";
 import { ProjectComment } from "./project-comment.entity";
 import { ProjectLog } from "./project-log.entity";
-import { UserRole } from "./role-permission.entity";
 import { Task } from "./task.entity";
 import { TaskComment } from "./task-comment.entity";
 import { TaskLog } from "./task-log.entity";
 import { UserLog } from "./user-log.entity";
+
+export enum Role {
+  ADMIN = "admin",
+  USER = "user",
+  MANAGER = "manager",
+  MODERATOR = "moderator"
+}
 
 @Entity("users")
 export class User {
@@ -41,8 +47,8 @@ export class User {
   @Column({ type: "varchar", length: 255, nullable: true })
   position?: string;
 
-  @Column({ type: "enum", enum: UserRole, default: UserRole.USER })
-  role: UserRole;
+  @Column({ type: "enum", enum: Role, default: Role.USER })
+  role: Role;
 
   @Column({ type: "varchar", length: 500, nullable: true })
   avatar_url?: string;
