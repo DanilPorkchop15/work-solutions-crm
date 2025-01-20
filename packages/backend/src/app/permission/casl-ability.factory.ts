@@ -1,6 +1,6 @@
 import { AbilityBuilder, PureAbility } from "@casl/ability";
 import { Injectable } from "@nestjs/common";
-import { Action, Subject } from "@work-solutions-crm/libs/shared/user/user.dto";
+import { Action, Subject } from "@work-solutions-crm/libs/shared/auth/auth.dto";
 
 import { Role, User } from "../../models/entities/user.entity";
 

@@ -5,21 +5,6 @@ export enum Role {
   MODERATOR = "moderator"
 }
 
-export enum Subject {
-  USERS = "users",
-  CUSTOMERS = "customers",
-  DOCUMENTS = "documents",
-  TASKS = "tasks",
-  PROJECTS = "projects"
-}
-
-export enum Action {
-  CREATE = "create",
-  READ = "read",
-  UPDATE = "update",
-  DELETE = "delete"
-}
-
 export interface UserDTO {
   id: string;
   fullName: string;

@@ -1,19 +1,21 @@
 import { ForbiddenException, Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { LoginRequestDTO } from "@work-solutions-crm/libs/shared/auth/auth.api";
-import { LoginDTO, TokenDTO } from "@work-solutions-crm/libs/shared/auth/auth.dto";
+import { LoginDTO, PermissionDTO, TokenDTO } from "@work-solutions-crm/libs/shared/auth/auth.dto";
 import { UserDTO } from "@work-solutions-crm/libs/shared/user/user.dto";
 import * as bcrypt from "bcryptjs";
 
 import { User } from "../../models/entities/user.entity";
 import { mapUserToDTO } from "../user/user.mappers";
 import { UserService } from "../user/user.service";
+import { CaslAbilityFactory } from "@backend/app/permission/casl-ability.factory";
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly usersService: UserService,
-    private readonly jwtService: JwtService
+    private readonly jwtService: JwtService,
+    private readonly caslAbilityFactory: CaslAbilityFactory
   ) {}
 
   async validateUser(email: string, password: string): Promise<User | null> {
@@ -37,8 +39,20 @@ export class AuthService {
 
     const userDTO: UserDTO = mapUserToDTO(user);
 
+    const ability = this.caslAbilityFactory.createForUser(user);
+
+    const permissions: PermissionDTO[] = ability.rules.map(rule => ({
+      action: rule.action,
+      subject: rule.subject,
+      conditions: rule.conditions || null,
+      inverted: rule.inverted || false
+    }));
+
     return {
-      user: userDTO,
+      user: {
+        ...userDTO,
+        permissions
+      },
       accessToken: accessToken,
       refreshToken
     };

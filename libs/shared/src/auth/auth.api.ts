@@ -1,7 +1,6 @@
 import { APIRoutes } from "../api-routes";
-import { UserDTO } from "../user/user.dto";
 
-import { LoginDTO, TokenDTO } from "./auth.dto";
+import { LoginDTO, TokenDTO, UserWithPermissionsDTO } from "./auth.dto";
 
 export interface LoginRequestDTO {
   email: string;
@@ -13,7 +12,7 @@ export interface RefreshRequestDTO {
 }
 
 export interface AuthApi {
-  me(user?: UserDTO): UserDTO;
+  me(...ommitted: any): UserWithPermissionsDTO;
   login(dto: LoginRequestDTO): Promise<LoginDTO>;
   refresh(dto: RefreshRequestDTO): TokenDTO;
 }
