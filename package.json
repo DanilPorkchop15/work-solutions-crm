@@ -16,6 +16,7 @@
   "author": "",
   "license": "",
   "dependencies": {
+    "@casl/ability": "^6.7.3",
     "@js-joda/core": "^5.6.2",
     "@js-joda/locale_ru": "^4.11.0",
     "@mui/material": "5.16.1",
