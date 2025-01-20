@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post, UseGuards } from "@nestjs/common";
 import { AUTH_ROUTES, AuthApi, RefreshRequestDTO } from "@work-solutions-crm/libs/shared/auth/auth.api";
 import { LoginDTO, TokenDTO } from "@work-solutions-crm/libs/shared/auth/auth.dto";
-import { UserDTO } from "@work-solutions-crm/libs/shared/users/users.dto";
+import { UserDTO } from "@work-solutions-crm/libs/shared/user/user.dto";
 
 import { CurrentUser } from "../../decorators/current-user.decorator";
 

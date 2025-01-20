@@ -14,7 +14,7 @@ import { CustomerLog } from "./customer-log.entity";
 import { Project } from "./project.entity";
 import { User } from "./user.entity";
 
-@Entity("customers")
+@Entity("customer")
 export class Customer {
   @PrimaryGeneratedColumn("uuid")
   customer_id: string;

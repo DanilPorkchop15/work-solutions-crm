@@ -1,5 +1,5 @@
 import { createParamDecorator, ExecutionContext } from "@nestjs/common";
-import { UserDTO } from "@work-solutions-crm/libs/shared/users/users.dto";
+import { UserDTO } from "@work-solutions-crm/libs/shared/user/user.dto";
 
 import { AuthRequest } from "../app/auth/auth.types";
 

@@ -1,5 +1,5 @@
 import { APIRoutes } from "../api-routes";
-import { UserDTO } from "../users/users.dto";
+import { UserDTO } from "../user/user.dto";
 
 import { LoginDTO, TokenDTO } from "./auth.dto";
 

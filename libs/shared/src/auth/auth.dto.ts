@@ -1,4 +1,4 @@
-import { UserDTO } from "../users/users.dto";
+import { UserDTO } from "../user/user.dto";
 
 export interface TokenDTO {
   accessToken: string;

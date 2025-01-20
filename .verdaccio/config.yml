@@ -9,7 +9,7 @@ uplinks:
 
 packages:
   "**":
-    # give all users (including non-authenticated users) full access
+    # give all user (including non-authenticated user) full access
     # because it is a local registry
     access: $all
     publish: $all

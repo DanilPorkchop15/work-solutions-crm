@@ -2,17 +2,17 @@ import { ForbiddenException, Injectable, UnauthorizedException } from "@nestjs/c
 import { JwtService } from "@nestjs/jwt";
 import { LoginRequestDTO } from "@work-solutions-crm/libs/shared/auth/auth.api";
 import { LoginDTO, TokenDTO } from "@work-solutions-crm/libs/shared/auth/auth.dto";
-import { UserDTO } from "@work-solutions-crm/libs/shared/users/users.dto";
+import { UserDTO } from "@work-solutions-crm/libs/shared/user/user.dto";
 import * as bcrypt from "bcryptjs";
 
 import { User } from "../../models/entities/user.entity";
-import { mapUserToDTO } from "../users/users.mappers";
-import { UsersService } from "../users/users.service";
+import { mapUserToDTO } from "../user/user.mappers";
+import { UserService } from "../user/user.service";
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly usersService: UsersService,
+    private readonly usersService: UserService,
     private readonly jwtService: JwtService
   ) {}
 
