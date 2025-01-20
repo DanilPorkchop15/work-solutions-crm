@@ -15,7 +15,7 @@ export interface RefreshRequestDTO {
 export interface AuthApi {
   me(user?: UserDTO): UserDTO;
   login(dto: LoginRequestDTO): Promise<LoginDTO>;
-  refresh(dto: RefreshRequestDTO): Promise<TokenDTO>;
+  refresh(dto: RefreshRequestDTO): TokenDTO;
 }
 
 export const AUTH_ROUTES: APIRoutes<AuthApi> = {

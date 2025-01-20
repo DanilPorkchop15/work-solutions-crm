@@ -19,8 +19,8 @@ export class AuthController implements AuthApi {
   }
 
   @Post(AUTH_ROUTES.refresh())
-  async refresh(@Body() { refreshToken }: RefreshRequestDTO): Promise<TokenDTO> {
-    return await this.authService.refresh(refreshToken);
+  refresh(@Body() { refreshToken }: RefreshRequestDTO): TokenDTO {
+    return this.authService.refresh(refreshToken);
   }
 
   @UseGuards(AuthGuard)
