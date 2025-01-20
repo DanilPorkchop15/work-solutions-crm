@@ -47,6 +47,9 @@ export class User {
   @Column({ type: "varchar", length: 500, nullable: true })
   avatar_url?: string;
 
+  @Column({ type: "varchar", length: 500, nullable: true })
+  refresh_token?: string;
+
   @OneToMany(() => Document, document => document.user_created)
   documents: Document[];
 

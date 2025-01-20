@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post, UseGuards } from "@nestjs/common";
-import { AUTH_ROUTES, AuthApi } from "@work-solutions-crm/libs/shared/auth/auth.api";
-import { LoginDTO } from "@work-solutions-crm/libs/shared/auth/auth.dto";
+import { AUTH_ROUTES, AuthApi, RefreshRequestDTO } from "@work-solutions-crm/libs/shared/auth/auth.api";
+import { LoginDTO, TokenDTO } from "@work-solutions-crm/libs/shared/auth/auth.dto";
 import { UserDTO } from "@work-solutions-crm/libs/shared/users/users.dto";
 
 import { CurrentUser } from "../../decorators/current-user.decorator";
@@ -16,6 +16,11 @@ export class AuthController implements AuthApi {
   @Post(AUTH_ROUTES.login())
   async login(@Body() dto: LoginValidationDTO): Promise<LoginDTO> {
     return await this.authService.login(dto);
+  }
+
+  @Post(AUTH_ROUTES.refresh())
+  async refresh(@Body() { refreshToken }: RefreshRequestDTO): Promise<TokenDTO> {
+    return await this.authService.refresh(refreshToken);
   }
 
   @UseGuards(AuthGuard)

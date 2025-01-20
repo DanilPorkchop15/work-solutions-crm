@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { UserCreateRequestDTO, UserUpdateRequestDTO } from "@work-solutions-crm/libs/shared/users/users.api";
 import { UserDTO, UserPreviewDTO } from "@work-solutions-crm/libs/shared/users/users.dto";
+import * as bcrypt from "bcryptjs";
 import { DeepPartial, Repository } from "typeorm";
 
 import { User } from "../../models/entities/user.entity";
@@ -25,8 +26,16 @@ export class UsersService {
     return users.map(mapUserToPreviewDTO);
   }
 
-  async findByEmail(email: string): Promise<User | null> {
+  async findOneByEmail(email: string): Promise<User | null> {
     const user: User | null = await this.userRepository.findOne({ where: { email } });
+    if (!user) {
+      return null;
+    }
+    return user;
+  }
+
+  async findOneById(id: string): Promise<User | null> {
+    const user: User | null = await this.userRepository.findOne({ where: { user_id: id } });
     if (!user) {
       return null;
     }
@@ -61,6 +70,11 @@ export class UsersService {
 
   async restore(userId: string): Promise<void> {
     await this.userRepository.restore(userId);
+  }
+
+  async updateRefreshToken(userId: string, refreshToken: string): Promise<void> {
+    const hashedToken: string = await bcrypt.hash(refreshToken, 10);
+    await this.userRepository.update(userId, { refresh_token: hashedToken });
   }
 }
 
