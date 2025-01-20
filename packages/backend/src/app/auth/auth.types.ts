@@ -1,6 +1,7 @@
-import { UserDTO } from "@work-solutions-crm/libs/shared/users/users.dto";
 import { Request } from "express";
 
+import { User } from "../../models/entities/user.entity";
+
 export interface AuthRequest extends Request {
-  user?: UserDTO;
+  user?: User;
 }

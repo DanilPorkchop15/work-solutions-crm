@@ -1,6 +1,6 @@
 import { APIRoutes } from "../api-routes";
 
-import { UserDTO, UserPreviewDTO, UserRole } from "./users.dto";
+import { Role, UserDTO, UserPreviewDTO } from "./users.dto";
 
 export interface UserCreateRequestDTO {
   fullName: string;
@@ -8,7 +8,7 @@ export interface UserCreateRequestDTO {
   password: string;
   position?: string;
   avatarUrl?: string;
-  role: UserRole;
+  role: Role;
 }
 
 export type UserUpdateRequestDTO = Partial<Omit<UserCreateRequestDTO, "role">>;

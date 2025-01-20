@@ -3,13 +3,17 @@ import { MigrationInterface, QueryRunner } from "typeorm";
 export class CreateUsers1736118954040 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
+      CREATE TYPE "role_enum" AS ENUM('admin', 'user', 'moderator', 'manager);
+    `);
+
+    await queryRunner.query(`
       CREATE TABLE "users" (
         "user_id" uuid NOT NULL DEFAULT uuid_generate_v4(),
         "full_name" varchar(255) NOT NULL,
         "email" varchar(255) NOT NULL UNIQUE,
         "password" varchar(255) NOT NULL,
         "position" varchar(255),
-        "role" "user_role_enum" NOT NULL DEFAULT 'user',
+        "role" "role_enum" NOT NULL DEFAULT 'user',
         "avatar_url" varchar(500),
         "created_at" timestamp NOT NULL DEFAULT now(),
         "updated_at" timestamp NOT NULL DEFAULT now(),
@@ -23,6 +27,10 @@ export class CreateUsers1736118954040 implements MigrationInterface {
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
       DROP TABLE "users";
+    `);
+
+    await queryRunner.query(`
+      DROP TYPE "role_enum";
     `);
   }
 }

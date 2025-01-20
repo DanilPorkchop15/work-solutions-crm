@@ -1,15 +1,11 @@
 import { Global, Module } from "@nestjs/common";
-import { TypeOrmModule } from "@nestjs/typeorm";
 
-import { RolePermission } from "../../models/entities/role-permission.entity";
-
-import { PermissionsGuard } from "./permissions.guard";
-import { PermissionsService } from "./permissions.service";
+import { CaslGuard } from "./casl.guard";
+import { CaslAbilityFactory } from "./casl-ability.factory";
 
 @Global()
 @Module({
-  imports: [TypeOrmModule.forFeature([RolePermission])],
-  providers: [RolePermission, PermissionsGuard],
-  exports: [PermissionsService]
+  providers: [CaslAbilityFactory, CaslGuard],
+  exports: [CaslAbilityFactory, CaslGuard]
 })
 export class PermissionsModule {}

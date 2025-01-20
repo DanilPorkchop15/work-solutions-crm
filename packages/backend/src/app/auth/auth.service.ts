@@ -30,11 +30,12 @@ export class AuthService {
       throw new ForbiddenException("Invalid credentials");
     }
 
-    const userDTO: UserDTO = mapUserToDTO(user);
-    const accessToken: string = this.jwtService.sign(userDTO, { expiresIn: "15m" });
-    const refreshToken: string = this.jwtService.sign(userDTO, { expiresIn: "7d" });
+    const accessToken: string = this.jwtService.sign(user, { expiresIn: "15m" });
+    const refreshToken: string = this.jwtService.sign(user, { expiresIn: "7d" });
 
     await this.usersService.updateRefreshToken(user.user_id, refreshToken);
+
+    const userDTO: UserDTO = mapUserToDTO(user);
 
     return {
       user: userDTO,
@@ -43,18 +44,17 @@ export class AuthService {
     };
   }
 
-  authenticate(token: string): UserDTO {
+  authenticate(token: string): User {
     try {
-      return this.jwtService.verify<UserDTO>(token);
+      return this.jwtService.verify<User>(token);
     } catch (error) {
       throw new UnauthorizedException("Invalid token");
     }
   }
 
-  async refresh(refreshToken: string): Promise<TokenDTO> {
+  refresh(refreshToken: string): TokenDTO {
     try {
-      const payload: UserDTO = this.jwtService.verify<UserDTO>(refreshToken);
-      const user: User | null = await this.usersService.findOneById(payload.id);
+      const user: User = this.jwtService.verify<User>(refreshToken);
 
       if (!user || user.refresh_token !== refreshToken) {
         throw new UnauthorizedException("Invalid refresh token");
