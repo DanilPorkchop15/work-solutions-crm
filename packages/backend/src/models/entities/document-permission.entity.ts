@@ -1,9 +1,9 @@
+import { Role } from "@work-solutions-crm/libs/shared/user/user.dto";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Unique } from "typeorm";
 
 import { SQL_CONSTRAINTS } from "../../common/sql-conststrints.enum";
 
 import { Document } from "./document.entity";
-import { UserRole } from "./role-permission.entity";
 
 @Entity("document_permissions")
 @Unique(SQL_CONSTRAINTS.UNIQUE_ROLE_AND_DOCUMENT, (documentPermission: DocumentPermission) => [
@@ -18,6 +18,6 @@ export class DocumentPermission {
   @JoinColumn({ name: "document_id" })
   document: Document;
 
-  @Column({ type: "enum", enum: UserRole })
-  role: UserRole;
+  @Column({ type: "enum", enum: Role })
+  role: Role;
 }
