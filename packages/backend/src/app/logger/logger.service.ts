@@ -1,3 +1,5 @@
+import { LOGGER_SERVICE_NAME } from "@backend/app/logger/logger.constraints";
+import { LogData, LogOptions, LogType } from "@backend/app/logger/logger.types";
 import { DocumentLog } from "@backend/models/entities/document-log.entity";
 import { ProjectLog } from "@backend/models/entities/project-log.entity";
 import { TaskLog } from "@backend/models/entities/task-log.entity";
@@ -6,33 +8,11 @@ import { Injectable, Logger } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 
-export enum LogType {
-  USER = "user",
-  DOCUMENT = "document",
-  TASK = "task",
-  PROJECT = "project",
-  OTHER = "other"
-}
-
-export interface LogOptions {
-  user_id: string;
-  document_id?: string;
-  task_id?: string;
-  project_id?: string;
-}
-
-export interface LogData {
-  action: string;
-  comment?: string;
-  user?: { user_id: string };
-  document?: { document_id: string };
-  task?: { task_id: string };
-  project?: { project_id: string };
-}
-
 @Injectable()
 export class LoggerService {
-  private readonly logger: Logger = new Logger("LoggerService");
+  private readonly logger: Logger = new Logger(LOGGER_SERVICE_NAME, {
+    timestamp: true
+  });
 
   constructor(
     @InjectRepository(UserLog)
@@ -45,27 +25,17 @@ export class LoggerService {
     private readonly projectLogRepository: Repository<ProjectLog>
   ) {}
 
-  async log(type: LogType, action: string, comment?: string, options?: LogOptions): Promise<void> {
-    const logRepositoryMap: Record<
-      Exclude<LogType, LogType.OTHER>,
-      Repository<ProjectLog | DocumentLog | TaskLog | UserLog>
-    > = {
+  async logByType(type: LogType, action: string, comment?: string, options?: LogOptions): Promise<void> {
+    const logRepositoryMap: Record<LogType, Repository<ProjectLog | DocumentLog | TaskLog | UserLog>> = {
       [LogType.USER]: this.userLogRepository,
       [LogType.DOCUMENT]: this.documentLogRepository,
       [LogType.TASK]: this.taskLogRepository,
       [LogType.PROJECT]: this.projectLogRepository
     };
 
-    const logRepository: Repository<ProjectLog | DocumentLog | TaskLog | UserLog> = logRepositoryMap[type] as
-      | Repository<ProjectLog>
-      | Repository<DocumentLog>
-      | Repository<TaskLog>
-      | Repository<UserLog>;
+    const logRepository: Repository<ProjectLog | DocumentLog | TaskLog | UserLog> = logRepositoryMap[type];
+
     if (!logRepository) {
-      if (type === LogType.OTHER) {
-        this.logger.log({ action, comment, options });
-        return;
-      }
       this.logger.warn(`Unknown log type: ${type}`);
       return;
     }
@@ -81,6 +51,33 @@ export class LoggerService {
     if (options?.project_id) logData.project = { project_id: options.project_id };
 
     await logRepository.save(logData);
-    this.logger.log({ action, comment, options });
+    this.logger.log(this.formatLogData(logData, type));
+  }
+
+  log(action: string, comment?: string): void {
+    return this.logger.log(this.formatLogData({ action, comment }));
+  }
+
+  private formatLogData(logData: LogData, type?: LogType): string {
+    const { action, comment, user, document, task, project } = logData;
+
+    const sections: string[] = [
+      type ? `[${type}]` : "",
+      action,
+      comment ? `- ${comment}` : "",
+      user ? `User: ${user.user_id}` : "",
+      document ? `Document: ${document.document_id}` : "",
+      task ? `Task: ${task.task_id}` : "",
+      project ? `Project: ${project.project_id}` : ""
+    ];
+
+    const logHeader: string = sections.slice(0, 3).filter(Boolean).join(" ");
+    const logDetails: string = sections
+      .slice(3)
+      .filter(Boolean)
+      .map(section => `| ${section.padEnd(30, " ")}|`)
+      .join("\n");
+
+    return `${logHeader}\n${logDetails}`;
   }
 }
