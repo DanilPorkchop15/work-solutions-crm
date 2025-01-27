@@ -15,10 +15,12 @@ import { AuthService } from "./auth.service";
     UserModule,
     ConfigModule,
     JwtModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
-        secret: "configService.authentication.secret",
+        secret: configService.database.database,
         signOptions: {
-          expiresIn: "60m"
+          expiresIn: "15m"
         },
         ignoreExpiration: false
       })
@@ -26,7 +28,7 @@ import { AuthService } from "./auth.service";
     PermissionModule
   ],
   providers: [AuthService, AuthGuard],
-  controllers: [AuthController, AuthGuard],
-  exports: [AuthService]
+  controllers: [AuthController],
+  exports: [AuthService, AuthGuard]
 })
 export class AuthModule {}
