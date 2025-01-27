@@ -10,6 +10,8 @@ import { Repository } from "typeorm";
 
 @Injectable()
 export class LoggerService {
+  private static instance: LoggerService;
+
   private readonly logger: Logger = new Logger(LOGGER_SERVICE_NAME, {
     timestamp: true
   });
@@ -23,7 +25,18 @@ export class LoggerService {
     private readonly taskLogRepository: Repository<TaskLog>,
     @InjectRepository(ProjectLog)
     private readonly projectLogRepository: Repository<ProjectLog>
-  ) {}
+  ) {
+    if (!LoggerService.instance) {
+      LoggerService.instance = this;
+    }
+  }
+
+  static getInstance(): LoggerService {
+    if (!LoggerService.instance) {
+      throw new Error("LoggerService is not initialized.");
+    }
+    return LoggerService.instance;
+  }
 
   async logByType(type: LogType, action: string, comment?: string, options?: LogOptions): Promise<void> {
     const logRepositoryMap: Record<LogType, Repository<ProjectLog | DocumentLog | TaskLog | UserLog>> = {
