@@ -1,5 +1,14 @@
 import { Type } from "class-transformer";
-import { IsBoolean, IsDefined, IsInt, IsNotEmpty, IsPositive, IsString, ValidateNested } from "class-validator";
+import {
+  IsBoolean,
+  IsDefined,
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsPositive,
+  IsString,
+  ValidateNested
+} from "class-validator";
 
 export class DatabaseConfig {
   @IsString()
@@ -26,7 +35,7 @@ export class DatabaseConfig {
 
 export class AuthenticationConfig {
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   readonly secret: string = "secret";
 }
 
