@@ -1,3 +1,4 @@
+import { PermissionModule } from "@backend/app/permission/permission.module";
 import { Module } from "@nestjs/common";
 import { JwtModule } from "@nestjs/jwt";
 
@@ -21,7 +22,8 @@ import { AuthService } from "./auth.service";
         },
         ignoreExpiration: false
       })
-    })
+    }),
+    PermissionModule
   ],
   providers: [AuthService, AuthGuard],
   controllers: [AuthController, AuthGuard],
