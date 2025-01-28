@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import {
   UserBulkDeleteRequestDTO,
@@ -82,8 +82,16 @@ export class UserService {
     await this.userRepository.update(userId, { refresh_token: hashedToken });
   }
 
-  async updatePassword(userId: string, password: string): Promise<void> {
-    const hashedPassword: string = await bcrypt.hash(password, 10);
+  async changePassword(userId: string, newPassword: string, oldPassword: string): Promise<void> {
+    const user: User | null = await this.userRepository.findOne({ where: { user_id: userId } });
+    if (!user) {
+      throw new NotFoundException("User not found");
+    }
+    const isPasswordValid: boolean = await bcrypt.compare(oldPassword, user.password);
+    if (!isPasswordValid) {
+      throw new BadRequestException("Invalid password");
+    }
+    const hashedPassword: string = await bcrypt.hash(newPassword, 10);
     await this.userRepository.update(userId, { password: hashedPassword });
   }
 
@@ -99,5 +107,3 @@ export class UserService {
     await this.userRepository.restore(dto.user_ids);
   }
 }
-
-//TODO add changeRole method
