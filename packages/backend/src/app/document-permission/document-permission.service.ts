@@ -16,11 +16,20 @@ export class DocumentPermissionService {
   }
 
   async create(documentId: string, role: Role): Promise<void> {
-    const documentPermission: DocumentPermission = await this.documentPermissionRepository.save({
+    const documentPermissions: DocumentPermission[] = await this.documentPermissionRepository.find({
+      where: { document: { document_id: documentId } }
+    });
+
+    const rolesToCheck: Role[] = [role, Role.ADMIN, Role.MODERATOR];
+
+    if (documentPermissions.some(documentPermission => documentPermission.role in rolesToCheck)) {
+      return;
+    }
+
+    await this.documentPermissionRepository.save({
       document: { document_id: documentId },
       role
     });
-    await this.documentPermissionRepository.save(documentPermission);
   }
 
   async delete(documentId: string): Promise<void> {
