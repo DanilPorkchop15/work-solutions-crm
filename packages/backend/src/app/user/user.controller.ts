@@ -1,6 +1,8 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
 import {
   UserApi,
+  UserBulkDeleteRequestDTO,
+  UserBulkRestoreRequestDTO,
   UserCreateRequestDTO,
   USERS_ROUTES,
   UserUpdateRequestDTO
@@ -41,5 +43,15 @@ export class UserController implements UserApi {
   @Patch(USERS_ROUTES.restore(":userId"))
   restore(@Param("userId") userId: string): Promise<void> {
     return this.usersService.restore(userId);
+  }
+
+  @Delete(USERS_ROUTES.bulkDelete())
+  bulkDelete(@Body() dto: UserBulkDeleteRequestDTO): Promise<void> {
+    return this.usersService.bulkDelete(dto);
+  }
+
+  @Patch(USERS_ROUTES.bulkRestore())
+  bulkRestore(@Body() dto: UserBulkRestoreRequestDTO): Promise<void> {
+    return this.usersService.bulkRestore(dto);
   }
 }

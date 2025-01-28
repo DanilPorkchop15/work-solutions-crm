@@ -13,6 +13,12 @@ export interface UserCreateRequestDTO {
 
 export type UserUpdateRequestDTO = Partial<Omit<UserCreateRequestDTO, "role">>;
 
+export interface UserBulkDeleteRequestDTO {
+  user_ids: string[];
+}
+
+export type UserBulkRestoreRequestDTO = UserBulkDeleteRequestDTO;
+
 export interface UserApi {
   findAll: () => Promise<UserPreviewDTO[]>;
   create: (dto: UserCreateRequestDTO) => Promise<UserDTO>;
@@ -20,6 +26,8 @@ export interface UserApi {
   delete: (userId: string) => Promise<void>;
   restore: (userId: string) => Promise<void>;
   bulkCreate: (dto: UserCreateRequestDTO[]) => Promise<UserPreviewDTO[]>;
+  bulkDelete: (dto: UserBulkDeleteRequestDTO) => Promise<void>;
+  bulkRestore: (dto: UserBulkRestoreRequestDTO) => Promise<void>;
 }
 
 export const USERS_ROUTES: APIRoutes<UserApi> = {
@@ -28,5 +36,7 @@ export const USERS_ROUTES: APIRoutes<UserApi> = {
   update: (userId: string) => `/users/${userId}`,
   delete: (userId: string) => `/users/${userId}`,
   restore: (userId: string) => `/users/${userId}/restore`,
-  bulkCreate: () => "/user/bulk-create"
+  bulkCreate: () => "/user/bulk-create",
+  bulkDelete: () => "/user/bulk-delete",
+  bulkRestore: () => "/user/bulk-restore"
 };

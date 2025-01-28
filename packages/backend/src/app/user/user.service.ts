@@ -1,7 +1,12 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { UserCreateRequestDTO, UserUpdateRequestDTO } from "@work-solutions-crm/libs/shared/user/user.api";
-import { UserDTO, UserPreviewDTO } from "@work-solutions-crm/libs/shared/user/user.dto";
+import {
+  UserBulkDeleteRequestDTO,
+  UserBulkRestoreRequestDTO,
+  UserCreateRequestDTO,
+  UserUpdateRequestDTO
+} from "@work-solutions-crm/libs/shared/user/user.api";
+import { Role, UserDTO, UserPreviewDTO } from "@work-solutions-crm/libs/shared/user/user.dto";
 import * as bcrypt from "bcryptjs";
 import { DeepPartial, Repository } from "typeorm";
 
@@ -75,6 +80,23 @@ export class UserService {
   async updateRefreshToken(userId: string, refreshToken: string): Promise<void> {
     const hashedToken: string = await bcrypt.hash(refreshToken, 10);
     await this.userRepository.update(userId, { refresh_token: hashedToken });
+  }
+
+  async updatePassword(userId: string, password: string): Promise<void> {
+    const hashedPassword: string = await bcrypt.hash(password, 10);
+    await this.userRepository.update(userId, { password: hashedPassword });
+  }
+
+  async changeRole(userId: string, role: Role): Promise<void> {
+    await this.userRepository.update(userId, { role });
+  }
+
+  async bulkDelete(dto: UserBulkDeleteRequestDTO): Promise<void> {
+    await this.userRepository.softDelete(dto.user_ids);
+  }
+
+  async bulkRestore(dto: UserBulkRestoreRequestDTO): Promise<void> {
+    await this.userRepository.restore(dto.user_ids);
   }
 }
 
