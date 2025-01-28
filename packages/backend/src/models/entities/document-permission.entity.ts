@@ -18,6 +18,6 @@ export class DocumentPermission {
   @JoinColumn({ name: "document_id" })
   document: Document;
 
-  @Column({ type: "enum", enum: Role })
+  @Column({ type: "enum", enum: Role, default: Role.USER })
   role: Role;
 }
