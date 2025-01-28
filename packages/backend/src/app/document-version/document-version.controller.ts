@@ -1,4 +1,6 @@
-import { Controller, Get, Param } from "@nestjs/common";
+import { AuthGuard } from "@backend/app/auth/auth.guard";
+import { DocumentPermissionGuard } from "@backend/app/document-permission/document-permission.guard";
+import { Controller, Get, Param, UseGuards } from "@nestjs/common";
 import {
   DOCUMENT_VERSIONS_ROUTES,
   DocumentVersionApi
@@ -12,6 +14,7 @@ export class DocumentVersionController implements DocumentVersionApi {
   constructor(private readonly documentVersionsService: DocumentVersionService) {}
 
   @Get(DOCUMENT_VERSIONS_ROUTES.findAll(":documentId"))
+  @UseGuards(AuthGuard, DocumentPermissionGuard)
   async findAll(@Param("documentId") documentId: string): Promise<DocumentVersionDTO[]> {
     return this.documentVersionsService.findAll(documentId);
   }

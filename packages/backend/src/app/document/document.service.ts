@@ -1,3 +1,4 @@
+import { DocumentPermissionService } from "@backend/app/document-permission/document-permission.service";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import {
@@ -15,7 +16,8 @@ import { mapDocumentToDTO, mapDocumentToPreviewDTO } from "./document.mappers";
 export class DocumentService {
   constructor(
     @InjectRepository(Document)
-    private readonly documentRepository: Repository<Document>
+    private readonly documentRepository: Repository<Document>,
+    private readonly documentPermissionService: DocumentPermissionService
   ) {}
 
   async findAll(): Promise<DocumentPreviewDTO[]> {
@@ -37,14 +39,27 @@ export class DocumentService {
     return mapDocumentToDTO(document);
   }
 
-  async create(dto: DocumentCreateRequestDTO): Promise<DocumentDTO> {
+  async create({ roles, ...dto }: DocumentCreateRequestDTO): Promise<DocumentDTO> {
     const document: Document = this.documentRepository.create(dto);
     await this.documentRepository.save(document);
+
+    for (const role of roles) {
+      await this.documentPermissionService.create(document.document_id, role);
+    }
+
     return mapDocumentToDTO(document);
   }
 
-  async update(documentId: string, dto: DocumentUpdateRequestDTO): Promise<DocumentDTO> {
+  async update(documentId: string, { roles, ...dto }: DocumentUpdateRequestDTO): Promise<DocumentDTO> {
     await this.documentRepository.update(documentId, dto);
+
+    if (roles) {
+      await this.documentPermissionService.delete(documentId);
+      for (const role of roles) {
+        await this.documentPermissionService.create(documentId, role);
+      }
+    }
+
     const updatedDocument: Document | null = await this.documentRepository.findOne({
       where: { document_id: documentId },
       relations: ["user_created"]

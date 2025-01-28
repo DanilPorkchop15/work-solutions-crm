@@ -1,4 +1,6 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
+import { AuthGuard } from "@backend/app/auth/auth.guard";
+import { DocumentPermissionGuard } from "@backend/app/document-permission/document-permission.guard";
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from "@nestjs/common";
 import {
   DocumentApi,
   DocumentCreateRequestDTO,
@@ -19,6 +21,7 @@ export class DocumentController implements DocumentApi {
   }
 
   @Get(DOCUMENTS_ROUTES.findOne(":documentId"))
+  @UseGuards(AuthGuard, DocumentPermissionGuard)
   async findOne(@Param("documentId") documentId: string): Promise<DocumentDTO> {
     return this.documentsService.findOne(documentId);
   }
@@ -29,16 +32,19 @@ export class DocumentController implements DocumentApi {
   }
 
   @Patch(DOCUMENTS_ROUTES.update(":documentId"))
+  @UseGuards(AuthGuard, DocumentPermissionGuard)
   async update(@Param("documentId") documentId: string, @Body() dto: DocumentUpdateRequestDTO): Promise<DocumentDTO> {
     return this.documentsService.update(documentId, dto);
   }
 
   @Delete(DOCUMENTS_ROUTES.delete(":documentId"))
+  @UseGuards(AuthGuard, DocumentPermissionGuard)
   async delete(@Param("documentId") documentId: string): Promise<void> {
     return this.documentsService.delete(documentId);
   }
 
   @Patch(DOCUMENTS_ROUTES.restore(":documentId"))
+  @UseGuards(AuthGuard, DocumentPermissionGuard)
   async restore(@Param("documentId") documentId: string): Promise<void> {
     return this.documentsService.restore(documentId);
   }

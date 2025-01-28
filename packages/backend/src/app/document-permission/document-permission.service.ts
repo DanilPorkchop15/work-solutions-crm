@@ -22,4 +22,8 @@ export class DocumentPermissionService {
     });
     await this.documentPermissionRepository.save(documentPermission);
   }
+
+  async delete(documentId: string): Promise<void> {
+    await this.documentPermissionRepository.delete({ document: { document_id: documentId } });
+  }
 }
