@@ -7,5 +7,5 @@ export interface CustomerLogDTO {
   comment?: string;
   user: UserPreviewDTO;
   customer: CustomerPreviewDTO;
-  created_at: Date;
+  created_at: string;
 }

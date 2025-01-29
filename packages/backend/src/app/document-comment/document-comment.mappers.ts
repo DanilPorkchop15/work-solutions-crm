@@ -8,7 +8,7 @@ export function mapDocumentCommentToDTO(comment: DocumentComment): DocumentComme
     id: comment.document_comment_id,
     user: mapUserToPreviewDTO(comment.user),
     text: comment.text,
-    created_at: comment.created_at,
-    updated_at: comment.updated_at
+    created_at: comment.created_at.toISOString(),
+    updated_at: comment.updated_at.toISOString()
   };
 }

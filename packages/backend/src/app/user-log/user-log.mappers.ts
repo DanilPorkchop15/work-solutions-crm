@@ -9,6 +9,6 @@ export function mapUserLogToDTO(userLog: UserLog): UserLogDTO {
     action: userLog.action,
     comment: userLog.comment ?? "",
     user: mapUserToPreviewDTO(userLog.user),
-    created_at: userLog.created_at
+    created_at: userLog.created_at.toISOString()
   };
 }

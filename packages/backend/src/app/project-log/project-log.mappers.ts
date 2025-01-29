@@ -11,6 +11,6 @@ export function mapProjectLogToDTO(projectLog: ProjectLog): ProjectLogDTO {
     comment: projectLog.comment,
     user: mapUserToPreviewDTO(projectLog.user),
     project: mapProjectToPreviewDTO(projectLog.project),
-    created_at: projectLog.created_at
+    created_at: projectLog.created_at.toISOString()
   };
 }

@@ -5,5 +5,5 @@ export interface UserLogDTO {
   action: string;
   comment: string;
   user: UserPreviewDTO;
-  created_at: Date;
+  created_at: string;
 }

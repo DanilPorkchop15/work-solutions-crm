@@ -16,8 +16,8 @@ export function mapProjectToDTO(project: Project): ProjectDTO {
     user_created: mapUserToPreviewDTO(project.user),
     customer: mapCustomerToPreviewDTO(project.customer),
     users_accountable: project.users_accountable.map(mapUserToPreviewDTO),
-    createdAt: project.created_at,
-    updatedAt: project.updated_at
+    created_at: project.created_at.toISOString(),
+    updated_at: project.updated_at.toISOString()
   };
 }
 

@@ -5,6 +5,6 @@ export interface DocumentVersionDTO {
   document_url: string;
   version: string;
   user_created: UserPreviewDTO;
-  createdAt: Date;
-  updatedAt: Date;
+  created_at: string;
+  updated_at: string;
 }

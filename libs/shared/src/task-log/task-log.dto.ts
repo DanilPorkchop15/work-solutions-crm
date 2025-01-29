@@ -7,5 +7,5 @@ export interface TaskLogDTO {
   comment: string;
   user: UserPreviewDTO;
   task: TaskPreviewDTO;
-  created_at: Date;
+  created_at: string;
 }

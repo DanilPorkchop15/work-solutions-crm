@@ -7,5 +7,5 @@ export interface DocumentLogDTO {
   comment: string;
   user: UserPreviewDTO;
   document: DocumentPreviewDTO;
-  created_at: Date;
+  created_at: string;
 }

@@ -9,7 +9,7 @@ export function mapDocumentVersionToDTO(documentVersion: DocumentVersion): Docum
     document_url: documentVersion.document_url,
     version: documentVersion.version,
     user_created: mapUserToPreviewDTO(documentVersion.user_created),
-    createdAt: documentVersion.created_at,
-    updatedAt: documentVersion.updated_at
+    created_at: documentVersion.created_at.toISOString(),
+    updated_at: documentVersion.updated_at.toISOString()
   };
 }

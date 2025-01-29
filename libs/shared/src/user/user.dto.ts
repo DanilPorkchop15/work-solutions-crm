@@ -7,13 +7,13 @@ export enum Role {
 
 export interface UserDTO {
   id: string;
-  fullName: string;
+  full_name: string;
   email: string;
   position?: string;
-  avatarUrl?: string;
+  avatar_url?: string;
   role: Role;
-  createdAt: Date;
-  updatedAt: Date;
+  created_at: string;
+  updated_at: string;
 }
 
-export type UserPreviewDTO = Omit<UserDTO, "role" | "createdAt" | "updatedAt">;
+export type UserPreviewDTO = Omit<UserDTO, "role" | "created_at" | "updated_at">;

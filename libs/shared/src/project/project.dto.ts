@@ -20,8 +20,8 @@ export interface ProjectDTO {
   user_created: UserPreviewDTO;
   customer: CustomerPreviewDTO;
   users_accountable: UserPreviewDTO[];
-  createdAt: Date;
-  updatedAt: Date;
+  created_at: string;
+  updated_at: string;
 }
 
-export type ProjectPreviewDTO = Omit<ProjectDTO, "description" | "createdAt" | "updatedAt">;
+export type ProjectPreviewDTO = Omit<ProjectDTO, "description" | "created_at" | "updated_at">;
