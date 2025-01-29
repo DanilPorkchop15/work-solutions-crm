@@ -1,5 +1,5 @@
 import { PermissionModule } from "@backend/app/permission/permission.module";
-import { Module } from "@nestjs/common";
+import { Global, Module } from "@nestjs/common";
 import { JwtModule } from "@nestjs/jwt";
 
 import { ConfigModule } from "../config/config.module";
@@ -10,6 +10,7 @@ import { AuthController } from "./auth.controller";
 import { AuthGuard } from "./auth.guard";
 import { AuthService } from "./auth.service";
 
+@Global()
 @Module({
   imports: [
     UserModule,
