@@ -1,4 +1,6 @@
-import { Controller, Get, Param } from "@nestjs/common";
+import { AuthGuard } from "@backend/app/auth/auth.guard";
+import { Controller, Get, Param, UseGuards } from "@nestjs/common";
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
 import {
   DOCUMENT_VERSIONS_ROUTES,
   DocumentVersionApi
@@ -7,10 +9,16 @@ import { DocumentVersionDTO } from "@work-solutions-crm/libs/shared/document-ver
 
 import { DocumentVersionService } from "./document-version.service";
 
+@ApiTags("Document Versions")
+@ApiBearerAuth()
 @Controller()
 export class DocumentVersionController implements DocumentVersionApi {
   constructor(private readonly documentVersionsService: DocumentVersionService) {}
 
+  @UseGuards(AuthGuard)
+  @ApiOperation({ summary: "Get all document versions" })
+  // @ApiResponse({ status: 200, type: [DocumentVersionDTO] })
+  @ApiParam({ name: "documentId", required: true })
   @Get(DOCUMENT_VERSIONS_ROUTES.findAll(":documentId"))
   async findAll(@Param("documentId") documentId: string): Promise<DocumentVersionDTO[]> {
     return this.documentVersionsService.findAll(documentId);

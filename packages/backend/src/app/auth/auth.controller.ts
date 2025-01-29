@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Post, UseGuards } from "@nestjs/common";
+import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { AUTH_ROUTES, AuthApi, RefreshRequestDTO } from "@work-solutions-crm/libs/shared/auth/auth.api";
 import {
   LoginDTO,
@@ -16,6 +17,7 @@ import { LoginValidationDTO } from "./auth.dto";
 import { AuthGuard } from "./auth.guard";
 import { AuthService } from "./auth.service";
 
+@ApiTags("Auth")
 @Controller()
 export class AuthController implements AuthApi {
   constructor(
@@ -24,17 +26,24 @@ export class AuthController implements AuthApi {
   ) {}
 
   @Post(AUTH_ROUTES.login())
+  @ApiOperation({ summary: "User login" })
+  // @ApiResponse({ status: 200, type: LoginDTO })
   async login(@Body() dto: LoginValidationDTO): Promise<LoginDTO> {
     return await this.authService.login(dto);
   }
 
   @Post(AUTH_ROUTES.refresh())
+  @ApiOperation({ summary: "Refresh token" })
+  // @ApiResponse({ status: 200, type: TokenDTO })
   refresh(@Body() { refreshToken }: RefreshRequestDTO): TokenDTO {
     return this.authService.refresh(refreshToken);
   }
 
   @UseGuards(AuthGuard)
   @Get(AUTH_ROUTES.me())
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Get current user info" })
+  // @ApiResponse({ status: 200, type: UserWithPermissionsDTO })
   me(@CurrentUser() user: User): UserWithPermissionsDTO {
     const ability: AppAbility = this.caslAbilityFactory.createForUser(user);
 
@@ -50,3 +59,6 @@ export class AuthController implements AuthApi {
     };
   }
 }
+
+// TODO : add class dtos for responses
+// TODO : update entity field sizes
