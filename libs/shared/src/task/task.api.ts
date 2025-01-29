@@ -5,8 +5,8 @@ import { TaskDTO, TaskPreviewDTO, TaskStatus } from "./task.dto";
 export interface TaskCreateRequestDTO {
   name: string;
   description?: string;
-  start_date?: Date;
-  end_date?: Date;
+  start_date?: string;
+  end_date?: string;
   time_spent?: number;
   estimated_time?: number;
   project_id: string;
@@ -28,9 +28,9 @@ export interface TaskApi {
 }
 
 export const TASKS_ROUTES: APIRoutes<TaskApi> = {
-  findAll: () => "/task",
+  findAll: () => "/tasks",
   findOne: (taskId: string) => `/tasks/${taskId}`,
-  create: () => "/task",
+  create: () => "/tasks",
   update: (taskId: string) => `/tasks/${taskId}`,
   delete: (taskId: string) => `/tasks/${taskId}`,
   restore: (taskId: string) => `/tasks/${taskId}/restore`

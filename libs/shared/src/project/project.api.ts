@@ -5,8 +5,8 @@ import { ProjectDTO, ProjectPreviewDTO, ProjectStatus } from "./project.dto";
 export interface ProjectCreateRequestDTO {
   name: string;
   description?: string;
-  start_date: Date;
-  end_date: Date;
+  start_date: string;
+  end_date: string;
   budget?: number;
   customer_id: string;
   users_accountable: {
@@ -27,9 +27,9 @@ export interface ProjectApi {
 }
 
 export const PROJECTS_ROUTES: APIRoutes<ProjectApi> = {
-  findAll: () => "/project",
+  findAll: () => "/projects",
   findOne: (projectId: string) => `/projects/${projectId}`,
-  create: () => "/project",
+  create: () => "/projects",
   update: (projectId: string) => `/projects/${projectId}`,
   delete: (projectId: string) => `/projects/${projectId}`,
   restore: (projectId: string) => `/projects/${projectId}/restore`
