@@ -47,3 +47,5 @@ Thumbs.db
 .npmrc
 
 pnpm-lock.yaml
+
+uploads
