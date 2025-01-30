@@ -19,7 +19,8 @@ import { AuthService } from "./auth.service";
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
-        secret: configService.database.database,
+        secret: configService.authentication.secret,
+        algorithm: configService.authentication.algorithm,
         signOptions: {
           expiresIn: "15m"
         },

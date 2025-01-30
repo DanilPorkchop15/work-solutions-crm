@@ -37,6 +37,10 @@ export class AuthenticationConfig {
   @IsString()
   @IsOptional()
   readonly secret: string = "secret";
+
+  @IsString()
+  @IsOptional()
+  readonly algorithm: string = "HS256";
 }
 
 export class ApplicationConfig {
