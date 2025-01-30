@@ -1,6 +1,7 @@
 import { AuthGuard } from "@backend/app/auth/auth.guard";
 import {
   DocumentCommentCreateValidationDTO,
+  DocumentCommentResponseDTO,
   DocumentCommentUpdateValidationDTO
 } from "@backend/app/document-comment/document-comment.dto";
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from "@nestjs/common";
@@ -21,7 +22,7 @@ export class DocumentCommentController implements DocumentCommentApi {
 
   @UseGuards(AuthGuard)
   @ApiOperation({ summary: "Get all comments for a document" })
-  // @ApiResponse({ status: 200, type: [DocumentCommentDTO] })
+  @ApiResponse({ status: 200, type: [DocumentCommentResponseDTO] })
   @Get(DOCUMENT_COMMENTS_ROUTES.findAll(":documentId"))
   async findAll(@Param("documentId") documentId: string): Promise<DocumentCommentDTO[]> {
     return this.documentCommentsService.findAll(documentId);

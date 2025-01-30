@@ -1,8 +1,11 @@
+import { UserPreviewResponseDTO } from "@backend/app/user/user.dto";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import {
   CustomerCreateRequestDTO,
   CustomerUpdateRequestDTO
 } from "@work-solutions-crm/libs/shared/customer/customer.api";
+import { CustomerDTO, CustomerPreviewDTO } from "@work-solutions-crm/libs/shared/customer/customer.dto";
+import { UserPreviewDTO } from "@work-solutions-crm/libs/shared/user/user.dto";
 import { IsEmail, IsNotEmpty, IsOptional, IsString, Length } from "class-validator";
 
 export class CustomerCreateValidationDTO implements CustomerCreateRequestDTO {
@@ -104,4 +107,86 @@ export class CustomerUpdateValidationDTO implements CustomerUpdateRequestDTO {
   @IsString()
   @Length(1, 255)
   website?: string;
+}
+
+export class CustomerResponseDTO implements CustomerDTO {
+  @ApiProperty({
+    description: "The ID of customer",
+    example: "c7d2ee27-0a5d-4c5d-a3ca-66d9b2b6c5a1"
+  })
+  id: string;
+
+  @ApiProperty({
+    description: "The name of customer",
+    example: "John Doe"
+  })
+  name: string;
+
+  @ApiPropertyOptional({
+    description: "The email of customer",
+    example: "user@example.com"
+  })
+  email?: string | undefined;
+
+  @ApiPropertyOptional({
+    description: "The phone number of customer",
+    example: "+7 (123) 456-78-90"
+  })
+  phone?: string | undefined;
+
+  @ApiPropertyOptional({
+    description: "The INN of customer",
+    example: "1234567890"
+  })
+  inn?: string | undefined;
+
+  @ApiPropertyOptional({
+    description: "The website of customer",
+    example: "https://example.com"
+  })
+  website?: string | undefined;
+
+  @ApiProperty({
+    description: "The user who created the customer",
+    type: () => UserPreviewResponseDTO
+  })
+  user_created: UserPreviewDTO;
+
+  @ApiProperty({
+    description: "The date and time when the customer was created",
+    example: "2022-01-01T12:00:00.000Z"
+  })
+  created_at: string;
+
+  @ApiProperty({
+    description: "The date and time when the customer was updated",
+    example: "2022-01-01T12:00:00.000Z"
+  })
+  updated_at: string;
+}
+
+export class CustomerPreviewResponseDTO implements CustomerPreviewDTO {
+  @ApiProperty({
+    description: "The name of the customer",
+    example: "John Doe"
+  })
+  name: string;
+
+  @ApiPropertyOptional({
+    description: "The email of the customer",
+    example: "user@example.com"
+  })
+  email?: string | undefined;
+
+  @ApiProperty({
+    description: "The ID of the customer",
+    example: "c7d2ee27-0a5d-4c5d-a3ca-66d9b2b6c5a1"
+  })
+  id: string;
+
+  @ApiProperty({
+    description: "The user who created the customer",
+    type: () => UserPreviewResponseDTO
+  })
+  user_created: UserPreviewDTO;
 }

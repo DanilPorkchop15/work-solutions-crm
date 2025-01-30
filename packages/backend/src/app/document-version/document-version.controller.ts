@@ -1,6 +1,7 @@
 import { AuthGuard } from "@backend/app/auth/auth.guard";
+import { DocumentVersionResponseDTO } from "@backend/app/document-version/document-version.dto";
 import { Controller, Get, Param, UseGuards } from "@nestjs/common";
-import { ApiBearerAuth, ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from "@nestjs/swagger";
 import {
   DOCUMENT_VERSIONS_ROUTES,
   DocumentVersionApi
@@ -17,7 +18,7 @@ export class DocumentVersionController implements DocumentVersionApi {
 
   @UseGuards(AuthGuard)
   @ApiOperation({ summary: "Get all document versions" })
-  // @ApiResponse({ status: 200, type: [DocumentVersionDTO] })
+  @ApiResponse({ status: 200, type: [DocumentVersionResponseDTO] })
   @ApiParam({ name: "documentId", required: true })
   @Get(DOCUMENT_VERSIONS_ROUTES.findAll(":documentId"))
   async findAll(@Param("documentId") documentId: string): Promise<DocumentVersionDTO[]> {

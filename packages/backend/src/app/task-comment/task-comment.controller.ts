@@ -1,10 +1,11 @@
 import { AuthGuard } from "@backend/app/auth/auth.guard";
 import {
   TaskCommentCreateValidationDTO,
+  TaskCommentResponseDTO,
   TaskCommentUpdateValidationDTO
 } from "@backend/app/task-comment/task-comment.dto";
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from "@nestjs/common";
-import { ApiBearerAuth, ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { TASK_COMMENTS_ROUTES, TaskCommentApi } from "@work-solutions-crm/libs/shared/task-comment/task-comment.api";
 import { TaskCommentDTO } from "@work-solutions-crm/libs/shared/task-comment/task-comment.dto";
 
@@ -20,6 +21,7 @@ export class TaskCommentController implements TaskCommentApi {
   @Get(TASK_COMMENTS_ROUTES.findAll(":taskId"))
   @ApiOperation({ summary: "Find all comments for a task" })
   @ApiParam({ name: "taskId", required: true, description: "The ID of the task" })
+  @ApiResponse({ status: 200, type: [TaskCommentResponseDTO] })
   async findAll(@Param("taskId") taskId: string): Promise<TaskCommentDTO[]> {
     return this.taskCommentsService.findAll(taskId);
   }

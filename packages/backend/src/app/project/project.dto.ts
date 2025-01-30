@@ -1,6 +1,10 @@
+import { CustomerPreviewResponseDTO } from "@backend/app/customer/customer.dto";
+import { UserPreviewResponseDTO } from "@backend/app/user/user.dto";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
+import { CustomerPreviewDTO } from "@work-solutions-crm/libs/shared/customer/customer.dto";
 import { ProjectCreateRequestDTO, ProjectUpdateRequestDTO } from "@work-solutions-crm/libs/shared/project/project.api";
-import { ProjectStatus } from "@work-solutions-crm/libs/shared/project/project.dto";
+import { ProjectDTO, ProjectPreviewDTO, ProjectStatus } from "@work-solutions-crm/libs/shared/project/project.dto";
+import { UserPreviewDTO } from "@work-solutions-crm/libs/shared/user/user.dto";
 import {
   IsArray,
   IsDate,
@@ -169,4 +173,136 @@ export class ProjectUpdateValidationDTO implements ProjectUpdateRequestDTO {
     type: [UserAccountable]
   })
   users_accountable?: UserAccountable[];
+}
+
+export class ProjectResponseDTO implements ProjectDTO {
+  @ApiProperty({
+    description: "The ID of project",
+    example: "c7d2ee27-0a5d-4c5d-a3ca-66d9b2b6c5a1"
+  })
+  id: string;
+
+  @ApiProperty({
+    description: "The name of project",
+    example: "Example Project"
+  })
+  name: string;
+
+  @ApiPropertyOptional({
+    description: "The description of project",
+    example: "This is an example project"
+  })
+  description?: string | undefined;
+
+  @ApiProperty({
+    description: "The start date of project",
+    example: new Date()
+  })
+  start_date: string;
+
+  @ApiProperty({
+    description: "The end date of project",
+    example: new Date()
+  })
+  end_date: string;
+
+  @ApiPropertyOptional({
+    description: "The budget of project",
+    example: 1000
+  })
+  budget?: number | undefined;
+
+  @ApiProperty({
+    description: "The status of project",
+    enum: ProjectStatus,
+    example: ProjectStatus.ACTIVE
+  })
+  status: ProjectStatus;
+
+  @ApiProperty({
+    description: "The user who created the project",
+    type: () => UserPreviewResponseDTO
+  })
+  user_created: UserPreviewDTO;
+
+  @ApiProperty({
+    description: "The customer of project",
+    type: () => CustomerPreviewResponseDTO
+  })
+  customer: CustomerPreviewDTO;
+
+  @ApiProperty({
+    description: "The users accountable for project",
+    type: () => [UserPreviewResponseDTO]
+  })
+  users_accountable: UserPreviewDTO[];
+
+  @ApiProperty({
+    description: "The date when project was created",
+    example: "2022-01-01T00:00:00.000Z"
+  })
+  created_at: string;
+
+  @ApiProperty({
+    description: "The date when project was updated",
+    example: "2022-01-01T00:00:00.000Z"
+  })
+  updated_at: string;
+}
+
+export class ProjectPreviewResponseDTO implements ProjectPreviewDTO {
+  @ApiProperty({
+    description: "The ID of project",
+    example: "c7d2ee27-0a5d-4c5d-a3ca-66d9b2b6c5a1"
+  })
+  id: string;
+
+  @ApiProperty({
+    description: "The name of project",
+    example: "Example Project"
+  })
+  name: string;
+
+  @ApiProperty({
+    description: "The start date of project",
+    example: new Date()
+  })
+  start_date: string;
+
+  @ApiProperty({
+    description: "The end date of project",
+    example: new Date()
+  })
+  end_date: string;
+
+  @ApiPropertyOptional({
+    description: "The budget of project",
+    example: 1000
+  })
+  budget?: number | undefined;
+
+  @ApiProperty({
+    description: "The status of project",
+    enum: ProjectStatus,
+    example: ProjectStatus.ACTIVE
+  })
+  status: ProjectStatus;
+
+  @ApiProperty({
+    description: "The user who created the project",
+    type: () => UserPreviewResponseDTO
+  })
+  user_created: UserPreviewDTO;
+
+  @ApiProperty({
+    description: "The customer of project",
+    type: () => CustomerPreviewResponseDTO
+  })
+  customer: CustomerPreviewDTO;
+
+  @ApiProperty({
+    description: "The users accountable for project",
+    type: () => [UserPreviewResponseDTO]
+  })
+  users_accountable: UserPreviewDTO[];
 }

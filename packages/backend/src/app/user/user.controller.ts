@@ -1,5 +1,10 @@
 import { AuthGuard } from "@backend/app/auth/auth.guard";
-import { UserCreateValidationDTO, UserUpdateValidationDTO } from "@backend/app/user/user.dto";
+import {
+  UserCreateValidationDTO,
+  UserPreviewResponseDTO,
+  UserResponseDTO,
+  UserUpdateValidationDTO
+} from "@backend/app/user/user.dto";
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { UserApi, USERS_ROUTES } from "@work-solutions-crm/libs/shared/user/user.api";
@@ -16,7 +21,7 @@ export class UserController implements UserApi {
   @UseGuards(AuthGuard)
   @Get(USERS_ROUTES.findAll())
   @ApiOperation({ summary: "Retrieve all users" })
-  // @ApiResponse({ status: 200, type: [UserPreviewDTO] })
+  @ApiResponse({ status: 200, type: [UserPreviewResponseDTO] })
   findAll(): Promise<UserPreviewDTO[]> {
     return this.usersService.findAll();
   }
@@ -24,7 +29,7 @@ export class UserController implements UserApi {
   @UseGuards(AuthGuard)
   @Post(USERS_ROUTES.create())
   @ApiOperation({ summary: "Create a new user" })
-  // @ApiResponse({ status: 201, type: UserDTO })
+  @ApiResponse({ status: 201, type: UserResponseDTO })
   create(@Body() dto: UserCreateValidationDTO): Promise<UserDTO> {
     return this.usersService.create(dto);
   }
@@ -32,7 +37,7 @@ export class UserController implements UserApi {
   @UseGuards(AuthGuard)
   @Post(USERS_ROUTES.bulkCreate())
   @ApiOperation({ summary: "Bulk create users" })
-  // @ApiResponse({ status: 201, type: [UserPreviewDTO] })
+  @ApiResponse({ status: 201, type: [UserPreviewResponseDTO] })
   bulkCreate(@Body() dto: UserCreateValidationDTO[]): Promise<UserPreviewDTO[]> {
     return this.usersService.bulkCreate(dto);
   }
@@ -40,7 +45,7 @@ export class UserController implements UserApi {
   @UseGuards(AuthGuard)
   @Patch(USERS_ROUTES.update(":userId"))
   @ApiOperation({ summary: "Update a user" })
-  // @ApiResponse({ status: 200, type: UserDTO })
+  @ApiResponse({ status: 200, type: UserResponseDTO })
   update(@Param("userId") userId: string, @Body() dto: UserUpdateValidationDTO): Promise<UserDTO> {
     return this.usersService.update(userId, dto);
   }

@@ -1,7 +1,20 @@
 import { AuthGuard } from "@backend/app/auth/auth.guard";
-import { DocumentCreateValidationDTO, DocumentUpdateValidationDTO } from "@backend/app/document/document.dto";
+import {
+  DocumentCreateValidationDTO,
+  DocumentPreviewResponseDTO,
+  DocumentResponseDTO,
+  DocumentUpdateValidationDTO
+} from "@backend/app/document/document.dto";
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from "@nestjs/common";
-import { ApiBearerAuth, ApiNotFoundResponse, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiResponse,
+  ApiTags
+} from "@nestjs/swagger";
 import { DocumentApi, DOCUMENTS_ROUTES } from "@work-solutions-crm/libs/shared/document/document.api";
 import { DocumentDTO, DocumentPreviewDTO } from "@work-solutions-crm/libs/shared/document/document.dto";
 
@@ -16,7 +29,7 @@ export class DocumentController implements DocumentApi {
   @UseGuards(AuthGuard)
   @Get(DOCUMENTS_ROUTES.findAll())
   @ApiOperation({ summary: "Get all documents" })
-  // @ApiResponse({ status: 200, type: [DocumentPreviewDTO] })
+  @ApiResponse({ status: 200, type: [DocumentPreviewResponseDTO] })
   async findAll(): Promise<DocumentPreviewDTO[]> {
     return this.documentsService.findAll();
   }
@@ -24,7 +37,7 @@ export class DocumentController implements DocumentApi {
   @UseGuards(AuthGuard)
   @Get(DOCUMENTS_ROUTES.findOne(":documentId"))
   @ApiOperation({ summary: "Get document by id" })
-  // @ApiOkResponse({ type: DocumentDTO })
+  @ApiOkResponse({ type: DocumentResponseDTO })
   @ApiNotFoundResponse({ description: "Document not found" })
   async findOne(@Param("documentId") documentId: string): Promise<DocumentDTO> {
     return this.documentsService.findOne(documentId);
@@ -33,7 +46,7 @@ export class DocumentController implements DocumentApi {
   @UseGuards(AuthGuard)
   @Post(DOCUMENTS_ROUTES.create())
   @ApiOperation({ summary: "Create document" })
-  // @ApiCreatedResponse({ type: DocumentDTO })
+  @ApiCreatedResponse({ type: DocumentResponseDTO })
   async create(@Body() dto: DocumentCreateValidationDTO): Promise<DocumentDTO> {
     return this.documentsService.create(dto);
   }
@@ -41,7 +54,7 @@ export class DocumentController implements DocumentApi {
   @UseGuards(AuthGuard)
   @Patch(DOCUMENTS_ROUTES.update(":documentId"))
   @ApiOperation({ summary: "Update document" })
-  // @ApiOkResponse({ type: DocumentDTO })
+  @ApiOkResponse({ type: DocumentResponseDTO })
   @ApiNotFoundResponse({ description: "Document not found" })
   async update(
     @Param("documentId") documentId: string,

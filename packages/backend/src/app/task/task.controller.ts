@@ -1,5 +1,10 @@
 import { AuthGuard } from "@backend/app/auth/auth.guard";
-import { TaskCreateValidationDTO, TaskUpdateValidationDTO } from "@backend/app/task/task.dto";
+import {
+  TaskCreateValidationDTO,
+  TaskPreviewResponseDTO,
+  TaskResponseDTO,
+  TaskUpdateValidationDTO
+} from "@backend/app/task/task.dto";
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { TaskApi, TASKS_ROUTES } from "@work-solutions-crm/libs/shared/task/task.api";
@@ -16,7 +21,7 @@ export class TaskController implements TaskApi {
   @UseGuards(AuthGuard)
   @Get(TASKS_ROUTES.findAll())
   @ApiOperation({ summary: "Get all tasks" })
-  // @ApiResponse({ status: 200, type: [TaskPreviewDTO] })
+  @ApiResponse({ status: 200, type: [TaskPreviewResponseDTO] })
   async findAll(): Promise<TaskPreviewDTO[]> {
     return this.tasksService.findAll();
   }
@@ -25,7 +30,7 @@ export class TaskController implements TaskApi {
   @Get(TASKS_ROUTES.findOne(":taskId"))
   @ApiOperation({ summary: "Get task by id" })
   @ApiParam({ name: "taskId", type: String })
-  // @ApiResponse({ status: 200, type: TaskDTO })
+  @ApiResponse({ status: 200, type: TaskResponseDTO })
   async findOne(@Param("taskId") taskId: string): Promise<TaskDTO> {
     return this.tasksService.findOne(taskId);
   }
@@ -33,7 +38,7 @@ export class TaskController implements TaskApi {
   @UseGuards(AuthGuard)
   @Post(TASKS_ROUTES.create())
   @ApiOperation({ summary: "Create task" })
-  // @ApiResponse({ status: 201, type: TaskDTO })
+  @ApiResponse({ status: 201, type: TaskResponseDTO })
   async create(@Body() dto: TaskCreateValidationDTO): Promise<TaskDTO> {
     return this.tasksService.create(dto);
   }
@@ -42,7 +47,7 @@ export class TaskController implements TaskApi {
   @Patch(TASKS_ROUTES.update(":taskId"))
   @ApiOperation({ summary: "Update task" })
   @ApiParam({ name: "taskId", type: String })
-  // @ApiResponse({ status: 200, type: TaskDTO })
+  @ApiResponse({ status: 200, type: TaskResponseDTO })
   async update(@Param("taskId") taskId: string, @Body() dto: TaskUpdateValidationDTO): Promise<TaskDTO> {
     return this.tasksService.update(taskId, dto);
   }

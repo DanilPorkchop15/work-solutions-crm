@@ -1,5 +1,6 @@
 import {
   ProjectCommentCreateValidationDTO,
+  ProjectCommentResponseDTO,
   ProjectCommentUpdateValidationDTO
 } from "@backend/app/project-comment/project-comment.dto";
 import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
@@ -18,7 +19,7 @@ export class ProjectCommentController implements ProjectCommentApi {
   constructor(private readonly projectCommentsService: ProjectCommentService) {}
 
   @ApiOperation({ summary: "Get all comments for a project" })
-  // @ApiResponse({ status: 200, description: "OK", type: [ProjectCommentDTO] })
+  @ApiResponse({ status: 200, description: "OK", type: [ProjectCommentResponseDTO] })
   @Get(PROJECT_COMMENTS_ROUTES.findAll(":projectId"))
   findAll(@Param("projectId") projectId: string): Promise<ProjectCommentDTO[]> {
     return this.projectCommentsService.findAll(projectId);

@@ -1,5 +1,10 @@
 import { AuthGuard } from "@backend/app/auth/auth.guard";
-import { CustomerCreateValidationDTO, CustomerUpdateValidationDTO } from "@backend/app/customer/customer.dto";
+import {
+  CustomerCreateValidationDTO,
+  CustomerPreviewResponseDTO,
+  CustomerResponseDTO,
+  CustomerUpdateValidationDTO
+} from "@backend/app/customer/customer.dto";
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { CustomerApi, CUSTOMERS_ROUTES } from "@work-solutions-crm/libs/shared/customer/customer.api";
@@ -16,7 +21,7 @@ export class CustomerController implements CustomerApi {
   @UseGuards(AuthGuard)
   @Get(CUSTOMERS_ROUTES.findAll())
   @ApiOperation({ summary: "Retrieve all customers" })
-  // @ApiResponse({ status: 200, description: "List of customers", type: [CustomerPreviewDTO] })
+  @ApiResponse({ status: 200, description: "List of customers", type: [CustomerPreviewResponseDTO] })
   findAll(): Promise<CustomerPreviewDTO[]> {
     return this.customersService.findAll();
   }
@@ -24,7 +29,7 @@ export class CustomerController implements CustomerApi {
   @UseGuards(AuthGuard)
   @Get(CUSTOMERS_ROUTES.findOne(":customerId"))
   @ApiOperation({ summary: "Retrieve a customer by ID" })
-  // @ApiResponse({ status: 200, description: "Customer details", type: CustomerDTO })
+  @ApiResponse({ status: 200, description: "Customer details", type: CustomerResponseDTO })
   @ApiResponse({ status: 404, description: "Customer not found" })
   findOne(@Param("customerId") customerId: string): Promise<CustomerDTO> {
     return this.customersService.findOne(customerId);
