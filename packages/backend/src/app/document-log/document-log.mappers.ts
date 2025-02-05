@@ -11,6 +11,6 @@ export function mapDocumentLogToDTO(documentLog: DocumentLog): DocumentLogDTO {
     comment: documentLog.comment ?? "",
     user: mapUserToPreviewDTO(documentLog.user),
     document: mapDocumentToPreviewDTO(documentLog.document),
-    created_at: documentLog.created_at
+    created_at: documentLog.created_at.toISOString()
   };
 }

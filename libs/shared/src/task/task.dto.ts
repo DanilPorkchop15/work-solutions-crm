@@ -14,15 +14,15 @@ export interface TaskDTO {
   name: string;
   description?: string;
   status: TaskStatus;
-  start_date?: Date;
-  end_date?: Date;
+  start_date?: string;
+  end_date?: string;
   time_spent?: number;
   estimated_time?: number;
   user_created: UserPreviewDTO;
   project: ProjectPreviewDTO;
   users_accountable: UserPreviewDTO[];
-  created_at: Date;
-  updated_at: Date;
+  created_at: string;
+  updated_at: string;
 }
 
 export type TaskPreviewDTO = Omit<TaskDTO, "description" | "created_at" | "updated_at">;

@@ -2,10 +2,16 @@ import { APIRoutes } from "../api-routes";
 
 import { DocumentCommentDTO } from "./document-comment.dto";
 
+export interface DocumentCommentCreateRequestDTO {
+  text: string;
+}
+
+export type DocumentCommentUpdateRequestDTO = DocumentCommentCreateRequestDTO;
+
 export interface DocumentCommentApi {
   findAll: (documentId: string) => Promise<DocumentCommentDTO[]>;
-  create: (documentId: string, text: string) => Promise<void>;
-  update: (documentCommentId: string, text: string) => Promise<void>;
+  create: (documentId: string, dto: DocumentCommentCreateRequestDTO) => Promise<void>;
+  update: (documentCommentId: string, dto: DocumentCommentUpdateRequestDTO) => Promise<void>;
   delete: (documentCommentId: string) => Promise<void>;
   restore: (documentCommentId: string) => Promise<void>;
 }

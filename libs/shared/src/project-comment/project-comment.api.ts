@@ -2,10 +2,16 @@ import { APIRoutes } from "../api-routes";
 
 import { ProjectCommentDTO } from "./project-comment.dto";
 
+export interface ProjectCommentCreateRequestDTO {
+  text: string;
+}
+
+export type ProjectCommentUpdateRequestDTO = ProjectCommentCreateRequestDTO;
+
 export interface ProjectCommentApi {
   findAll: (projectId: string) => Promise<ProjectCommentDTO[]>;
-  create: (projectId: string, text: string) => Promise<void>;
-  update: (projectCommentId: string, text: string) => Promise<void>;
+  create: (projectId: string, dto: ProjectCommentCreateRequestDTO) => Promise<void>;
+  update: (projectCommentId: string, dto: ProjectCommentUpdateRequestDTO) => Promise<void>;
   delete: (projectCommentId: string) => Promise<void>;
   restore: (projectCommentId: string) => Promise<void>;
 }

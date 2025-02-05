@@ -10,15 +10,15 @@ export function mapTaskToDTO(task: Task): TaskDTO {
     name: task.name,
     description: task.description,
     status: task.status,
-    start_date: task.start_date,
-    end_date: task.end_date,
+    start_date: task.start_date?.toISOString(),
+    end_date: task.end_date?.toISOString(),
     time_spent: task.time_spent,
     estimated_time: task.estimated_time,
     user_created: mapUserToPreviewDTO(task.user_created),
     project: mapProjectToPreviewDTO(task.project),
     users_accountable: task.users_accountable.map(mapUserToPreviewDTO),
-    created_at: task.created_at,
-    updated_at: task.updated_at
+    created_at: task.created_at.toISOString(),
+    updated_at: task.updated_at.toISOString()
   };
 }
 

@@ -25,7 +25,6 @@ export type UserChangeRoleRequestDTO = {
 };
 
 export type UserChangePasswordRequestDTO = {
-  user_id: string;
   old_password: string;
   new_password: string;
 };
@@ -40,7 +39,7 @@ export interface UserApi {
   bulkDelete: (dto: UserBulkDeleteRequestDTO) => Promise<void>;
   bulkRestore: (dto: UserBulkRestoreRequestDTO) => Promise<void>;
   changeRole: (dto: UserChangeRoleRequestDTO) => Promise<void>;
-  changePassword: (dto: UserChangePasswordRequestDTO) => Promise<void>;
+  changePassword: (dto: UserChangePasswordRequestDTO, ...omitted: never) => Promise<void>;
 }
 
 export const USERS_ROUTES: APIRoutes<UserApi> = {

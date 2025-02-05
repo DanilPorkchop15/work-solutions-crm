@@ -9,8 +9,8 @@ export function mapDocumentToDTO(document: Document): DocumentDTO {
     name: document.name,
     description: document.description,
     user_created: mapUserToPreviewDTO(document.user_created),
-    createdAt: document.created_at,
-    updatedAt: document.updated_at
+    createdAt: document.created_at.toISOString(),
+    updatedAt: document.updated_at.toISOString()
   };
 }
 
@@ -19,7 +19,7 @@ export function mapDocumentToPreviewDTO(document: Document): DocumentPreviewDTO 
     id: document.document_id,
     name: document.name,
     user_created: mapUserToPreviewDTO(document.user_created),
-    createdAt: document.created_at,
-    updatedAt: document.updated_at
+    createdAt: document.created_at.toISOString(),
+    updatedAt: document.updated_at.toISOString()
   };
 }

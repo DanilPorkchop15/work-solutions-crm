@@ -26,7 +26,6 @@ export interface DocumentApi {
   update: (documentId: string, dto: DocumentUpdateRequestDTO) => Promise<DocumentDTO>;
   delete: (documentId: string) => Promise<void>;
   restore: (documentId: string) => Promise<void>;
-  upload: (documentId: string, file: File) => Promise<void>;
   bulkDelete: (documentIds: DocumentBulkDeleteRequestDTO) => Promise<void>;
   bulkRestore: (documentIds: DocumentBulkRestoreRequestDTO) => Promise<void>;
 }
@@ -38,7 +37,6 @@ export const DOCUMENTS_ROUTES: APIRoutes<DocumentApi> = {
   update: (documentId: string) => `/documents/${documentId}`,
   delete: (documentId: string) => `/documents/${documentId}`,
   restore: (documentId: string) => `/documents/${documentId}/restore`,
-  upload: (documentId: string) => `/documents/${documentId}/upload`,
   bulkDelete: () => "/documents/bulk-delete",
   bulkRestore: () => "/documents/bulk-restore"
 };

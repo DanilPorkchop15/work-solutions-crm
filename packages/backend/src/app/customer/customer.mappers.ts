@@ -12,8 +12,8 @@ export function mapCustomerToDTO(customer: Customer): CustomerDTO {
     inn: customer.inn,
     website: customer.website,
     user_created: mapUserToPreviewDTO(customer.user_created),
-    createdAt: customer.created_at,
-    updatedAt: customer.updated_at
+    created_at: customer.created_at.toISOString(),
+    updated_at: customer.updated_at.toISOString()
   };
 }
 
