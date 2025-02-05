@@ -1,4 +1,5 @@
-import { Controller, Get, Param } from "@nestjs/common";
+import { Controller, Get, Param, Post, UploadedFile, UseInterceptors } from "@nestjs/common";
+import { FileInterceptor } from "@nestjs/platform-express";
 import {
   DOCUMENT_VERSIONS_ROUTES,
   DocumentVersionApi
@@ -14,5 +15,11 @@ export class DocumentVersionController implements DocumentVersionApi {
   @Get(DOCUMENT_VERSIONS_ROUTES.findAll(":documentId"))
   async findAll(@Param("documentId") documentId: string): Promise<DocumentVersionDTO[]> {
     return this.documentVersionsService.findAll(documentId);
+  }
+
+  @Post(DOCUMENT_VERSIONS_ROUTES.upload(":documentId"))
+  @UseInterceptors(FileInterceptor("file"))
+  async upload(@Param("documentId") documentId: string, @UploadedFile() file: Express.Multer.File) {
+    await this.documentVersionsService.upload(documentId, file);
   }
 }

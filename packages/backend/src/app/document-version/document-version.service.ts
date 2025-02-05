@@ -22,4 +22,13 @@ export class DocumentVersionService {
     });
     return documentVersions.map(mapDocumentVersionToDTO);
   }
+
+  async upload(documentId: string, file: Express.Multer.File) {
+    await this.documentVersionRepository.save({
+      document: {
+        document_id: documentId
+      },
+      document_url: file.filename
+    });
+  }
 }
