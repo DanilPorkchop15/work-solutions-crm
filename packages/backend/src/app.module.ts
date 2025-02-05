@@ -1,5 +1,6 @@
 import { Module } from "@nestjs/common";
 import { EventEmitterModule } from "@nestjs/event-emitter";
+import { ServeStaticModule } from "@nestjs/serve-static";
 import { TypeOrmModule, TypeOrmModuleOptions } from "@nestjs/typeorm";
 
 import { AuthModule } from "./app/auth/auth.module";
@@ -30,6 +31,21 @@ import { entitiesAndMigrations } from "./app.migrations";
           ...entitiesAndMigrations
         };
       }
+    }),
+    ServeStaticModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => [
+        {
+          rootPath: configService.uploadsDir,
+          serveRoot: "/uploads",
+          serveStaticOptions: {
+            cacheControl: true,
+            immutable: true,
+            dotfiles: "ignore"
+          }
+        }
+      ]
     })
   ]
 })
