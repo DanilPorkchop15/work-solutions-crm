@@ -8,8 +8,8 @@ export interface CustomerDTO {
   inn?: string;
   website?: string;
   user_created: UserPreviewDTO;
-  createdAt: Date;
-  updatedAt: Date;
+  created_at: string;
+  updated_at: string;
 }
 
 export type CustomerPreviewDTO = Pick<CustomerDTO, "id" | "name" | "user_created" | "email">;

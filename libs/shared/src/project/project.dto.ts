@@ -13,15 +13,15 @@ export interface ProjectDTO {
   id: string;
   name: string;
   description?: string;
-  start_date: Date;
-  end_date: Date;
+  start_date: string;
+  end_date: string;
   budget?: number;
   status: ProjectStatus;
   user_created: UserPreviewDTO;
   customer: CustomerPreviewDTO;
   users_accountable: UserPreviewDTO[];
-  createdAt: Date;
-  updatedAt: Date;
+  created_at: string;
+  updated_at: string;
 }
 
-export type ProjectPreviewDTO = Omit<ProjectDTO, "description" | "createdAt" | "updatedAt">;
+export type ProjectPreviewDTO = Omit<ProjectDTO, "description" | "created_at" | "updated_at">;

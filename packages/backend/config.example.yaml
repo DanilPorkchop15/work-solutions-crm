@@ -9,3 +9,4 @@ corsEnabled: true # Optional, default: false
 
 authentication:
   secret: secret # Optional, default: secret
+  algorithm: HS256 # Optional, default: HS256

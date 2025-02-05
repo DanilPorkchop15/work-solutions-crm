@@ -11,6 +11,6 @@ export function mapCustomerLogToDTO(log: CustomerLog): CustomerLogDTO {
     comment: log.comment,
     user: mapUserToPreviewDTO(log.user),
     customer: mapCustomerToPreviewDTO(log.customer),
-    created_at: log.created_at
+    created_at: log.created_at.toISOString()
   };
 }

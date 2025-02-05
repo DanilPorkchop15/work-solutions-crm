@@ -11,6 +11,6 @@ export function mapTaskLogToDTO(taskLog: TaskLog): TaskLogDTO {
     comment: taskLog.comment ?? "",
     user: mapUserToPreviewDTO(taskLog.user),
     task: mapTaskToPreviewDTO(taskLog.task),
-    created_at: taskLog.created_at
+    created_at: taskLog.created_at.toISOString()
   };
 }

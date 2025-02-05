@@ -5,8 +5,8 @@ export interface DocumentDTO {
   name: string;
   description?: string;
   user_created: UserPreviewDTO;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export type DocumentPreviewDTO = Omit<DocumentDTO, "description">;

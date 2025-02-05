@@ -2,10 +2,16 @@ import { APIRoutes } from "../api-routes";
 
 import { TaskCommentDTO } from "./task-comment.dto";
 
+export interface TaskCommentCreateRequestDTO {
+  text: string;
+}
+
+export type TaskCommentUpdateRequestDTO = TaskCommentCreateRequestDTO;
+
 export interface TaskCommentApi {
   findAll: (taskId: string) => Promise<TaskCommentDTO[]>;
-  create: (taskId: string, text: string) => Promise<void>;
-  update: (taskCommentId: string, text: string) => Promise<void>;
+  create: (taskId: string, dto: TaskCommentCreateRequestDTO) => Promise<void>;
+  update: (taskCommentId: string, dto: TaskCommentUpdateRequestDTO) => Promise<void>;
   delete: (taskCommentId: string) => Promise<void>;
   restore: (taskCommentId: string) => Promise<void>;
 }

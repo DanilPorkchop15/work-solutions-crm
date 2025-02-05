@@ -7,5 +7,5 @@ export interface ProjectLogDTO {
   comment: string;
   user: UserPreviewDTO;
   project: ProjectPreviewDTO;
-  created_at: Date;
+  created_at: string;
 }

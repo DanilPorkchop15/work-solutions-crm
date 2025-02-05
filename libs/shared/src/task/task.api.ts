@@ -5,8 +5,8 @@ import { TaskDTO, TaskPreviewDTO, TaskStatus } from "./task.dto";
 export interface TaskCreateRequestDTO {
   name: string;
   description?: string;
-  start_date?: Date;
-  end_date?: Date;
+  start_date?: string;
+  end_date?: string;
   time_spent?: number;
   estimated_time?: number;
   project_id: string;

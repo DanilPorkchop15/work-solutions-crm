@@ -8,7 +8,7 @@ export function mapTaskCommentToDTO(taskComment: TaskComment): TaskCommentDTO {
     id: taskComment.task_comment_id,
     user: mapUserToPreviewDTO(taskComment.user),
     text: taskComment.text,
-    created_at: taskComment.created_at,
-    updated_at: taskComment.updated_at
+    created_at: taskComment.created_at.toISOString(),
+    updated_at: taskComment.updated_at.toISOString()
   };
 }
