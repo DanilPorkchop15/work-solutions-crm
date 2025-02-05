@@ -7,7 +7,7 @@ export class CreateDocumentVersions1736126415746 implements MigrationInterface {
       (
         "document_version_id" uuid         NOT NULL DEFAULT uuid_generate_v4(),
         "document_url"        varchar(255) NOT NULL,
-        "version"             varchar(255) NOT NULL,
+        "version"             int          NOT NULL,
         "document_id"         uuid         NOT NULL,
         "user_created_id"     uuid         NOT NULL,
         "created_at"          timestamp    NOT NULL DEFAULT now(),

@@ -1,3 +1,4 @@
+import { User } from "@backend/models/entities/user.entity";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { DocumentVersionDTO } from "@work-solutions-crm/libs/shared/document-version/document-version.dto";
@@ -23,12 +24,22 @@ export class DocumentVersionService {
     return documentVersions.map(mapDocumentVersionToDTO);
   }
 
-  async upload(documentId: string, file: Express.Multer.File) {
+  async upload(documentId: string, file: Express.Multer.File, user: User) {
+    const lastVersion: DocumentVersion | null = await this.documentVersionRepository.findOne({
+      where: { document: { document_id: documentId } },
+      relations: {
+        document: true
+      },
+      order: { version: "DESC" }
+    });
+
     await this.documentVersionRepository.save({
       document: {
         document_id: documentId
       },
-      document_url: file.filename
+      document_url: file.filename,
+      version: lastVersion ? lastVersion.version + 1 : 1,
+      user_created: user
     });
   }
 }
