@@ -1,3 +1,5 @@
+import { Role } from "@work-solutions-crm/libs/shared/user/user.dto";
+
 import { APIRoutes } from "../api-routes";
 
 import { DocumentDTO, DocumentPreviewDTO } from "./document.dto";
@@ -6,6 +8,7 @@ export interface DocumentCreateRequestDTO {
   name: string;
   description?: string;
   document_url: string;
+  roles: Role[];
 }
 
 export interface DocumentBulkDeleteRequestDTO {

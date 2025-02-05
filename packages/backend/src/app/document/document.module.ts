@@ -1,3 +1,4 @@
+import { DocumentPermissionModule } from "@backend/app/document-permission/document-permission.module";
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
@@ -8,7 +9,7 @@ import { DocumentController } from "./document.controller";
 import { DocumentService } from "./document.service";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Document, User])],
+  imports: [TypeOrmModule.forFeature([Document, User]), DocumentPermissionModule],
   providers: [DocumentService],
   controllers: [DocumentController],
   exports: [DocumentService]
