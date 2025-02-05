@@ -9,3 +9,5 @@ corsEnabled: true # Optional, default: false
 
 authentication:
   secret: secret # Optional, default: secret
+
+uploadsDir: uploads # Optional, default: ./uploads
