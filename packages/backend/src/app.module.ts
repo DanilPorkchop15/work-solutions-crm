@@ -1,3 +1,4 @@
+import { LoggerModule } from "@backend/app/logger/logger.module";
 import { Module } from "@nestjs/common";
 import { EventEmitterModule } from "@nestjs/event-emitter";
 import { ServeStaticModule } from "@nestjs/serve-static";
@@ -15,6 +16,7 @@ import { entitiesAndMigrations } from "./app.migrations";
     EventEmitterModule.forRoot({ global: true }),
     AuthModule,
     UserModule,
+    LoggerModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

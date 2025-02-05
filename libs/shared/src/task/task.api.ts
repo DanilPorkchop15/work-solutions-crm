@@ -18,6 +18,12 @@ export interface TaskCreateRequestDTO {
 
 export type TaskUpdateRequestDTO = Partial<TaskCreateRequestDTO>;
 
+export interface TaskBulkDeleteRequestDTO {
+  task_ids: string[];
+}
+
+export type TaskBulkRestoreRequestDTO = TaskBulkDeleteRequestDTO;
+
 export interface TaskApi {
   findAll: () => Promise<TaskPreviewDTO[]>;
   findOne: (taskId: string) => Promise<TaskDTO>;
@@ -25,13 +31,17 @@ export interface TaskApi {
   update: (taskId: string, dto: TaskUpdateRequestDTO) => Promise<TaskDTO>;
   delete: (taskId: string) => Promise<void>;
   restore: (taskId: string) => Promise<void>;
+  bulkDelete: (dto: TaskBulkDeleteRequestDTO) => Promise<void>;
+  bulkRestore: (dto: TaskBulkRestoreRequestDTO) => Promise<void>;
 }
 
 export const TASKS_ROUTES: APIRoutes<TaskApi> = {
-  findAll: () => "/task",
+  findAll: () => "/tasks",
   findOne: (taskId: string) => `/tasks/${taskId}`,
-  create: () => "/task",
+  create: () => "/tasks",
   update: (taskId: string) => `/tasks/${taskId}`,
   delete: (taskId: string) => `/tasks/${taskId}`,
-  restore: (taskId: string) => `/tasks/${taskId}/restore`
+  restore: (taskId: string) => `/tasks/${taskId}/restore`,
+  bulkDelete: () => "/tasks/bulk-restore",
+  bulkRestore: () => "/tasks/bulk-restore"
 };

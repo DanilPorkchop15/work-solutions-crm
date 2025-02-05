@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import {
+  CustomerBulkDeleteRequestDTO,
   CustomerCreateRequestDTO,
   CustomerUpdateRequestDTO
 } from "@work-solutions-crm/libs/shared/customer/customer.api";
@@ -57,18 +58,18 @@ export class CustomerService {
   }
 
   async delete(customerId: string): Promise<void> {
-    const customer: Customer | null = await this.customerRepository.findOne({
-      where: { customer_id: customerId }
-    });
-
-    if (!customer) {
-      throw new Error("Customer not found");
-    }
-
-    await this.customerRepository.softRemove(customer);
+    await this.customerRepository.softDelete(customerId);
   }
 
   async restore(customerId: string): Promise<void> {
     await this.customerRepository.restore(customerId);
+  }
+
+  async bulkDelete(dto: CustomerBulkDeleteRequestDTO): Promise<void> {
+    await this.customerRepository.softDelete(dto.customer_ids);
+  }
+
+  async bulkRestore(dto: CustomerBulkDeleteRequestDTO): Promise<void> {
+    await this.customerRepository.restore(dto.customer_ids);
   }
 }

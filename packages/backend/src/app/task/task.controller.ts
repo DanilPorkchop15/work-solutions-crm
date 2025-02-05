@@ -3,6 +3,8 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
 import {
   TaskApi,
+  TaskBulkDeleteRequestDTO,
+  TaskBulkRestoreRequestDTO,
   TaskCreateRequestDTO,
   TASKS_ROUTES,
   TaskUpdateRequestDTO
@@ -43,5 +45,15 @@ export class TaskController implements TaskApi {
   @Patch(TASKS_ROUTES.restore(":taskId"))
   async restore(@Param("taskId") taskId: string): Promise<void> {
     return this.tasksService.restore(taskId);
+  }
+
+  @Delete(TASKS_ROUTES.bulkDelete())
+  async bulkDelete(@Body() dto: TaskBulkDeleteRequestDTO): Promise<void> {
+    return this.tasksService.bulkDelete(dto);
+  }
+
+  @Patch(TASKS_ROUTES.bulkRestore())
+  async bulkRestore(@Body() dto: TaskBulkRestoreRequestDTO): Promise<void> {
+    return this.tasksService.bulkRestore(dto);
   }
 }
