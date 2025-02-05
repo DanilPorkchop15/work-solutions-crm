@@ -1,6 +1,8 @@
 import { UserPreviewResponseDTO } from "@backend/app/user/user.dto";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import {
+  CustomerBulkDeleteRequestDTO,
+  CustomerBulkRestoreRequestDTO,
   CustomerCreateRequestDTO,
   CustomerUpdateRequestDTO
 } from "@work-solutions-crm/libs/shared/customer/customer.api";
@@ -189,4 +191,22 @@ export class CustomerPreviewResponseDTO implements CustomerPreviewDTO {
     type: () => UserPreviewResponseDTO
   })
   user_created: UserPreviewDTO;
+}
+
+export class CustomerBulkDeleteValidationDTO implements CustomerBulkDeleteRequestDTO {
+  @ApiProperty({
+    description: "The IDs of customers to delete",
+    example: ["c7d2ee27-0a5d-4c5d-a3ca-66d9b2b6c5a1", "c7d2ee27-0a5d-4c5d-a3ca-66d9b2b6c5a2"],
+    required: true
+  })
+  readonly customer_ids: string[];
+}
+
+export class CustomerBulkRestoreValidationDTO implements CustomerBulkRestoreRequestDTO {
+  @ApiProperty({
+    description: "The IDs of customers to restore",
+    example: ["c7d2ee27-0a5d-4c5d-a3ca-66d9b2b6c5a1", "c7d2ee27-0a5d-4c5d-a3ca-66d9b2b6c5a2"],
+    required: true
+  })
+  readonly customer_ids: string[];
 }

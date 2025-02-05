@@ -1,7 +1,14 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { UserCreateRequestDTO, UserUpdateRequestDTO } from "@work-solutions-crm/libs/shared/user/user.api";
+import {
+  UserBulkDeleteRequestDTO,
+  UserBulkRestoreRequestDTO,
+  UserChangePasswordRequestDTO,
+  UserChangeRoleRequestDTO,
+  UserCreateRequestDTO,
+  UserUpdateRequestDTO
+} from "@work-solutions-crm/libs/shared/user/user.api";
 import { Role, UserDTO, UserPreviewDTO } from "@work-solutions-crm/libs/shared/user/user.dto";
-import { IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, Length } from "class-validator";
+import { IsArray, IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, Length } from "class-validator";
 
 export class UserCreateValidationDTO implements UserCreateRequestDTO {
   @ApiPropertyOptional({
@@ -175,4 +182,63 @@ export class UserPreviewResponseDTO implements UserPreviewDTO {
     example: "https://example.com/avatar.jpg"
   })
   avatar_url?: string | undefined;
+}
+
+export class UserChangePasswordValidationDTO implements UserChangePasswordRequestDTO {
+  @ApiProperty({
+    description: "The ID of the user",
+    example: "c7d2ee27-0a5d-4c5d-a3ca-66d9b2b6c5a1"
+  })
+  @IsString()
+  user_id: string;
+
+  @ApiProperty({
+    description: "The old password of the user",
+    example: "old_password"
+  })
+  @IsString()
+  old_password: string;
+
+  @ApiProperty({
+    description: "The new password of the user",
+    example: "new_password"
+  })
+  @IsString()
+  new_password: string;
+}
+
+export class UserBulkDeleteValidationDTO implements UserBulkDeleteRequestDTO {
+  @ApiProperty({
+    description: "The IDs of users to delete",
+    example: ["c7d2ee27-0a5d-4c5d-a3ca-66d9b2b6c5a1", "c7d2ee27-0a5d-4c5d-a3ca-66d9b2b6c5a2"]
+  })
+  @IsArray()
+  @IsString({ each: true })
+  user_ids: string[];
+}
+
+export class UserBulkRestoreValidationDTO implements UserBulkRestoreRequestDTO {
+  @ApiProperty({
+    description: "The IDs of users to restore",
+    example: ["c7d2ee27-0a5d-4c5d-a3ca-66d9b2b6c5a1", "c7d2ee27-0a5d-4c5d-a3ca-66d9b2b6c5a2"]
+  })
+  @IsArray()
+  @IsString({ each: true })
+  user_ids: string[];
+}
+
+export class UserChangeRoleValidationDTO implements UserChangeRoleRequestDTO {
+  @ApiProperty({
+    description: "The role of the user",
+    example: Role.USER
+  })
+  @IsEnum(Role)
+  role: Role;
+
+  @ApiProperty({
+    description: "The ID of the user",
+    example: "c7d2ee27-0a5d-4c5d-a3ca-66d9b2b6c5a1"
+  })
+  @IsString()
+  user_id: string;
 }

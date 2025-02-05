@@ -1,12 +1,14 @@
 import { UserPreviewResponseDTO } from "@backend/app/user/user.dto";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import {
+  DocumentBulkDeleteRequestDTO,
+  DocumentBulkRestoreRequestDTO,
   DocumentCreateRequestDTO,
   DocumentUpdateRequestDTO
 } from "@work-solutions-crm/libs/shared/document/document.api";
 import { DocumentDTO, DocumentPreviewDTO } from "@work-solutions-crm/libs/shared/document/document.dto";
-import { UserPreviewDTO } from "@work-solutions-crm/libs/shared/user/user.dto";
-import { IsOptional, IsString, IsUrl, Length } from "class-validator";
+import { Role, UserPreviewDTO } from "@work-solutions-crm/libs/shared/user/user.dto";
+import { IsArray, IsEnum, IsOptional, IsString, IsUrl, Length } from "class-validator";
 
 export class DocumentCreateValidationDTO implements DocumentCreateRequestDTO {
   @ApiProperty({
@@ -35,6 +37,15 @@ export class DocumentCreateValidationDTO implements DocumentCreateRequestDTO {
   })
   @IsUrl()
   readonly document_url: string;
+
+  @ApiProperty({
+    description: "The roles of document",
+    example: ["user", "admin"],
+    required: true
+  })
+  @IsArray()
+  @IsEnum(Role, { each: true })
+  readonly roles: Role[];
 }
 
 export class DocumentUpdateValidationDTO implements DocumentUpdateRequestDTO {
@@ -147,4 +158,22 @@ export class DocumentPreviewResponseDTO implements DocumentPreviewDTO {
     required: true
   })
   readonly updatedAt: string;
+}
+
+export class DocumentBulkDeleteValidationDTO implements DocumentBulkDeleteRequestDTO {
+  @ApiProperty({
+    description: "The IDs of documents to delete",
+    example: ["c7d2ee27-0a5d-4c5d-a3ca-66d9b2b6c5a1", "c7d2ee27-0a5d-4c5d-a3ca-66d9b2b6c5a2"],
+    required: true
+  })
+  readonly document_ids: string[];
+}
+
+export class DocumentBulkRestoreValidationDTO implements DocumentBulkRestoreRequestDTO {
+  @ApiProperty({
+    description: "The IDs of documents to restore",
+    example: ["c7d2ee27-0a5d-4c5d-a3ca-66d9b2b6c5a1", "c7d2ee27-0a5d-4c5d-a3ca-66d9b2b6c5a2"],
+    required: true
+  })
+  readonly document_ids: string[];
 }

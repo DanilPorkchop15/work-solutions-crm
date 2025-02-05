@@ -1,14 +1,17 @@
 import { AuthGuard } from "@backend/app/auth/auth.guard";
-import { DocumentPermissionGuard } from "@backend/app/document-permission/document-permission.guard";
-import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from "@nestjs/common";
 import {
+  DocumentBulkDeleteValidationDTO,
+  DocumentBulkRestoreValidationDTO,
   DocumentCreateValidationDTO,
   DocumentPreviewResponseDTO,
   DocumentResponseDTO,
   DocumentUpdateValidationDTO
 } from "@backend/app/document/document.dto";
+import { DocumentPermissionGuard } from "@backend/app/document-permission/document-permission.guard";
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from "@nestjs/common";
 import {
   ApiBearerAuth,
+  ApiBody,
   ApiCreatedResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -16,9 +19,7 @@ import {
   ApiResponse,
   ApiTags
 } from "@nestjs/swagger";
-import { DocumentApi, DOCUMENTS_ROUTES,
-  DocumentUpdateRequestDTO
-} from "@work-solutions-crm/libs/shared/document/document.api";
+import { DocumentApi, DOCUMENTS_ROUTES } from "@work-solutions-crm/libs/shared/document/document.api";
 import { DocumentDTO, DocumentPreviewDTO } from "@work-solutions-crm/libs/shared/document/document.dto";
 
 import { DocumentService } from "./document.service";
@@ -55,7 +56,6 @@ export class DocumentController implements DocumentApi {
 
   @Patch(DOCUMENTS_ROUTES.update(":documentId"))
   @UseGuards(AuthGuard, DocumentPermissionGuard)
-  async update(@Param("documentId") documentId: string, @Body() dto: DocumentUpdateRequestDTO): Promise<DocumentDTO> {
   @ApiOperation({ summary: "Update document" })
   @ApiOkResponse({ type: DocumentResponseDTO })
   @ApiNotFoundResponse({ description: "Document not found" })
@@ -67,7 +67,6 @@ export class DocumentController implements DocumentApi {
   }
 
   @Delete(DOCUMENTS_ROUTES.delete(":documentId"))
-  @UseGuards(AuthGuard, DocumentPermissionGuard)
   @ApiOperation({ summary: "Delete document" })
   @ApiResponse({ status: 200 })
   @ApiNotFoundResponse({ description: "Document not found" })
@@ -85,17 +84,20 @@ export class DocumentController implements DocumentApi {
   }
 
   @Delete(DOCUMENTS_ROUTES.bulkDelete())
-  bulkDelete(@Body() documentIds: DocumentBulkDeleteRequestDTO): Promise<void> {
+  @ApiOperation({ summary: "Bulk delete documents" })
+  @ApiBody({ type: DocumentBulkDeleteValidationDTO })
+  @ApiResponse({ status: 200 })
+  @UseGuards(AuthGuard)
+  bulkDelete(@Body() documentIds: DocumentBulkDeleteValidationDTO): Promise<void> {
     return this.documentsService.bulkDelete(documentIds);
   }
 
   @Patch(DOCUMENTS_ROUTES.bulkRestore())
-  bulkRestore(@Body() documentIds: DocumentBulkRestoreRequestDTO): Promise<void> {
+  @ApiOperation({ summary: "Bulk restore documents" })
+  @ApiBody({ type: DocumentBulkRestoreValidationDTO })
+  @ApiResponse({ status: 200 })
+  @UseGuards(AuthGuard)
+  bulkRestore(@Body() documentIds: DocumentBulkRestoreValidationDTO): Promise<void> {
     return this.documentsService.bulkRestore(documentIds);
-  }
-
-  // TODO : implement
-  upload(documentId: string, file: File): Promise<void> {
-    return Promise.resolve(undefined);
   }
 }

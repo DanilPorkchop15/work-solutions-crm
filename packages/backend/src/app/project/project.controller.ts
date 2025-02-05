@@ -1,18 +1,15 @@
 import { AuthGuard } from "@backend/app/auth/auth.guard";
 import {
+  ProjectBulkDeleteValidationDTO,
+  ProjectBulkRestoreValidationDTO,
   ProjectCreateValidationDTO,
   ProjectPreviewResponseDTO,
   ProjectResponseDTO,
   ProjectUpdateValidationDTO
 } from "@backend/app/project/project.dto";
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from "@nestjs/common";
-import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
-import {
-  ProjectApi,
-  ProjectBulkDeleteRequestDTO,
-  ProjectBulkRestoreRequestDTO,
-  PROJECTS_ROUTES,
-} from "@work-solutions-crm/libs/shared/project/project.api";
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { ProjectApi, PROJECTS_ROUTES } from "@work-solutions-crm/libs/shared/project/project.api";
 import { ProjectDTO, ProjectPreviewDTO } from "@work-solutions-crm/libs/shared/project/project.dto";
 
 import { ProjectService } from "./project.service";
@@ -76,12 +73,20 @@ export class ProjectController implements ProjectApi {
   }
 
   @Delete(PROJECTS_ROUTES.bulkDelete())
-  bulkDelete(@Body() dto: ProjectBulkDeleteRequestDTO): Promise<void> {
+  @ApiOperation({ summary: "Delete multiple projects" })
+  @ApiBody({ type: ProjectBulkDeleteValidationDTO })
+  @ApiResponse({ status: 204, description: "Projects deleted successfully" })
+  @UseGuards(AuthGuard)
+  bulkDelete(@Body() dto: ProjectBulkDeleteValidationDTO): Promise<void> {
     return this.projectsService.bulkDelete(dto);
   }
 
   @Patch(PROJECTS_ROUTES.bulkRestore())
-  bulkRestore(@Body() dto: ProjectBulkRestoreRequestDTO): Promise<void> {
+  @ApiOperation({ summary: "Restore multiple deleted projects" })
+  @ApiBody({ type: ProjectBulkRestoreValidationDTO })
+  @ApiResponse({ status: 204, description: "Projects restored successfully" })
+  @UseGuards(AuthGuard)
+  bulkRestore(@Body() dto: ProjectBulkRestoreValidationDTO): Promise<void> {
     return this.projectsService.bulkRestore(dto);
   }
 }

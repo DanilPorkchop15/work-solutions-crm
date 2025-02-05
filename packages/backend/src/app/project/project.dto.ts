@@ -2,7 +2,12 @@ import { CustomerPreviewResponseDTO } from "@backend/app/customer/customer.dto";
 import { UserPreviewResponseDTO } from "@backend/app/user/user.dto";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { CustomerPreviewDTO } from "@work-solutions-crm/libs/shared/customer/customer.dto";
-import { ProjectCreateRequestDTO, ProjectUpdateRequestDTO } from "@work-solutions-crm/libs/shared/project/project.api";
+import {
+  ProjectBulkDeleteRequestDTO,
+  ProjectBulkRestoreRequestDTO,
+  ProjectCreateRequestDTO,
+  ProjectUpdateRequestDTO
+} from "@work-solutions-crm/libs/shared/project/project.api";
 import { ProjectDTO, ProjectPreviewDTO, ProjectStatus } from "@work-solutions-crm/libs/shared/project/project.dto";
 import { UserPreviewDTO } from "@work-solutions-crm/libs/shared/user/user.dto";
 import {
@@ -305,4 +310,28 @@ export class ProjectPreviewResponseDTO implements ProjectPreviewDTO {
     type: () => [UserPreviewResponseDTO]
   })
   users_accountable: UserPreviewDTO[];
+}
+
+export class ProjectBulkDeleteValidationDTO implements ProjectBulkDeleteRequestDTO {
+  @IsArray()
+  @IsNotEmpty()
+  @ApiProperty({
+    description: "Project ids",
+    required: true,
+    example: ["projectId"],
+    type: [String]
+  })
+  project_ids: string[];
+}
+
+export class ProjectBulkRestoreValidationDTO implements ProjectBulkRestoreRequestDTO {
+  @IsArray()
+  @IsNotEmpty()
+  @ApiProperty({
+    description: "Project ids",
+    required: true,
+    example: ["projectId"],
+    type: [String]
+  })
+  project_ids: string[];
 }

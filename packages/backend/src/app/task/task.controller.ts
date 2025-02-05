@@ -1,18 +1,15 @@
 import { AuthGuard } from "@backend/app/auth/auth.guard";
 import {
+  TaskBulkDeleteValidationDTO,
+  TaskBulkRestoreValidationDTO,
   TaskCreateValidationDTO,
   TaskPreviewResponseDTO,
   TaskResponseDTO,
   TaskUpdateValidationDTO
 } from "@backend/app/task/task.dto";
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from "@nestjs/common";
-import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from "@nestjs/swagger";
-import {
-  TaskApi,
-  TaskBulkDeleteRequestDTO,
-  TaskBulkRestoreRequestDTO,
-  TASKS_ROUTES,
-} from "@work-solutions-crm/libs/shared/task/task.api";
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { TaskApi, TASKS_ROUTES } from "@work-solutions-crm/libs/shared/task/task.api";
 import { TaskDTO, TaskPreviewDTO } from "@work-solutions-crm/libs/shared/task/task.dto";
 
 import { TaskService } from "./task.service";
@@ -75,13 +72,19 @@ export class TaskController implements TaskApi {
     return this.tasksService.restore(taskId);
   }
 
+  @UseGuards(AuthGuard)
   @Delete(TASKS_ROUTES.bulkDelete())
-  async bulkDelete(@Body() dto: TaskBulkDeleteRequestDTO): Promise<void> {
+  @ApiOperation({ summary: "Bulk delete tasks" })
+  @ApiBody({ type: TaskBulkDeleteValidationDTO })
+  async bulkDelete(@Body() dto: TaskBulkDeleteValidationDTO): Promise<void> {
     return this.tasksService.bulkDelete(dto);
   }
 
+  @UseGuards(AuthGuard)
   @Patch(TASKS_ROUTES.bulkRestore())
-  async bulkRestore(@Body() dto: TaskBulkRestoreRequestDTO): Promise<void> {
+  @ApiOperation({ summary: "Bulk restore tasks" })
+  @ApiBody({ type: TaskBulkRestoreValidationDTO })
+  async bulkRestore(@Body() dto: TaskBulkRestoreValidationDTO): Promise<void> {
     return this.tasksService.bulkRestore(dto);
   }
 }

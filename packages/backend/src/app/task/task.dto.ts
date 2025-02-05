@@ -2,7 +2,12 @@ import { ProjectPreviewResponseDTO } from "@backend/app/project/project.dto";
 import { UserPreviewResponseDTO } from "@backend/app/user/user.dto";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { ProjectPreviewDTO } from "@work-solutions-crm/libs/shared/project/project.dto";
-import { TaskCreateRequestDTO, TaskUpdateRequestDTO } from "@work-solutions-crm/libs/shared/task/task.api";
+import {
+  TaskBulkDeleteRequestDTO,
+  TaskBulkRestoreRequestDTO,
+  TaskCreateRequestDTO,
+  TaskUpdateRequestDTO
+} from "@work-solutions-crm/libs/shared/task/task.api";
 import { TaskDTO, TaskPreviewDTO, TaskStatus } from "@work-solutions-crm/libs/shared/task/task.dto";
 import { UserPreviewDTO } from "@work-solutions-crm/libs/shared/user/user.dto";
 import { IsArray, IsDate, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, ValidateNested } from "class-validator";
@@ -340,4 +345,28 @@ export class TaskPreviewResponseDTO implements TaskPreviewDTO {
     type: () => ProjectPreviewResponseDTO
   })
   project: ProjectPreviewDTO;
+}
+
+export class TaskBulkDeleteValidationDTO implements TaskBulkDeleteRequestDTO {
+  @ApiProperty({
+    description: "Task ids",
+    required: true,
+    example: ["taskId"],
+    type: [String]
+  })
+  @IsArray()
+  @IsNotEmpty()
+  task_ids: string[];
+}
+
+export class TaskBulkRestoreValidationDTO implements TaskBulkRestoreRequestDTO {
+  @ApiProperty({
+    description: "Task ids",
+    required: true,
+    example: ["taskId"],
+    type: [String]
+  })
+  @IsArray()
+  @IsNotEmpty()
+  task_ids: string[];
 }

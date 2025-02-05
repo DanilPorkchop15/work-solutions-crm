@@ -2,23 +2,21 @@ import { AuthGuard } from "@backend/app/auth/auth.guard";
 import { LoggerService } from "@backend/app/logger/logger.service";
 import { LogType } from "@backend/app/logger/logger.types";
 import {
+  UserBulkDeleteValidationDTO,
+  UserBulkRestoreValidationDTO,
+  UserChangePasswordValidationDTO,
+  UserChangeRoleValidationDTO,
   UserCreateValidationDTO,
   UserPreviewResponseDTO,
   UserResponseDTO,
   UserUpdateValidationDTO
 } from "@backend/app/user/user.dto";
+import { CurrentUser } from "@backend/decorators/current-user.decorator";
 import { Logger } from "@backend/decorators/logger.decorator";
+import { User } from "@backend/models/entities/user.entity";
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from "@nestjs/common";
-import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
-import {
-  UserApi,
-  UserBulkDeleteRequestDTO,
-  UserBulkRestoreRequestDTO,
-  UserChangePasswordRequestDTO,
-  UserChangeRoleRequestDTO,
-  UserCreateRequestDTO,
-  USERS_ROUTES
-} from "@work-solutions-crm/libs/shared/user/user.api";
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { UserApi, USERS_ROUTES } from "@work-solutions-crm/libs/shared/user/user.api";
 import { UserDTO, UserPreviewDTO } from "@work-solutions-crm/libs/shared/user/user.dto";
 
 import { UserService } from "./user.service";
@@ -45,7 +43,7 @@ export class UserController implements UserApi {
   @ApiOperation({ summary: "Create a new user" })
   @ApiResponse({ status: 201, type: UserResponseDTO })
   @Logger("user", "user")
-  async create(@Body() dto: UserCreateRequestDTO): Promise<UserDTO> {
+  async create(@Body() dto: UserCreateValidationDTO): Promise<UserDTO> {
     const user: UserDTO = await this.usersService.create(dto);
     await this.loggerService.logByType(LogType.USER, "created", "new user", { user_id: user.id });
     return this.usersService.create(dto);
@@ -84,22 +82,38 @@ export class UserController implements UserApi {
   }
 
   @Delete(USERS_ROUTES.bulkDelete())
-  bulkDelete(@Body() dto: UserBulkDeleteRequestDTO): Promise<void> {
+  @ApiOperation({ summary: "Bulk delete users" })
+  @ApiBody({ type: [UserBulkDeleteValidationDTO] })
+  @ApiResponse({ status: 204 })
+  @UseGuards(AuthGuard)
+  bulkDelete(@Body() dto: UserBulkDeleteValidationDTO): Promise<void> {
     return this.usersService.bulkDelete(dto);
   }
 
   @Patch(USERS_ROUTES.bulkRestore())
-  bulkRestore(@Body() dto: UserBulkRestoreRequestDTO): Promise<void> {
+  @ApiOperation({ summary: "Bulk restore users" })
+  @ApiBody({ type: [UserBulkRestoreValidationDTO] })
+  @ApiResponse({ status: 204 })
+  @UseGuards(AuthGuard)
+  bulkRestore(@Body() dto: UserBulkRestoreValidationDTO): Promise<void> {
     return this.usersService.bulkRestore(dto);
   }
 
   @Patch(USERS_ROUTES.changeRole())
-  changeRole(@Body() dto: UserChangeRoleRequestDTO): Promise<void> {
+  @ApiOperation({ summary: "Change user role" })
+  @ApiBody({ type: UserChangeRoleValidationDTO })
+  @ApiResponse({ status: 204 })
+  @UseGuards(AuthGuard)
+  changeRole(@Body() dto: UserChangeRoleValidationDTO): Promise<void> {
     return this.usersService.changeRole(dto.user_id, dto.role);
   }
 
   @Patch(USERS_ROUTES.changePassword())
-  changePassword(@Body() dto: UserChangePasswordRequestDTO): Promise<void> {
-    return this.usersService.changePassword(dto.user_id, dto.new_password, dto.old_password);
+  @ApiOperation({ summary: "Change user password" })
+  @ApiBody({ type: UserChangePasswordValidationDTO })
+  @ApiResponse({ status: 204 })
+  @UseGuards(AuthGuard)
+  changePassword(@Body() dto: UserChangePasswordValidationDTO, @CurrentUser() user: User): Promise<void> {
+    return this.usersService.changePassword(user.user_id, dto.new_password, dto.old_password);
   }
 }

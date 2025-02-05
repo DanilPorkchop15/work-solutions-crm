@@ -1,17 +1,15 @@
 import { AuthGuard } from "@backend/app/auth/auth.guard";
 import {
+  CustomerBulkDeleteValidationDTO,
+  CustomerBulkRestoreValidationDTO,
   CustomerCreateValidationDTO,
   CustomerPreviewResponseDTO,
   CustomerResponseDTO,
   CustomerUpdateValidationDTO
 } from "@backend/app/customer/customer.dto";
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from "@nestjs/common";
-import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
-import {
-  CustomerApi,
-  CustomerBulkDeleteRequestDTO,
-  CUSTOMERS_ROUTES,
-} from "@work-solutions-crm/libs/shared/customer/customer.api";
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { CustomerApi, CUSTOMERS_ROUTES } from "@work-solutions-crm/libs/shared/customer/customer.api";
 import { CustomerDTO, CustomerPreviewDTO } from "@work-solutions-crm/libs/shared/customer/customer.dto";
 
 import { CustomerService } from "./customer.service";
@@ -74,13 +72,21 @@ export class CustomerController implements CustomerApi {
     return this.customersService.restore(customerId);
   }
 
+  @UseGuards(AuthGuard)
   @Delete(CUSTOMERS_ROUTES.bulkDelete())
-  bulkDelete(@Body() dto: CustomerBulkDeleteRequestDTO): Promise<void> {
+  @ApiOperation({ summary: "Bulk delete customers" })
+  @ApiResponse({ status: 200, description: "Customers deleted successfully" })
+  @ApiBody({ type: CustomerBulkDeleteValidationDTO })
+  bulkDelete(@Body() dto: CustomerBulkDeleteValidationDTO): Promise<void> {
     return this.customersService.bulkDelete(dto);
   }
 
+  @UseGuards(AuthGuard)
   @Patch(CUSTOMERS_ROUTES.bulkRestore())
-  bulkRestore(@Body() dto: CustomerBulkDeleteRequestDTO): Promise<void> {
+  @ApiOperation({ summary: "Bulk restore customers" })
+  @ApiResponse({ status: 200, description: "Customers restored successfully" })
+  @ApiBody({ type: CustomerBulkRestoreValidationDTO })
+  bulkRestore(@Body() dto: CustomerBulkRestoreValidationDTO): Promise<void> {
     return this.customersService.bulkRestore(dto);
   }
 }
