@@ -7,7 +7,12 @@ import {
 } from "@backend/app/task/task.dto";
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from "@nestjs/swagger";
-import { TaskApi, TASKS_ROUTES } from "@work-solutions-crm/libs/shared/task/task.api";
+import {
+  TaskApi,
+  TaskBulkDeleteRequestDTO,
+  TaskBulkRestoreRequestDTO,
+  TASKS_ROUTES,
+} from "@work-solutions-crm/libs/shared/task/task.api";
 import { TaskDTO, TaskPreviewDTO } from "@work-solutions-crm/libs/shared/task/task.dto";
 
 import { TaskService } from "./task.service";
@@ -68,5 +73,15 @@ export class TaskController implements TaskApi {
   @ApiResponse({ status: 204 })
   async restore(@Param("taskId") taskId: string): Promise<void> {
     return this.tasksService.restore(taskId);
+  }
+
+  @Delete(TASKS_ROUTES.bulkDelete())
+  async bulkDelete(@Body() dto: TaskBulkDeleteRequestDTO): Promise<void> {
+    return this.tasksService.bulkDelete(dto);
+  }
+
+  @Patch(TASKS_ROUTES.bulkRestore())
+  async bulkRestore(@Body() dto: TaskBulkRestoreRequestDTO): Promise<void> {
+    return this.tasksService.bulkRestore(dto);
   }
 }

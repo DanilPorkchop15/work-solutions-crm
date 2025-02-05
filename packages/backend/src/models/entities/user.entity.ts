@@ -30,7 +30,7 @@ export enum Role {
   MODERATOR = "moderator"
 }
 
-@Entity("user")
+@Entity("users")
 export class User {
   @PrimaryGeneratedColumn("uuid")
   user_id: string;

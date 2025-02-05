@@ -1,6 +1,11 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { ProjectCreateRequestDTO, ProjectUpdateRequestDTO } from "@work-solutions-crm/libs/shared/project/project.api";
+import {
+  ProjectBulkDeleteRequestDTO,
+  ProjectBulkRestoreRequestDTO,
+  ProjectCreateRequestDTO,
+  ProjectUpdateRequestDTO
+} from "@work-solutions-crm/libs/shared/project/project.api";
 import { ProjectDTO, ProjectPreviewDTO } from "@work-solutions-crm/libs/shared/project/project.dto";
 import { Repository } from "typeorm";
 
@@ -55,5 +60,13 @@ export class ProjectService {
 
   async restore(projectId: string): Promise<void> {
     await this.projectRepository.restore({ project_id: projectId });
+  }
+
+  async bulkDelete(dto: ProjectBulkDeleteRequestDTO): Promise<void> {
+    await this.projectRepository.softDelete(dto.project_ids);
+  }
+
+  async bulkRestore(dto: ProjectBulkRestoreRequestDTO): Promise<void> {
+    await this.projectRepository.restore(dto.project_ids);
   }
 }

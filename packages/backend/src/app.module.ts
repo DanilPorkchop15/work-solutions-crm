@@ -3,6 +3,7 @@ import { ProjectLogModule } from "@backend/app/project-log/project-log.module";
 import { TaskCommentModule } from "@backend/app/task-comment/task-comment.module";
 import { TaskLogModule } from "@backend/app/task-log/task-log.module";
 import { UserLogModule } from "@backend/app/user-log/user-log.module";
+import { LoggerModule } from "@backend/app/logger/logger.module";
 import { Module } from "@nestjs/common";
 import { EventEmitterModule } from "@nestjs/event-emitter";
 import { TypeOrmModule, TypeOrmModuleOptions } from "@nestjs/typeorm";
@@ -30,6 +31,7 @@ import { entitiesAndMigrations } from "./app.migrations";
     EventEmitterModule.forRoot({ global: true }),
     AuthModule,
     UserModule,
+    LoggerModule,
     UserLogModule,
     DocumentModule,
     DocumentCommentModule,

@@ -7,7 +7,12 @@ import {
 } from "@backend/app/project/project.dto";
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
-import { ProjectApi, PROJECTS_ROUTES } from "@work-solutions-crm/libs/shared/project/project.api";
+import {
+  ProjectApi,
+  ProjectBulkDeleteRequestDTO,
+  ProjectBulkRestoreRequestDTO,
+  PROJECTS_ROUTES,
+} from "@work-solutions-crm/libs/shared/project/project.api";
 import { ProjectDTO, ProjectPreviewDTO } from "@work-solutions-crm/libs/shared/project/project.dto";
 
 import { ProjectService } from "./project.service";
@@ -68,5 +73,15 @@ export class ProjectController implements ProjectApi {
   @ApiResponse({ status: 204, description: "Project restored successfully" })
   restore(@Param("projectId") projectId: string): Promise<void> {
     return this.projectsService.restore(projectId);
+  }
+
+  @Delete(PROJECTS_ROUTES.bulkDelete())
+  bulkDelete(@Body() dto: ProjectBulkDeleteRequestDTO): Promise<void> {
+    return this.projectsService.bulkDelete(dto);
+  }
+
+  @Patch(PROJECTS_ROUTES.bulkRestore())
+  bulkRestore(@Body() dto: ProjectBulkRestoreRequestDTO): Promise<void> {
+    return this.projectsService.bulkRestore(dto);
   }
 }

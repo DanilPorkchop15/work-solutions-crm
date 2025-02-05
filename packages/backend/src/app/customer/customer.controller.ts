@@ -7,7 +7,11 @@ import {
 } from "@backend/app/customer/customer.dto";
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
-import { CustomerApi, CUSTOMERS_ROUTES } from "@work-solutions-crm/libs/shared/customer/customer.api";
+import {
+  CustomerApi,
+  CustomerBulkDeleteRequestDTO,
+  CUSTOMERS_ROUTES,
+} from "@work-solutions-crm/libs/shared/customer/customer.api";
 import { CustomerDTO, CustomerPreviewDTO } from "@work-solutions-crm/libs/shared/customer/customer.dto";
 
 import { CustomerService } from "./customer.service";
@@ -68,5 +72,15 @@ export class CustomerController implements CustomerApi {
   @ApiResponse({ status: 404, description: "Customer not found" })
   restore(@Param("customerId") customerId: string): Promise<void> {
     return this.customersService.restore(customerId);
+  }
+
+  @Delete(CUSTOMERS_ROUTES.bulkDelete())
+  bulkDelete(@Body() dto: CustomerBulkDeleteRequestDTO): Promise<void> {
+    return this.customersService.bulkDelete(dto);
+  }
+
+  @Patch(CUSTOMERS_ROUTES.bulkRestore())
+  bulkRestore(@Body() dto: CustomerBulkDeleteRequestDTO): Promise<void> {
+    return this.customersService.bulkRestore(dto);
   }
 }

@@ -1,7 +1,12 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { UserCreateRequestDTO, UserUpdateRequestDTO } from "@work-solutions-crm/libs/shared/user/user.api";
-import { UserDTO, UserPreviewDTO } from "@work-solutions-crm/libs/shared/user/user.dto";
+import {
+  UserBulkDeleteRequestDTO,
+  UserBulkRestoreRequestDTO,
+  UserCreateRequestDTO,
+  UserUpdateRequestDTO
+} from "@work-solutions-crm/libs/shared/user/user.api";
+import { Role, UserDTO, UserPreviewDTO } from "@work-solutions-crm/libs/shared/user/user.dto";
 import * as bcrypt from "bcryptjs";
 import { DeepPartial, Repository } from "typeorm";
 
@@ -44,6 +49,11 @@ export class UserService {
 
   async create(dto: UserCreateRequestDTO): Promise<UserDTO> {
     const user: DeepPartial<User> = await mapCreateRequestDTOToUser(dto);
+
+    const existingUser: User | null = await this.userRepository.findOne({ where: { email: dto.email } });
+    if (existingUser) {
+      return mapUserToDTO(existingUser);
+    }
     const createdUser: User = await this.userRepository.save(user);
     return mapUserToDTO(createdUser);
   }
@@ -76,6 +86,29 @@ export class UserService {
     const hashedToken: string = await bcrypt.hash(refreshToken, 10);
     await this.userRepository.update(userId, { refresh_token: hashedToken });
   }
-}
 
-//TODO add changeRole method
+  async changePassword(userId: string, newPassword: string, oldPassword: string): Promise<void> {
+    const user: User | null = await this.userRepository.findOne({ where: { user_id: userId } });
+    if (!user) {
+      throw new NotFoundException("User not found");
+    }
+    const isPasswordValid: boolean = await bcrypt.compare(oldPassword, user.password);
+    if (!isPasswordValid) {
+      throw new BadRequestException("Invalid password");
+    }
+    const hashedPassword: string = await bcrypt.hash(newPassword, 10);
+    await this.userRepository.update(userId, { password: hashedPassword });
+  }
+
+  async changeRole(userId: string, role: Role): Promise<void> {
+    await this.userRepository.update(userId, { role });
+  }
+
+  async bulkDelete(dto: UserBulkDeleteRequestDTO): Promise<void> {
+    await this.userRepository.softDelete(dto.user_ids);
+  }
+
+  async bulkRestore(dto: UserBulkRestoreRequestDTO): Promise<void> {
+    await this.userRepository.restore(dto.user_ids);
+  }
+}
