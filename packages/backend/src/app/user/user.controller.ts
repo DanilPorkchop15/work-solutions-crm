@@ -1,3 +1,6 @@
+import { LoggerService } from "@backend/app/logger/logger.service";
+import { LogType } from "@backend/app/logger/logger.types";
+import { Logger } from "@backend/decorators/logger.decorator";
 import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
 import {
   UserApi,
@@ -11,7 +14,10 @@ import { UserService } from "./user.service";
 
 @Controller()
 export class UserController implements UserApi {
-  constructor(private readonly usersService: UserService) {}
+  constructor(
+    private readonly usersService: UserService,
+    private readonly loggerService: LoggerService
+  ) {}
 
   @Get(USERS_ROUTES.findAll())
   findAll(): Promise<UserPreviewDTO[]> {
@@ -19,8 +25,11 @@ export class UserController implements UserApi {
   }
 
   @Post(USERS_ROUTES.create())
-  create(@Body() dto: UserCreateRequestDTO): Promise<UserDTO> {
-    return this.usersService.create(dto);
+  @Logger("user", "user")
+  async create(@Body() dto: UserCreateRequestDTO): Promise<UserDTO> {
+    const user: UserDTO = await this.usersService.create(dto);
+    await this.loggerService.logByType(LogType.USER, "created", "new user", { user_id: user.id });
+    return user;
   }
 
   @Post(USERS_ROUTES.bulkCreate())

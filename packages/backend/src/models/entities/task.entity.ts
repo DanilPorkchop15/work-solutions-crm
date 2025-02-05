@@ -25,7 +25,7 @@ enum TaskStatus {
   CANCELED = "canceled"
 }
 
-@Entity("task")
+@Entity("tasks")
 export class Task {
   @PrimaryGeneratedColumn("uuid")
   task_id: string;
