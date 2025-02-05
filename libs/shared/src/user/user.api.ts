@@ -44,12 +44,12 @@ export interface UserApi {
 }
 
 export const USERS_ROUTES: APIRoutes<UserApi> = {
-  findAll: () => "/user",
-  create: () => "/user",
+  findAll: () => "/users",
+  create: () => "/users",
   update: (userId: string) => `/users/${userId}`,
   delete: (userId: string) => `/users/${userId}`,
   restore: (userId: string) => `/users/${userId}/restore`,
-  bulkCreate: () => "/user/bulk-create",
+  bulkCreate: () => "/users/bulk-create",
   bulkDelete: () => "/user/bulk-delete",
   bulkRestore: () => "/user/bulk-restore",
   changeRole: () => "/user/role",

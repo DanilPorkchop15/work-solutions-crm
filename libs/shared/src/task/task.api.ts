@@ -36,9 +36,9 @@ export interface TaskApi {
 }
 
 export const TASKS_ROUTES: APIRoutes<TaskApi> = {
-  findAll: () => "/task",
+  findAll: () => "/tasks",
   findOne: (taskId: string) => `/tasks/${taskId}`,
-  create: () => "/task",
+  create: () => "/tasks",
   update: (taskId: string) => `/tasks/${taskId}`,
   delete: (taskId: string) => `/tasks/${taskId}`,
   restore: (taskId: string) => `/tasks/${taskId}/restore`,

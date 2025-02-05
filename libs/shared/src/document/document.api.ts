@@ -29,9 +29,9 @@ export interface DocumentApi {
 }
 
 export const DOCUMENTS_ROUTES: APIRoutes<DocumentApi> = {
-  findAll: () => "/document",
+  findAll: () => "/documents",
   findOne: (documentId: string) => `/documents/${documentId}`,
-  create: () => "/document",
+  create: () => "/documents",
   update: (documentId: string) => `/documents/${documentId}`,
   delete: (documentId: string) => `/documents/${documentId}`,
   restore: (documentId: string) => `/documents/${documentId}/restore`,

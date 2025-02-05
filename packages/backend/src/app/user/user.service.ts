@@ -49,6 +49,11 @@ export class UserService {
 
   async create(dto: UserCreateRequestDTO): Promise<UserDTO> {
     const user: DeepPartial<User> = await mapCreateRequestDTOToUser(dto);
+
+    const existingUser: User | null = await this.userRepository.findOne({ where: { email: dto.email } });
+    if (existingUser) {
+      return mapUserToDTO(existingUser);
+    }
     const createdUser: User = await this.userRepository.save(user);
     return mapUserToDTO(createdUser);
   }

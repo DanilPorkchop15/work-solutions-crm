@@ -37,9 +37,9 @@ export interface ProjectApi {
 }
 
 export const PROJECTS_ROUTES: APIRoutes<ProjectApi> = {
-  findAll: () => "/project",
+  findAll: () => "/projects",
   findOne: (projectId: string) => `/projects/${projectId}`,
-  create: () => "/project",
+  create: () => "/projects",
   update: (projectId: string) => `/projects/${projectId}`,
   delete: (projectId: string) => `/projects/${projectId}`,
   restore: (projectId: string) => `/projects/${projectId}/restore`,
