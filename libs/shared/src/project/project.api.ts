@@ -17,6 +17,14 @@ export interface ProjectCreateRequestDTO {
 
 export type ProjectUpdateRequestDTO = Partial<ProjectCreateRequestDTO>;
 
+export interface ProjectBulkDeleteRequestDTO {
+  project_ids: string[];
+}
+
+export interface ProjectBulkRestoreRequestDTO {
+  project_ids: string[];
+}
+
 export interface ProjectApi {
   findAll: () => Promise<ProjectPreviewDTO[]>;
   findOne: (projectId: string) => Promise<ProjectDTO>;
@@ -24,6 +32,8 @@ export interface ProjectApi {
   update: (projectId: string, dto: ProjectUpdateRequestDTO) => Promise<ProjectDTO>;
   delete: (projectId: string) => Promise<void>;
   restore: (projectId: string) => Promise<void>;
+  bulkDelete: (projectIds: ProjectBulkDeleteRequestDTO) => Promise<void>;
+  bulkRestore: (projectIds: ProjectBulkRestoreRequestDTO) => Promise<void>;
 }
 
 export const PROJECTS_ROUTES: APIRoutes<ProjectApi> = {
@@ -32,5 +42,7 @@ export const PROJECTS_ROUTES: APIRoutes<ProjectApi> = {
   create: () => "/projects",
   update: (projectId: string) => `/projects/${projectId}`,
   delete: (projectId: string) => `/projects/${projectId}`,
-  restore: (projectId: string) => `/projects/${projectId}/restore`
+  restore: (projectId: string) => `/projects/${projectId}/restore`,
+  bulkDelete: () => "/projects/bulk-delete",
+  bulkRestore: () => "/projects/bulk-restore"
 };

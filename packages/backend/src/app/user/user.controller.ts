@@ -4,6 +4,10 @@ import { Logger } from "@backend/decorators/logger.decorator";
 import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
 import {
   UserApi,
+  UserBulkDeleteRequestDTO,
+  UserBulkRestoreRequestDTO,
+  UserChangePasswordRequestDTO,
+  UserChangeRoleRequestDTO,
   UserCreateRequestDTO,
   USERS_ROUTES,
   UserUpdateRequestDTO
@@ -50,5 +54,25 @@ export class UserController implements UserApi {
   @Patch(USERS_ROUTES.restore(":userId"))
   restore(@Param("userId") userId: string): Promise<void> {
     return this.usersService.restore(userId);
+  }
+
+  @Delete(USERS_ROUTES.bulkDelete())
+  bulkDelete(@Body() dto: UserBulkDeleteRequestDTO): Promise<void> {
+    return this.usersService.bulkDelete(dto);
+  }
+
+  @Patch(USERS_ROUTES.bulkRestore())
+  bulkRestore(@Body() dto: UserBulkRestoreRequestDTO): Promise<void> {
+    return this.usersService.bulkRestore(dto);
+  }
+
+  @Patch(USERS_ROUTES.changeRole())
+  changeRole(@Body() dto: UserChangeRoleRequestDTO): Promise<void> {
+    return this.usersService.changeRole(dto.user_id, dto.role);
+  }
+
+  @Patch(USERS_ROUTES.changePassword())
+  changePassword(@Body() dto: UserChangePasswordRequestDTO): Promise<void> {
+    return this.usersService.changePassword(dto.user_id, dto.new_password, dto.old_password);
   }
 }

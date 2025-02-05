@@ -1,6 +1,8 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
 import {
   ProjectApi,
+  ProjectBulkDeleteRequestDTO,
+  ProjectBulkRestoreRequestDTO,
   ProjectCreateRequestDTO,
   PROJECTS_ROUTES,
   ProjectUpdateRequestDTO
@@ -41,5 +43,15 @@ export class ProjectController implements ProjectApi {
   @Patch(PROJECTS_ROUTES.restore(":projectId"))
   restore(@Param("projectId") projectId: string): Promise<void> {
     return this.projectsService.restore(projectId);
+  }
+
+  @Delete(PROJECTS_ROUTES.bulkDelete())
+  bulkDelete(@Body() dto: ProjectBulkDeleteRequestDTO): Promise<void> {
+    return this.projectsService.bulkDelete(dto);
+  }
+
+  @Patch(PROJECTS_ROUTES.bulkRestore())
+  bulkRestore(@Body() dto: ProjectBulkRestoreRequestDTO): Promise<void> {
+    return this.projectsService.bulkRestore(dto);
   }
 }

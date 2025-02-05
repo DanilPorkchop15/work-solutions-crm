@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import {
+  DocumentBulkDeleteRequestDTO,
   DocumentCreateRequestDTO,
   DocumentUpdateRequestDTO
 } from "@work-solutions-crm/libs/shared/document/document.api";
@@ -61,5 +62,13 @@ export class DocumentService {
 
   async restore(documentId: string): Promise<void> {
     await this.documentRepository.restore(documentId);
+  }
+
+  async bulkDelete(dto: DocumentBulkDeleteRequestDTO): Promise<void> {
+    await this.documentRepository.softDelete(dto.document_ids);
+  }
+
+  async bulkRestore(dto: DocumentBulkDeleteRequestDTO): Promise<void> {
+    await this.documentRepository.restore(dto.document_ids);
   }
 }

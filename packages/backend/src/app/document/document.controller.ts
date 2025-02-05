@@ -1,6 +1,8 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
 import {
   DocumentApi,
+  DocumentBulkDeleteRequestDTO,
+  DocumentBulkRestoreRequestDTO,
   DocumentCreateRequestDTO,
   DOCUMENTS_ROUTES,
   DocumentUpdateRequestDTO
@@ -41,5 +43,20 @@ export class DocumentController implements DocumentApi {
   @Patch(DOCUMENTS_ROUTES.restore(":documentId"))
   async restore(@Param("documentId") documentId: string): Promise<void> {
     return this.documentsService.restore(documentId);
+  }
+
+  @Delete(DOCUMENTS_ROUTES.bulkDelete())
+  bulkDelete(@Body() documentIds: DocumentBulkDeleteRequestDTO): Promise<void> {
+    return this.documentsService.bulkDelete(documentIds);
+  }
+
+  @Patch(DOCUMENTS_ROUTES.bulkRestore())
+  bulkRestore(@Body() documentIds: DocumentBulkRestoreRequestDTO): Promise<void> {
+    return this.documentsService.bulkRestore(documentIds);
+  }
+
+  // TODO : implement
+  upload(documentId: string, file: File): Promise<void> {
+    return Promise.resolve(undefined);
   }
 }

@@ -1,6 +1,11 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { TaskCreateRequestDTO, TaskUpdateRequestDTO } from "@work-solutions-crm/libs/shared/task/task.api";
+import {
+  TaskBulkDeleteRequestDTO,
+  TaskBulkRestoreRequestDTO,
+  TaskCreateRequestDTO,
+  TaskUpdateRequestDTO
+} from "@work-solutions-crm/libs/shared/task/task.api";
 import { TaskDTO, TaskPreviewDTO } from "@work-solutions-crm/libs/shared/task/task.dto";
 import { Repository } from "typeorm";
 
@@ -53,5 +58,13 @@ export class TaskService {
 
   async restore(taskId: string): Promise<void> {
     await this.taskRepository.restore(taskId);
+  }
+
+  async bulkDelete(dto: TaskBulkDeleteRequestDTO): Promise<void> {
+    await this.taskRepository.softDelete(dto.task_ids);
+  }
+
+  async bulkRestore(dto: TaskBulkRestoreRequestDTO): Promise<void> {
+    await this.taskRepository.restore(dto.task_ids);
   }
 }
