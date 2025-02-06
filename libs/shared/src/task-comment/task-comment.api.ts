@@ -10,7 +10,7 @@ export type TaskCommentUpdateRequestDTO = TaskCommentCreateRequestDTO;
 
 export interface TaskCommentApi {
   findAll: (taskId: string) => Promise<TaskCommentDTO[]>;
-  create: (taskId: string, dto: TaskCommentCreateRequestDTO) => Promise<void>;
+  create: (taskId: string, dto: TaskCommentCreateRequestDTO, ...omitted: never) => Promise<void>;
   update: (taskCommentId: string, dto: TaskCommentUpdateRequestDTO) => Promise<void>;
   delete: (taskCommentId: string) => Promise<void>;
   restore: (taskCommentId: string) => Promise<void>;

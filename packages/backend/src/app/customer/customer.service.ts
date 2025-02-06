@@ -39,9 +39,9 @@ export class CustomerService {
     return mapCustomerToDTO(customer);
   }
 
-  async create(dto: CustomerCreateRequestDTO): Promise<void> {
+  async create(dto: CustomerCreateRequestDTO): Promise<Customer> {
     const customer: Customer = this.customerRepository.create(dto);
-    await this.customerRepository.save(customer);
+    return this.customerRepository.save(customer);
   }
 
   async update(customerId: string, dto: CustomerUpdateRequestDTO): Promise<void> {

@@ -8,6 +8,10 @@ import {
   DocumentUpdateValidationDTO
 } from "@backend/app/document/document.dto";
 import { DocumentPermissionGuard } from "@backend/app/document-permission/document-permission.guard";
+import { LogType } from "@backend/app/logger/logger.types";
+import { CurrentUser } from "@backend/decorators/current-user.decorator";
+import { Logger } from "@backend/decorators/logger.decorator";
+import { User } from "@backend/models/entities/user.entity";
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from "@nestjs/common";
 import {
   ApiBearerAuth,
@@ -22,18 +26,24 @@ import {
 import { DocumentApi, DOCUMENTS_ROUTES } from "@work-solutions-crm/libs/shared/document/document.api";
 import { DocumentDTO, DocumentPreviewDTO } from "@work-solutions-crm/libs/shared/document/document.dto";
 
+import { LoggerService } from "../logger/logger.service";
+
 import { DocumentService } from "./document.service";
 
 @ApiTags("Documents")
 @ApiBearerAuth()
 @Controller()
 export class DocumentController implements DocumentApi {
-  constructor(private readonly documentsService: DocumentService) {}
+  constructor(
+    private readonly documentsService: DocumentService,
+    private readonly loggerService: LoggerService
+  ) {}
 
   @UseGuards(AuthGuard)
   @Get(DOCUMENTS_ROUTES.findAll())
   @ApiOperation({ summary: "Get all documents" })
   @ApiResponse({ status: 200, type: [DocumentPreviewResponseDTO] })
+  @Logger("findAll", "Documents")
   async findAll(): Promise<DocumentPreviewDTO[]> {
     return this.documentsService.findAll();
   }
@@ -43,6 +53,7 @@ export class DocumentController implements DocumentApi {
   @ApiOperation({ summary: "Get document by id" })
   @ApiOkResponse({ type: DocumentResponseDTO })
   @ApiNotFoundResponse({ description: "Document not found" })
+  @Logger("findOne", "Document")
   async findOne(@Param("documentId") documentId: string): Promise<DocumentDTO> {
     return this.documentsService.findOne(documentId);
   }
@@ -50,8 +61,13 @@ export class DocumentController implements DocumentApi {
   @Post(DOCUMENTS_ROUTES.create())
   @ApiOperation({ summary: "Create document" })
   @ApiCreatedResponse({ type: DocumentResponseDTO })
-  async create(@Body() dto: DocumentCreateValidationDTO): Promise<DocumentDTO> {
-    return this.documentsService.create(dto);
+  async create(@Body() dto: DocumentCreateValidationDTO, @CurrentUser() user: User): Promise<DocumentDTO> {
+    const documentDto: DocumentDTO = await this.documentsService.create(dto);
+    await this.loggerService.logByType(LogType.DOCUMENT, "created", "document", {
+      document_id: documentDto.id,
+      user_id: user.user_id
+    });
+    return documentDto;
   }
 
   @Patch(DOCUMENTS_ROUTES.update(":documentId"))
@@ -61,17 +77,27 @@ export class DocumentController implements DocumentApi {
   @ApiNotFoundResponse({ description: "Document not found" })
   async update(
     @Param("documentId") documentId: string,
-    @Body() dto: DocumentUpdateValidationDTO
+    @Body() dto: DocumentUpdateValidationDTO,
+    @CurrentUser() user: User
   ): Promise<DocumentDTO> {
-    return this.documentsService.update(documentId, dto);
+    const documentDto: DocumentDTO = await this.documentsService.update(documentId, dto);
+    await this.loggerService.logByType(LogType.DOCUMENT, "updated", "document", {
+      document_id: documentId,
+      user_id: user.user_id
+    });
+    return documentDto;
   }
 
   @Delete(DOCUMENTS_ROUTES.delete(":documentId"))
   @ApiOperation({ summary: "Delete document" })
   @ApiResponse({ status: 200 })
   @ApiNotFoundResponse({ description: "Document not found" })
-  async delete(@Param("documentId") documentId: string): Promise<void> {
-    return this.documentsService.delete(documentId);
+  async delete(@Param("documentId") documentId: string, @CurrentUser() user: User): Promise<void> {
+    await this.documentsService.delete(documentId);
+    await this.loggerService.logByType(LogType.DOCUMENT, "deleted", "document", {
+      document_id: documentId,
+      user_id: user.user_id
+    });
   }
 
   @Patch(DOCUMENTS_ROUTES.restore(":documentId"))
@@ -79,8 +105,12 @@ export class DocumentController implements DocumentApi {
   @ApiOperation({ summary: "Restore document" })
   @ApiResponse({ status: 200 })
   @ApiNotFoundResponse({ description: "Document not found" })
-  async restore(@Param("documentId") documentId: string): Promise<void> {
-    return this.documentsService.restore(documentId);
+  async restore(@Param("documentId") documentId: string, @CurrentUser() user: User): Promise<void> {
+    await this.documentsService.restore(documentId);
+    await this.loggerService.logByType(LogType.DOCUMENT, "restored", "document", {
+      document_id: documentId,
+      user_id: user.user_id
+    });
   }
 
   @Delete(DOCUMENTS_ROUTES.bulkDelete())
@@ -88,8 +118,14 @@ export class DocumentController implements DocumentApi {
   @ApiBody({ type: DocumentBulkDeleteValidationDTO })
   @ApiResponse({ status: 200 })
   @UseGuards(AuthGuard)
-  bulkDelete(@Body() documentIds: DocumentBulkDeleteValidationDTO): Promise<void> {
-    return this.documentsService.bulkDelete(documentIds);
+  async bulkDelete(@Body() documentIds: DocumentBulkDeleteValidationDTO, @CurrentUser() user: User): Promise<void> {
+    await this.documentsService.bulkDelete(documentIds);
+    for (const documentId of documentIds.document_ids) {
+      await this.loggerService.logByType(LogType.DOCUMENT, "bulk deleted", "documents", {
+        document_id: documentId,
+        user_id: user.user_id
+      });
+    }
   }
 
   @Patch(DOCUMENTS_ROUTES.bulkRestore())
@@ -97,7 +133,13 @@ export class DocumentController implements DocumentApi {
   @ApiBody({ type: DocumentBulkRestoreValidationDTO })
   @ApiResponse({ status: 200 })
   @UseGuards(AuthGuard)
-  bulkRestore(@Body() documentIds: DocumentBulkRestoreValidationDTO): Promise<void> {
-    return this.documentsService.bulkRestore(documentIds);
+  async bulkRestore(@Body() documentIds: DocumentBulkRestoreValidationDTO, @CurrentUser() user: User): Promise<void> {
+    await this.documentsService.bulkRestore(documentIds);
+    for (const documentId of documentIds.document_ids) {
+      await this.loggerService.logByType(LogType.DOCUMENT, "bulk restored", "documents", {
+        document_id: documentId,
+        user_id: user.user_id
+      });
+    }
   }
 }

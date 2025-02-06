@@ -1,6 +1,6 @@
 import { LoggerService } from "@backend/app/logger/logger.service";
 
-export function Logger(action: string, comment?: string): MethodDecorator {
+export function Logger(action: string, comment: string): MethodDecorator {
   return function (target: object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<any>): void {
     const originalMethod: unknown = descriptor.value;
 

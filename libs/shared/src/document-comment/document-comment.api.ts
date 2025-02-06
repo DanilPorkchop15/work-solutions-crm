@@ -10,10 +10,10 @@ export type DocumentCommentUpdateRequestDTO = DocumentCommentCreateRequestDTO;
 
 export interface DocumentCommentApi {
   findAll: (documentId: string) => Promise<DocumentCommentDTO[]>;
-  create: (documentId: string, dto: DocumentCommentCreateRequestDTO) => Promise<void>;
-  update: (documentCommentId: string, dto: DocumentCommentUpdateRequestDTO) => Promise<void>;
-  delete: (documentCommentId: string) => Promise<void>;
-  restore: (documentCommentId: string) => Promise<void>;
+  create: (documentId: string, dto: DocumentCommentCreateRequestDTO, ...omitted: never) => Promise<void>;
+  update: (documentCommentId: string, dto: DocumentCommentUpdateRequestDTO, ...omitted: never) => Promise<void>;
+  delete: (documentCommentId: string, ...omitted: never) => Promise<void>;
+  restore: (documentCommentId: string, ...omitted: never) => Promise<void>;
 }
 
 export const DOCUMENT_COMMENTS_ROUTES: APIRoutes<DocumentCommentApi> = {

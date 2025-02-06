@@ -2,7 +2,8 @@ export enum LogType {
   USER = "user",
   DOCUMENT = "document",
   TASK = "task",
-  PROJECT = "project"
+  PROJECT = "project",
+  CUSTOMER = "customer"
 }
 
 export interface LogOptions {
@@ -10,6 +11,7 @@ export interface LogOptions {
   document_id?: string;
   task_id?: string;
   project_id?: string;
+  customer_id?: string;
 }
 
 export interface LogData {
@@ -19,4 +21,5 @@ export interface LogData {
   document?: { document_id: string };
   task?: { task_id: string };
   project?: { project_id: string };
+  customer?: { customer_id: string };
 }

@@ -10,10 +10,10 @@ export type ProjectCommentUpdateRequestDTO = ProjectCommentCreateRequestDTO;
 
 export interface ProjectCommentApi {
   findAll: (projectId: string) => Promise<ProjectCommentDTO[]>;
-  create: (projectId: string, dto: ProjectCommentCreateRequestDTO) => Promise<void>;
-  update: (projectCommentId: string, dto: ProjectCommentUpdateRequestDTO) => Promise<void>;
-  delete: (projectCommentId: string) => Promise<void>;
-  restore: (projectCommentId: string) => Promise<void>;
+  create: (projectId: string, dto: ProjectCommentCreateRequestDTO, ...omitted: never) => Promise<void>;
+  update: (projectCommentId: string, dto: ProjectCommentUpdateRequestDTO, ...omitted: never) => Promise<void>;
+  delete: (projectCommentId: string, ...omitted: never) => Promise<void>;
+  restore: (projectCommentId: string, ...omitted: never) => Promise<void>;
 }
 
 export const PROJECT_COMMENTS_ROUTES: APIRoutes<ProjectCommentApi> = {

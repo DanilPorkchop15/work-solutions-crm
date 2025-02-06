@@ -21,12 +21,12 @@ export type CustomerBulkRestoreRequestDTO = CustomerBulkDeleteRequestDTO;
 export interface CustomerApi {
   findAll: () => Promise<CustomerPreviewDTO[]>;
   findOne: (customerId: string) => Promise<CustomerDTO>;
-  create: (dto: CustomerCreateRequestDTO) => Promise<void>;
-  update: (customerId: string, dto: CustomerUpdateRequestDTO) => Promise<void>;
-  delete: (customerId: string) => Promise<void>;
-  restore: (customerId: string) => Promise<void>;
-  bulkDelete: (dto: CustomerBulkDeleteRequestDTO) => Promise<void>;
-  bulkRestore: (dto: CustomerBulkRestoreRequestDTO) => Promise<void>;
+  create: (dto: CustomerCreateRequestDTO, ...omitted: never) => Promise<void>;
+  update: (customerId: string, dto: CustomerUpdateRequestDTO, ...omitted: never) => Promise<void>;
+  delete: (customerId: string, ...omitted: never) => Promise<void>;
+  restore: (customerId: string, ...omitted: never) => Promise<void>;
+  bulkDelete: (dto: CustomerBulkDeleteRequestDTO, ...omitted: never) => Promise<void>;
+  bulkRestore: (dto: CustomerBulkRestoreRequestDTO, ...omitted: never) => Promise<void>;
 }
 
 export const CUSTOMERS_ROUTES: APIRoutes<CustomerApi> = {
