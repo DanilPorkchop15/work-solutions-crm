@@ -34,7 +34,8 @@ export class UserController implements UserApi {
   @Get(USERS_ROUTES.findAll())
   @ApiOperation({ summary: "Retrieve all users" })
   @ApiResponse({ status: 200, type: [UserPreviewResponseDTO] })
-  findAll(): Promise<UserPreviewDTO[]> {
+  @Logger("findAll", "users")
+  async findAll(): Promise<UserPreviewDTO[]> {
     return this.usersService.findAll();
   }
 
@@ -42,43 +43,52 @@ export class UserController implements UserApi {
   @Post(USERS_ROUTES.create())
   @ApiOperation({ summary: "Create a new user" })
   @ApiResponse({ status: 201, type: UserResponseDTO })
-  @Logger("user", "user")
-  async create(@Body() dto: UserCreateValidationDTO): Promise<UserDTO> {
-    const user: UserDTO = await this.usersService.create(dto);
-    await this.loggerService.logByType(LogType.USER, "created", "new user", { user_id: user.id });
-    return this.usersService.create(dto);
+  async create(@Body() dto: UserCreateValidationDTO, @CurrentUser() user: User): Promise<UserDTO> {
+    const userDto: UserDTO = await this.usersService.create(dto);
+    await this.loggerService.logByType(LogType.USER, "created", "new user", { user_id: user.user_id });
+    return userDto;
   }
 
   @UseGuards(AuthGuard)
   @Post(USERS_ROUTES.bulkCreate())
   @ApiOperation({ summary: "Bulk create users" })
   @ApiResponse({ status: 201, type: [UserPreviewResponseDTO] })
-  bulkCreate(@Body() dto: UserCreateValidationDTO[]): Promise<UserPreviewDTO[]> {
-    return this.usersService.bulkCreate(dto);
+  async bulkCreate(@Body() dto: UserCreateValidationDTO[], @CurrentUser() user: User): Promise<UserPreviewDTO[]> {
+    const createdUsers: UserPreviewDTO[] = await this.usersService.bulkCreate(dto);
+    await this.loggerService.logByType(LogType.USER, "bulk created", "new users", { user_id: user.user_id });
+    return createdUsers;
   }
 
   @UseGuards(AuthGuard)
   @Patch(USERS_ROUTES.update(":userId"))
   @ApiOperation({ summary: "Update a user" })
   @ApiResponse({ status: 200, type: UserResponseDTO })
-  update(@Param("userId") userId: string, @Body() dto: UserUpdateValidationDTO): Promise<UserDTO> {
-    return this.usersService.update(userId, dto);
+  async update(
+    @Param("userId") userId: string,
+    @Body() dto: UserUpdateValidationDTO,
+    @CurrentUser() user: User
+  ): Promise<UserDTO> {
+    const updatedUser: UserDTO = await this.usersService.update(userId, dto);
+    await this.loggerService.logByType(LogType.USER, "updated", "user", { user_id: user.user_id });
+    return updatedUser;
   }
 
   @UseGuards(AuthGuard)
   @Delete(USERS_ROUTES.delete(":userId"))
   @ApiOperation({ summary: "Delete a user" })
   @ApiResponse({ status: 204 })
-  delete(@Param("userId") userId: string): Promise<void> {
-    return this.usersService.delete(userId);
+  async delete(@Param("userId") userId: string, @CurrentUser() user: User): Promise<void> {
+    await this.usersService.delete(userId);
+    await this.loggerService.logByType(LogType.USER, "deleted", "user", { user_id: user.user_id });
   }
 
   @UseGuards(AuthGuard)
   @Patch(USERS_ROUTES.restore(":userId"))
   @ApiOperation({ summary: "Restore a user" })
   @ApiResponse({ status: 204 })
-  restore(@Param("userId") userId: string): Promise<void> {
-    return this.usersService.restore(userId);
+  async restore(@Param("userId") userId: string, @CurrentUser() user: User): Promise<void> {
+    await this.usersService.restore(userId);
+    await this.loggerService.logByType(LogType.USER, "restored", "user", { user_id: user.user_id });
   }
 
   @Delete(USERS_ROUTES.bulkDelete())
@@ -86,8 +96,9 @@ export class UserController implements UserApi {
   @ApiBody({ type: [UserBulkDeleteValidationDTO] })
   @ApiResponse({ status: 204 })
   @UseGuards(AuthGuard)
-  bulkDelete(@Body() dto: UserBulkDeleteValidationDTO): Promise<void> {
-    return this.usersService.bulkDelete(dto);
+  async bulkDelete(@Body() dto: UserBulkDeleteValidationDTO, @CurrentUser() user: User): Promise<void> {
+    await this.usersService.bulkDelete(dto);
+    await this.loggerService.logByType(LogType.USER, "bulk deleted", "users", { user_id: user.user_id });
   }
 
   @Patch(USERS_ROUTES.bulkRestore())
@@ -95,8 +106,9 @@ export class UserController implements UserApi {
   @ApiBody({ type: [UserBulkRestoreValidationDTO] })
   @ApiResponse({ status: 204 })
   @UseGuards(AuthGuard)
-  bulkRestore(@Body() dto: UserBulkRestoreValidationDTO): Promise<void> {
-    return this.usersService.bulkRestore(dto);
+  async bulkRestore(@Body() dto: UserBulkRestoreValidationDTO, @CurrentUser() user: User): Promise<void> {
+    await this.usersService.bulkRestore(dto);
+    await this.loggerService.logByType(LogType.USER, "bulk restored", "users", { user_id: user.user_id });
   }
 
   @Patch(USERS_ROUTES.changeRole())
@@ -104,8 +116,10 @@ export class UserController implements UserApi {
   @ApiBody({ type: UserChangeRoleValidationDTO })
   @ApiResponse({ status: 204 })
   @UseGuards(AuthGuard)
-  changeRole(@Body() dto: UserChangeRoleValidationDTO): Promise<void> {
-    return this.usersService.changeRole(dto.user_id, dto.role);
+  @Logger("user", "user")
+  async changeRole(@Body() dto: UserChangeRoleValidationDTO): Promise<void> {
+    await this.usersService.changeRole(dto.user_id, dto.role);
+    await this.loggerService.logByType(LogType.USER, "role changed", "user", { user_id: dto.user_id });
   }
 
   @Patch(USERS_ROUTES.changePassword())
@@ -113,7 +127,8 @@ export class UserController implements UserApi {
   @ApiBody({ type: UserChangePasswordValidationDTO })
   @ApiResponse({ status: 204 })
   @UseGuards(AuthGuard)
-  changePassword(@Body() dto: UserChangePasswordValidationDTO, @CurrentUser() user: User): Promise<void> {
-    return this.usersService.changePassword(user.user_id, dto.new_password, dto.old_password);
+  async changePassword(@Body() dto: UserChangePasswordValidationDTO, @CurrentUser() user: User): Promise<void> {
+    await this.usersService.changePassword(user.user_id, dto.new_password, dto.old_password);
+    return this.loggerService.logByType(LogType.USER, "password changed", "user", { user_id: user.user_id });
   }
 }

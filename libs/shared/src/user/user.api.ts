@@ -31,14 +31,14 @@ export type UserChangePasswordRequestDTO = {
 
 export interface UserApi {
   findAll: () => Promise<UserPreviewDTO[]>;
-  create: (dto: UserCreateRequestDTO) => Promise<UserDTO>;
-  update: (userId: string, dto: UserUpdateRequestDTO) => Promise<UserDTO>;
-  delete: (userId: string) => Promise<void>;
-  restore: (userId: string) => Promise<void>;
-  bulkCreate: (dto: UserCreateRequestDTO[]) => Promise<UserPreviewDTO[]>;
-  bulkDelete: (dto: UserBulkDeleteRequestDTO) => Promise<void>;
-  bulkRestore: (dto: UserBulkRestoreRequestDTO) => Promise<void>;
-  changeRole: (dto: UserChangeRoleRequestDTO) => Promise<void>;
+  create: (dto: UserCreateRequestDTO, ...omitted: never) => Promise<UserDTO>;
+  update: (userId: string, dto: UserUpdateRequestDTO, ...omitted: never) => Promise<UserDTO>;
+  delete: (userId: string, ...omitted: never) => Promise<void>;
+  restore: (userId: string, ...omitted: never) => Promise<void>;
+  bulkCreate: (dto: UserCreateRequestDTO[], ...omitted: never) => Promise<UserPreviewDTO[]>;
+  bulkDelete: (dto: UserBulkDeleteRequestDTO, ...omitted: never) => Promise<void>;
+  bulkRestore: (dto: UserBulkRestoreRequestDTO, ...omitted: never) => Promise<void>;
+  changeRole: (dto: UserChangeRoleRequestDTO, ...omitted: never) => Promise<void>;
   changePassword: (dto: UserChangePasswordRequestDTO, ...omitted: never) => Promise<void>;
 }
 

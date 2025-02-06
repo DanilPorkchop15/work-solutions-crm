@@ -7,6 +7,12 @@ import {
   CustomerResponseDTO,
   CustomerUpdateValidationDTO
 } from "@backend/app/customer/customer.dto";
+import { LoggerService } from "@backend/app/logger/logger.service";
+import { LogType } from "@backend/app/logger/logger.types";
+import { CurrentUser } from "@backend/decorators/current-user.decorator";
+import { Logger } from "@backend/decorators/logger.decorator";
+import { Customer } from "@backend/models/entities/customer.entity";
+import { User } from "@backend/models/entities/user.entity";
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { CustomerApi, CUSTOMERS_ROUTES } from "@work-solutions-crm/libs/shared/customer/customer.api";
@@ -18,12 +24,16 @@ import { CustomerService } from "./customer.service";
 @ApiBearerAuth()
 @Controller()
 export class CustomerController implements CustomerApi {
-  constructor(private readonly customersService: CustomerService) {}
+  constructor(
+    private readonly customersService: CustomerService,
+    private readonly loggerService: LoggerService
+  ) {}
 
   @UseGuards(AuthGuard)
   @Get(CUSTOMERS_ROUTES.findAll())
   @ApiOperation({ summary: "Retrieve all customers" })
   @ApiResponse({ status: 200, description: "List of customers", type: [CustomerPreviewResponseDTO] })
+  @Logger("findAll", "customer")
   findAll(): Promise<CustomerPreviewDTO[]> {
     return this.customersService.findAll();
   }
@@ -33,6 +43,7 @@ export class CustomerController implements CustomerApi {
   @ApiOperation({ summary: "Retrieve a customer by ID" })
   @ApiResponse({ status: 200, description: "Customer details", type: CustomerResponseDTO })
   @ApiResponse({ status: 404, description: "Customer not found" })
+  @Logger("findOne", "customer")
   findOne(@Param("customerId") customerId: string): Promise<CustomerDTO> {
     return this.customersService.findOne(customerId);
   }
@@ -41,8 +52,12 @@ export class CustomerController implements CustomerApi {
   @Post(CUSTOMERS_ROUTES.create())
   @ApiOperation({ summary: "Create a new customer" })
   @ApiResponse({ status: 201, description: "Customer created successfully" })
-  create(@Body() dto: CustomerCreateValidationDTO): Promise<void> {
-    return this.customersService.create(dto);
+  async create(@Body() dto: CustomerCreateValidationDTO, @CurrentUser() user: User): Promise<void> {
+    const customer: Customer = await this.customersService.create(dto);
+    await this.loggerService.logByType(LogType.CUSTOMER, "created", "new customer", {
+      customer_id: customer.customer_id,
+      user_id: user.user_id
+    });
   }
 
   @UseGuards(AuthGuard)
@@ -50,8 +65,16 @@ export class CustomerController implements CustomerApi {
   @ApiOperation({ summary: "Update an existing customer" })
   @ApiResponse({ status: 200, description: "Customer updated successfully" })
   @ApiResponse({ status: 404, description: "Customer not found" })
-  update(@Param("customerId") customerId: string, @Body() dto: CustomerUpdateValidationDTO): Promise<void> {
-    return this.customersService.update(customerId, dto);
+  async update(
+    @Param("customerId") customerId: string,
+    @Body() dto: CustomerUpdateValidationDTO,
+    @CurrentUser() user: User
+  ): Promise<void> {
+    await this.customersService.update(customerId, dto);
+    await this.loggerService.logByType(LogType.CUSTOMER, "updated", "customer", {
+      customer_id: customerId,
+      user_id: user.user_id
+    });
   }
 
   @UseGuards(AuthGuard)
@@ -59,8 +82,12 @@ export class CustomerController implements CustomerApi {
   @ApiOperation({ summary: "Delete a customer" })
   @ApiResponse({ status: 200, description: "Customer deleted successfully" })
   @ApiResponse({ status: 404, description: "Customer not found" })
-  delete(@Param("customerId") customerId: string): Promise<void> {
-    return this.customersService.delete(customerId);
+  async delete(@Param("customerId") customerId: string, @CurrentUser() user: User): Promise<void> {
+    await this.customersService.delete(customerId);
+    await this.loggerService.logByType(LogType.CUSTOMER, "deleted", "customer", {
+      customer_id: customerId,
+      user_id: user.user_id
+    });
   }
 
   @UseGuards(AuthGuard)
@@ -68,8 +95,12 @@ export class CustomerController implements CustomerApi {
   @ApiOperation({ summary: "Restore a deleted customer" })
   @ApiResponse({ status: 200, description: "Customer restored successfully" })
   @ApiResponse({ status: 404, description: "Customer not found" })
-  restore(@Param("customerId") customerId: string): Promise<void> {
-    return this.customersService.restore(customerId);
+  async restore(@Param("customerId") customerId: string, @CurrentUser() user: User): Promise<void> {
+    await this.customersService.restore(customerId);
+    await this.loggerService.logByType(LogType.CUSTOMER, "restored", "customer", {
+      customer_id: customerId,
+      user_id: user.user_id
+    });
   }
 
   @UseGuards(AuthGuard)
@@ -77,8 +108,14 @@ export class CustomerController implements CustomerApi {
   @ApiOperation({ summary: "Bulk delete customers" })
   @ApiResponse({ status: 200, description: "Customers deleted successfully" })
   @ApiBody({ type: CustomerBulkDeleteValidationDTO })
-  bulkDelete(@Body() dto: CustomerBulkDeleteValidationDTO): Promise<void> {
-    return this.customersService.bulkDelete(dto);
+  async bulkDelete(@Body() dto: CustomerBulkDeleteValidationDTO, @CurrentUser() user: User): Promise<void> {
+    await this.customersService.bulkDelete(dto);
+    for (const id of dto.customer_ids) {
+      await this.loggerService.logByType(LogType.CUSTOMER, "bulk deleted", "customers", {
+        customer_id: id,
+        user_id: user.user_id
+      });
+    }
   }
 
   @UseGuards(AuthGuard)
@@ -86,7 +123,13 @@ export class CustomerController implements CustomerApi {
   @ApiOperation({ summary: "Bulk restore customers" })
   @ApiResponse({ status: 200, description: "Customers restored successfully" })
   @ApiBody({ type: CustomerBulkRestoreValidationDTO })
-  bulkRestore(@Body() dto: CustomerBulkRestoreValidationDTO): Promise<void> {
-    return this.customersService.bulkRestore(dto);
+  async bulkRestore(@Body() dto: CustomerBulkRestoreValidationDTO, @CurrentUser() user: User): Promise<void> {
+    await this.customersService.bulkRestore(dto);
+    for (const id of dto.customer_ids) {
+      await this.loggerService.logByType(LogType.CUSTOMER, "bulk restored", "customers", {
+        customer_id: id,
+        user_id: user.user_id
+      });
+    }
   }
 }

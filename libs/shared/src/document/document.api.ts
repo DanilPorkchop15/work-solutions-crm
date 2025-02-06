@@ -22,12 +22,12 @@ export type DocumentUpdateRequestDTO = Partial<DocumentCreateRequestDTO>;
 export interface DocumentApi {
   findAll: () => Promise<DocumentPreviewDTO[]>;
   findOne: (documentId: string) => Promise<DocumentDTO>;
-  create: (dto: DocumentCreateRequestDTO) => Promise<DocumentDTO>;
-  update: (documentId: string, dto: DocumentUpdateRequestDTO) => Promise<DocumentDTO>;
-  delete: (documentId: string) => Promise<void>;
-  restore: (documentId: string) => Promise<void>;
-  bulkDelete: (documentIds: DocumentBulkDeleteRequestDTO) => Promise<void>;
-  bulkRestore: (documentIds: DocumentBulkRestoreRequestDTO) => Promise<void>;
+  create: (dto: DocumentCreateRequestDTO, ...omitted: never) => Promise<DocumentDTO>;
+  update: (documentId: string, dto: DocumentUpdateRequestDTO, ...omitted: never) => Promise<DocumentDTO>;
+  delete: (documentId: string, ...omitted: never) => Promise<void>;
+  restore: (documentId: string, ...omitted: never) => Promise<void>;
+  bulkDelete: (documentIds: DocumentBulkDeleteRequestDTO, ...omitted: never) => Promise<void>;
+  bulkRestore: (documentIds: DocumentBulkRestoreRequestDTO, ...omitted: never) => Promise<void>;
 }
 
 export const DOCUMENTS_ROUTES: APIRoutes<DocumentApi> = {

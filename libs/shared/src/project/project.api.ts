@@ -27,13 +27,13 @@ export interface ProjectBulkRestoreRequestDTO {
 
 export interface ProjectApi {
   findAll: () => Promise<ProjectPreviewDTO[]>;
-  findOne: (projectId: string) => Promise<ProjectDTO>;
-  create: (dto: ProjectCreateRequestDTO) => Promise<ProjectDTO>;
-  update: (projectId: string, dto: ProjectUpdateRequestDTO) => Promise<ProjectDTO>;
-  delete: (projectId: string) => Promise<void>;
-  restore: (projectId: string) => Promise<void>;
-  bulkDelete: (projectIds: ProjectBulkDeleteRequestDTO) => Promise<void>;
-  bulkRestore: (projectIds: ProjectBulkRestoreRequestDTO) => Promise<void>;
+  findOne: (projectId: string, ...omitted: never) => Promise<ProjectDTO>;
+  create: (dto: ProjectCreateRequestDTO, ...omitted: never) => Promise<ProjectDTO>;
+  update: (projectId: string, dto: ProjectUpdateRequestDTO, ...omitted: never) => Promise<ProjectDTO>;
+  delete: (projectId: string, ...omitted: never) => Promise<void>;
+  restore: (projectId: string, ...omitted: never) => Promise<void>;
+  bulkDelete: (projectIds: ProjectBulkDeleteRequestDTO, ...omitted: never) => Promise<void>;
+  bulkRestore: (projectIds: ProjectBulkRestoreRequestDTO, ...omitted: never) => Promise<void>;
 }
 
 export const PROJECTS_ROUTES: APIRoutes<ProjectApi> = {
