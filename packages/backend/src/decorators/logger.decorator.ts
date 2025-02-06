@@ -1,14 +1,14 @@
 import { LoggerService } from "@backend/app/logger/logger.service";
 
 export function Logger(action: string, comment: string): MethodDecorator {
-  return function (target: object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<any>): void {
+  return function (target: object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<unknown>): void {
     const originalMethod: unknown = descriptor.value;
 
     if (typeof originalMethod !== "function") {
       throw new Error("LoggerDecorator can only be applied to methods.");
     }
 
-    descriptor.value = function (...args: any[]): unknown {
+    descriptor.value = function (...args: unknown[]): unknown {
       const loggerService: LoggerService = LoggerService.getInstance();
 
       loggerService.log(action, comment);
