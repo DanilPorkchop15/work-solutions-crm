@@ -20,8 +20,8 @@ export class DocumentVersion {
   @Column({ type: "varchar", length: 255 })
   document_url: string;
 
-  @Column({ type: "varchar", length: 255 })
-  version: string;
+  @Column({ type: "int", default: 1 })
+  version: number;
 
   @ManyToOne(() => Document, document => document.document_id, { onDelete: "CASCADE" })
   @JoinColumn({ name: "document_id" })

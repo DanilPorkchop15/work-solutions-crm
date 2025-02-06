@@ -26,6 +26,10 @@ export class ConfigService implements ApplicationConfig {
     return this.config.corsEnabled;
   }
 
+  get uploadsDir(): string {
+    return this.config.uploadsDir;
+  }
+
   get authentication(): AuthenticationConfig {
     return this.config.authentication;
   }

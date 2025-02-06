@@ -53,6 +53,10 @@ export class ApplicationConfig {
   @IsDefined()
   readonly corsEnabled: boolean = false;
 
+  @IsString()
+  @IsOptional()
+  readonly uploadsDir: string = "./uploads";
+
   @IsDefined()
   @ValidateNested()
   @Type(() => AuthenticationConfig)

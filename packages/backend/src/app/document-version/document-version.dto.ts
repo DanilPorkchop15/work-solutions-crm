@@ -9,8 +9,8 @@ export class DocumentVersionResponseDTO implements DocumentVersionDTO {
   @ApiProperty({ description: "The URL to access the document version", example: "http://example.com/document.pdf" })
   document_url: string;
 
-  @ApiProperty({ description: "The version of the document", example: "v1.0" })
-  version: string;
+  @ApiProperty({ description: "The version of the document", example: 1 })
+  version: number;
 
   @ApiProperty({ description: "The user who created this version", type: () => UserPreviewResponseDTO })
   user_created: UserPreviewResponseDTO;
