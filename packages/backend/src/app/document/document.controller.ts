@@ -9,6 +9,8 @@ import {
 } from "@backend/app/document/document.dto";
 import { DocumentPermissionGuard } from "@backend/app/document-permission/document-permission.guard";
 import { LogType } from "@backend/app/logger/logger.types";
+import { CaslGuard } from "@backend/app/permission/casl.guard";
+import { CheckPolicies } from "@backend/decorators/check-policies.decorator";
 import { CurrentUser } from "@backend/decorators/current-user.decorator";
 import { Logger } from "@backend/decorators/logger.decorator";
 import { User } from "@backend/models/entities/user.entity";
@@ -23,6 +25,7 @@ import {
   ApiResponse,
   ApiTags
 } from "@nestjs/swagger";
+import { Action, Subject } from "@work-solutions-crm/libs/shared/auth/auth.dto";
 import { DocumentApi, DOCUMENTS_ROUTES } from "@work-solutions-crm/libs/shared/document/document.api";
 import { DocumentDTO, DocumentPreviewDTO } from "@work-solutions-crm/libs/shared/document/document.dto";
 
@@ -39,7 +42,8 @@ export class DocumentController implements DocumentApi {
     private readonly loggerService: LoggerService
   ) {}
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, CaslGuard, DocumentPermissionGuard)
+  @CheckPolicies(ability => ability.can(Action.READ, Subject.DOCUMENTS))
   @Get(DOCUMENTS_ROUTES.findAll())
   @ApiOperation({ summary: "Get all documents" })
   @ApiResponse({ status: 200, type: [DocumentPreviewResponseDTO] })
@@ -49,7 +53,8 @@ export class DocumentController implements DocumentApi {
   }
 
   @Get(DOCUMENTS_ROUTES.findOne(":documentId"))
-  @UseGuards(AuthGuard, DocumentPermissionGuard)
+  @UseGuards(AuthGuard, DocumentPermissionGuard, CaslGuard)
+  @CheckPolicies(ability => ability.can(Action.READ, Subject.DOCUMENTS))
   @ApiOperation({ summary: "Get document by id" })
   @ApiOkResponse({ type: DocumentResponseDTO })
   @ApiNotFoundResponse({ description: "Document not found" })
@@ -58,6 +63,8 @@ export class DocumentController implements DocumentApi {
     return this.documentsService.findOne(documentId);
   }
 
+  @UseGuards(AuthGuard, CaslGuard)
+  @CheckPolicies(ability => ability.can(Action.CREATE, Subject.DOCUMENTS))
   @Post(DOCUMENTS_ROUTES.create())
   @ApiOperation({ summary: "Create document" })
   @ApiCreatedResponse({ type: DocumentResponseDTO })
@@ -71,7 +78,8 @@ export class DocumentController implements DocumentApi {
   }
 
   @Patch(DOCUMENTS_ROUTES.update(":documentId"))
-  @UseGuards(AuthGuard, DocumentPermissionGuard)
+  @UseGuards(AuthGuard, DocumentPermissionGuard, CaslGuard)
+  @CheckPolicies(ability => ability.can(Action.UPDATE, Subject.DOCUMENTS))
   @ApiOperation({ summary: "Update document" })
   @ApiOkResponse({ type: DocumentResponseDTO })
   @ApiNotFoundResponse({ description: "Document not found" })
@@ -88,6 +96,8 @@ export class DocumentController implements DocumentApi {
     return documentDto;
   }
 
+  @UseGuards(AuthGuard, CaslGuard, DocumentPermissionGuard)
+  @CheckPolicies(ability => ability.can(Action.DELETE, Subject.DOCUMENTS))
   @Delete(DOCUMENTS_ROUTES.delete(":documentId"))
   @ApiOperation({ summary: "Delete document" })
   @ApiResponse({ status: 200 })
@@ -101,7 +111,8 @@ export class DocumentController implements DocumentApi {
   }
 
   @Patch(DOCUMENTS_ROUTES.restore(":documentId"))
-  @UseGuards(AuthGuard, DocumentPermissionGuard)
+  @UseGuards(AuthGuard, DocumentPermissionGuard, CaslGuard)
+  @CheckPolicies(ability => ability.can(Action.UPDATE, Subject.DOCUMENTS))
   @ApiOperation({ summary: "Restore document" })
   @ApiResponse({ status: 200 })
   @ApiNotFoundResponse({ description: "Document not found" })
@@ -114,10 +125,11 @@ export class DocumentController implements DocumentApi {
   }
 
   @Delete(DOCUMENTS_ROUTES.bulkDelete())
+  @UseGuards(AuthGuard, CaslGuard)
+  @CheckPolicies(ability => ability.can(Action.DELETE, Subject.DOCUMENTS))
   @ApiOperation({ summary: "Bulk delete documents" })
   @ApiBody({ type: DocumentBulkDeleteValidationDTO })
   @ApiResponse({ status: 200 })
-  @UseGuards(AuthGuard)
   async bulkDelete(@Body() documentIds: DocumentBulkDeleteValidationDTO, @CurrentUser() user: User): Promise<void> {
     await this.documentsService.bulkDelete(documentIds);
     for (const documentId of documentIds.document_ids) {
@@ -129,10 +141,11 @@ export class DocumentController implements DocumentApi {
   }
 
   @Patch(DOCUMENTS_ROUTES.bulkRestore())
+  @UseGuards(AuthGuard, CaslGuard)
+  @CheckPolicies(ability => ability.can(Action.UPDATE, Subject.DOCUMENTS))
   @ApiOperation({ summary: "Bulk restore documents" })
   @ApiBody({ type: DocumentBulkRestoreValidationDTO })
   @ApiResponse({ status: 200 })
-  @UseGuards(AuthGuard)
   async bulkRestore(@Body() documentIds: DocumentBulkRestoreValidationDTO, @CurrentUser() user: User): Promise<void> {
     await this.documentsService.bulkRestore(documentIds);
     for (const documentId of documentIds.document_ids) {

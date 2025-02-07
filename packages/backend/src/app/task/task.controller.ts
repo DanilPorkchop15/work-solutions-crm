@@ -1,5 +1,6 @@
 import { AuthGuard } from "@backend/app/auth/auth.guard";
 import { LogType } from "@backend/app/logger/logger.types";
+import { CaslGuard } from "@backend/app/permission/casl.guard";
 import {
   TaskBulkDeleteValidationDTO,
   TaskBulkRestoreValidationDTO,
@@ -8,11 +9,13 @@ import {
   TaskResponseDTO,
   TaskUpdateValidationDTO
 } from "@backend/app/task/task.dto";
+import { CheckPolicies } from "@backend/decorators/check-policies.decorator";
 import { CurrentUser } from "@backend/decorators/current-user.decorator";
 import { Logger } from "@backend/decorators/logger.decorator";
 import { User } from "@backend/models/entities/user.entity";
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { Action, Subject } from "@work-solutions-crm/libs/shared/auth/auth.dto";
 import { TaskApi, TASKS_ROUTES } from "@work-solutions-crm/libs/shared/task/task.api";
 import { TaskDTO, TaskPreviewDTO } from "@work-solutions-crm/libs/shared/task/task.dto";
 
@@ -29,7 +32,8 @@ export class TaskController implements TaskApi {
     private readonly loggerService: LoggerService
   ) {}
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, CaslGuard)
+  @CheckPolicies(ability => ability.can(Action.READ, Subject.TASKS))
   @Get(TASKS_ROUTES.findAll())
   @ApiOperation({ summary: "Get all tasks" })
   @ApiResponse({ status: 200, type: [TaskPreviewResponseDTO] })
@@ -38,7 +42,8 @@ export class TaskController implements TaskApi {
     return this.tasksService.findAll();
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, CaslGuard)
+  @CheckPolicies(ability => ability.can(Action.READ, Subject.TASKS))
   @Get(TASKS_ROUTES.findOne(":taskId"))
   @ApiOperation({ summary: "Get task by id" })
   @ApiParam({ name: "taskId", type: String })
@@ -48,7 +53,8 @@ export class TaskController implements TaskApi {
     return this.tasksService.findOne(taskId);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, CaslGuard)
+  @CheckPolicies(ability => ability.can(Action.CREATE, Subject.TASKS))
   @Post(TASKS_ROUTES.create())
   @ApiOperation({ summary: "Create task" })
   @ApiResponse({ status: 201, type: TaskResponseDTO })
@@ -61,7 +67,8 @@ export class TaskController implements TaskApi {
     return taskDto;
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, CaslGuard)
+  @CheckPolicies(ability => ability.can(Action.UPDATE, Subject.TASKS))
   @Patch(TASKS_ROUTES.update(":taskId"))
   @ApiOperation({ summary: "Update task" })
   @ApiParam({ name: "taskId", type: String })
@@ -79,7 +86,8 @@ export class TaskController implements TaskApi {
     return taskDto;
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, CaslGuard)
+  @CheckPolicies(ability => ability.can(Action.DELETE, Subject.TASKS))
   @Delete(TASKS_ROUTES.delete(":taskId"))
   @ApiOperation({ summary: "Delete task" })
   @ApiParam({ name: "taskId", type: String })
@@ -92,7 +100,8 @@ export class TaskController implements TaskApi {
     });
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, CaslGuard)
+  @CheckPolicies(ability => ability.can(Action.UPDATE, Subject.TASKS))
   @Patch(TASKS_ROUTES.restore(":taskId"))
   @ApiOperation({ summary: "Restore task" })
   @ApiParam({ name: "taskId", type: String })
@@ -105,7 +114,8 @@ export class TaskController implements TaskApi {
     });
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, CaslGuard)
+  @CheckPolicies(ability => ability.can(Action.DELETE, Subject.TASKS))
   @Delete(TASKS_ROUTES.bulkDelete())
   @ApiOperation({ summary: "Bulk delete tasks" })
   @ApiBody({ type: TaskBulkDeleteValidationDTO })
@@ -119,7 +129,8 @@ export class TaskController implements TaskApi {
     }
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, CaslGuard)
+  @CheckPolicies(ability => ability.can(Action.UPDATE, Subject.TASKS))
   @Patch(TASKS_ROUTES.bulkRestore())
   @ApiOperation({ summary: "Bulk restore tasks" })
   @ApiBody({ type: TaskBulkRestoreValidationDTO })

@@ -5,11 +5,14 @@ import {
   DocumentCommentUpdateValidationDTO
 } from "@backend/app/document-comment/document-comment.dto";
 import { LoggerService } from "@backend/app/logger/logger.service";
+import { CaslGuard } from "@backend/app/permission/casl.guard";
+import { CheckPolicies } from "@backend/decorators/check-policies.decorator";
 import { CurrentUser } from "@backend/decorators/current-user.decorator";
 import { Logger } from "@backend/decorators/logger.decorator";
 import { User } from "@backend/models/entities/user.entity";
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { Action, Subject } from "@work-solutions-crm/libs/shared/auth/auth.dto";
 import {
   DOCUMENT_COMMENTS_ROUTES,
   DocumentCommentApi
@@ -29,7 +32,8 @@ export class DocumentCommentController implements DocumentCommentApi {
     private readonly loggerService: LoggerService
   ) {}
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, CaslGuard)
+  @CheckPolicies(ability => ability.can(Action.READ, Subject.DOCUMENTS))
   @ApiOperation({ summary: "Get all comments for a document" })
   @ApiResponse({ status: 200, type: [DocumentCommentResponseDTO] })
   @Get(DOCUMENT_COMMENTS_ROUTES.findAll(":documentId"))
@@ -38,7 +42,8 @@ export class DocumentCommentController implements DocumentCommentApi {
     return this.documentCommentsService.findAll(documentId);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, CaslGuard)
+  @CheckPolicies(ability => ability.can(Action.READ, Subject.DOCUMENTS))
   @ApiOperation({ summary: "Create a new comment for a document" })
   @ApiResponse({ status: 201 })
   @Post(DOCUMENT_COMMENTS_ROUTES.create(":documentId"))
@@ -54,7 +59,8 @@ export class DocumentCommentController implements DocumentCommentApi {
     });
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, CaslGuard)
+  @CheckPolicies(ability => ability.can(Action.READ, Subject.DOCUMENTS))
   @ApiOperation({ summary: "Update a comment" })
   @ApiResponse({ status: 200 })
   @Patch(DOCUMENT_COMMENTS_ROUTES.update(":documentCommentId"))
@@ -66,7 +72,8 @@ export class DocumentCommentController implements DocumentCommentApi {
     await this.documentCommentsService.update(documentCommentId, text);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, CaslGuard)
+  @CheckPolicies(ability => ability.can(Action.READ, Subject.DOCUMENTS))
   @ApiOperation({ summary: "Delete a comment" })
   @ApiResponse({ status: 200 })
   @Delete(DOCUMENT_COMMENTS_ROUTES.delete(":documentCommentId"))
@@ -75,7 +82,8 @@ export class DocumentCommentController implements DocumentCommentApi {
     await this.documentCommentsService.delete(documentCommentId);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, CaslGuard)
+  @CheckPolicies(ability => ability.can(Action.READ, Subject.DOCUMENTS))
   @ApiOperation({ summary: "Restore a deleted comment" })
   @ApiResponse({ status: 200 })
   @Patch(DOCUMENT_COMMENTS_ROUTES.restore(":documentCommentId"))
