@@ -1,15 +1,19 @@
+import { AuthGuard } from "@backend/app/auth/auth.guard";
 import { LoggerService } from "@backend/app/logger/logger.service";
 import { LogType } from "@backend/app/logger/logger.types";
+import { CaslGuard } from "@backend/app/permission/casl.guard";
 import {
   ProjectCommentCreateValidationDTO,
   ProjectCommentResponseDTO,
   ProjectCommentUpdateValidationDTO
 } from "@backend/app/project-comment/project-comment.dto";
+import { CheckPolicies } from "@backend/decorators/check-policies.decorator";
 import { CurrentUser } from "@backend/decorators/current-user.decorator";
 import { Logger } from "@backend/decorators/logger.decorator";
 import { User } from "@backend/models/entities/user.entity";
-import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from "@nestjs/common";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { Action, Subject } from "@work-solutions-crm/libs/shared/auth/auth.dto";
 import {
   PROJECT_COMMENTS_ROUTES,
   ProjectCommentApi
@@ -26,6 +30,8 @@ export class ProjectCommentController implements ProjectCommentApi {
     private readonly loggerService: LoggerService
   ) {}
 
+  @UseGuards(AuthGuard, CaslGuard)
+  @CheckPolicies(ability => ability.can(Action.READ, Subject.PROJECTS))
   @ApiOperation({ summary: "Get all comments for a project" })
   @ApiResponse({ status: 200, description: "OK", type: [ProjectCommentResponseDTO] })
   @Get(PROJECT_COMMENTS_ROUTES.findAll(":projectId"))
@@ -34,6 +40,8 @@ export class ProjectCommentController implements ProjectCommentApi {
     return this.projectCommentsService.findAll(projectId);
   }
 
+  @UseGuards(AuthGuard, CaslGuard)
+  @CheckPolicies(ability => ability.can(Action.READ, Subject.PROJECTS))
   @ApiOperation({ summary: "Create a new comment for a project" })
   @ApiResponse({ status: 201, description: "Created" })
   @Post(PROJECT_COMMENTS_ROUTES.create(":projectId"))
@@ -49,6 +57,8 @@ export class ProjectCommentController implements ProjectCommentApi {
     });
   }
 
+  @UseGuards(AuthGuard, CaslGuard)
+  @CheckPolicies(ability => ability.can(Action.READ, Subject.PROJECTS))
   @ApiOperation({ summary: "Update a project comment" })
   @ApiResponse({ status: 200, description: "Updated" })
   @Patch(PROJECT_COMMENTS_ROUTES.update(":projectCommentId"))
@@ -60,6 +70,8 @@ export class ProjectCommentController implements ProjectCommentApi {
     return this.projectCommentsService.update(projectCommentId, text);
   }
 
+  @UseGuards(AuthGuard, CaslGuard)
+  @CheckPolicies(ability => ability.can(Action.READ, Subject.PROJECTS))
   @ApiOperation({ summary: "Delete a project comment" })
   @ApiResponse({ status: 200, description: "Deleted" })
   @Delete(PROJECT_COMMENTS_ROUTES.delete(":projectCommentId"))
@@ -68,6 +80,8 @@ export class ProjectCommentController implements ProjectCommentApi {
     return this.projectCommentsService.delete(projectCommentId);
   }
 
+  @UseGuards(AuthGuard, CaslGuard)
+  @CheckPolicies(ability => ability.can(Action.READ, Subject.PROJECTS))
   @ApiOperation({ summary: "Restore a deleted project comment" })
   @ApiResponse({ status: 200, description: "Restored" })
   @Patch(PROJECT_COMMENTS_ROUTES.restore(":projectCommentId"))

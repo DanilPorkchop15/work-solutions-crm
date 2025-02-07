@@ -9,12 +9,15 @@ import {
 } from "@backend/app/customer/customer.dto";
 import { LoggerService } from "@backend/app/logger/logger.service";
 import { LogType } from "@backend/app/logger/logger.types";
+import { CaslGuard } from "@backend/app/permission/casl.guard";
+import { CheckPolicies } from "@backend/decorators/check-policies.decorator";
 import { CurrentUser } from "@backend/decorators/current-user.decorator";
 import { Logger } from "@backend/decorators/logger.decorator";
 import { Customer } from "@backend/models/entities/customer.entity";
 import { User } from "@backend/models/entities/user.entity";
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { Action, Subject } from "@work-solutions-crm/libs/shared/auth/auth.dto";
 import { CustomerApi, CUSTOMERS_ROUTES } from "@work-solutions-crm/libs/shared/customer/customer.api";
 import { CustomerDTO, CustomerPreviewDTO } from "@work-solutions-crm/libs/shared/customer/customer.dto";
 
@@ -29,7 +32,8 @@ export class CustomerController implements CustomerApi {
     private readonly loggerService: LoggerService
   ) {}
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, CaslGuard)
+  @CheckPolicies(ability => ability.can(Action.READ, Subject.CUSTOMERS))
   @Get(CUSTOMERS_ROUTES.findAll())
   @ApiOperation({ summary: "Retrieve all customers" })
   @ApiResponse({ status: 200, description: "List of customers", type: [CustomerPreviewResponseDTO] })
@@ -38,7 +42,8 @@ export class CustomerController implements CustomerApi {
     return this.customersService.findAll();
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, CaslGuard)
+  @CheckPolicies(ability => ability.can(Action.READ, Subject.CUSTOMERS))
   @Get(CUSTOMERS_ROUTES.findOne(":customerId"))
   @ApiOperation({ summary: "Retrieve a customer by ID" })
   @ApiResponse({ status: 200, description: "Customer details", type: CustomerResponseDTO })
@@ -48,7 +53,8 @@ export class CustomerController implements CustomerApi {
     return this.customersService.findOne(customerId);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, CaslGuard)
+  @CheckPolicies(ability => ability.can(Action.CREATE, Subject.CUSTOMERS))
   @Post(CUSTOMERS_ROUTES.create())
   @ApiOperation({ summary: "Create a new customer" })
   @ApiResponse({ status: 201, description: "Customer created successfully" })
@@ -60,7 +66,8 @@ export class CustomerController implements CustomerApi {
     });
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, CaslGuard)
+  @CheckPolicies(ability => ability.can(Action.UPDATE, Subject.CUSTOMERS))
   @Patch(CUSTOMERS_ROUTES.update(":customerId"))
   @ApiOperation({ summary: "Update an existing customer" })
   @ApiResponse({ status: 200, description: "Customer updated successfully" })
@@ -77,7 +84,8 @@ export class CustomerController implements CustomerApi {
     });
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, CaslGuard)
+  @CheckPolicies(ability => ability.can(Action.DELETE, Subject.CUSTOMERS))
   @Delete(CUSTOMERS_ROUTES.delete(":customerId"))
   @ApiOperation({ summary: "Delete a customer" })
   @ApiResponse({ status: 200, description: "Customer deleted successfully" })
@@ -90,7 +98,8 @@ export class CustomerController implements CustomerApi {
     });
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, CaslGuard)
+  @CheckPolicies(ability => ability.can(Action.UPDATE, Subject.CUSTOMERS))
   @Patch(CUSTOMERS_ROUTES.restore(":customerId"))
   @ApiOperation({ summary: "Restore a deleted customer" })
   @ApiResponse({ status: 200, description: "Customer restored successfully" })
@@ -103,7 +112,8 @@ export class CustomerController implements CustomerApi {
     });
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, CaslGuard)
+  @CheckPolicies(ability => ability.can(Action.DELETE, Subject.CUSTOMERS))
   @Delete(CUSTOMERS_ROUTES.bulkDelete())
   @ApiOperation({ summary: "Bulk delete customers" })
   @ApiResponse({ status: 200, description: "Customers deleted successfully" })
@@ -118,7 +128,8 @@ export class CustomerController implements CustomerApi {
     }
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, CaslGuard)
+  @CheckPolicies(ability => ability.can(Action.UPDATE, Subject.CUSTOMERS))
   @Patch(CUSTOMERS_ROUTES.bulkRestore())
   @ApiOperation({ summary: "Bulk restore customers" })
   @ApiResponse({ status: 200, description: "Customers restored successfully" })

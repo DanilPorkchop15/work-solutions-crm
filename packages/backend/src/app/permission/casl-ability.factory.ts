@@ -59,11 +59,11 @@ export class CaslAbilityFactory {
         can(Action.READ, Subject.PROJECTS);
         can(Action.UPDATE, Subject.PROJECTS);
 
-        can(Action.DELETE, Subject.USERS, { user_id: user.user_id });
-        can(Action.DELETE, Subject.CUSTOMERS, { user_id: user.user_id });
-        can(Action.DELETE, Subject.DOCUMENTS, { user_id: user.user_id });
-        can(Action.DELETE, Subject.TASKS, { user_id: user.user_id });
-        can(Action.DELETE, Subject.PROJECTS, { user_id: user.user_id });
+        can(Action.DELETE, Subject.USERS);
+        can(Action.DELETE, Subject.CUSTOMERS);
+        can(Action.DELETE, Subject.DOCUMENTS);
+        can(Action.DELETE, Subject.TASKS);
+        can(Action.DELETE, Subject.PROJECTS);
         break;
       case Role.MODERATOR:
         can(Action.READ, Subject.USERS);
@@ -78,17 +78,17 @@ export class CaslAbilityFactory {
         can(Action.CREATE, Subject.TASKS);
         can(Action.CREATE, Subject.PROJECTS);
 
-        can(Action.UPDATE, Subject.USERS, { user_id: user.user_id });
-        can(Action.UPDATE, Subject.CUSTOMERS, { user_id: user.user_id });
-        can(Action.UPDATE, Subject.DOCUMENTS, { user_id: user.user_id });
-        can(Action.UPDATE, Subject.TASKS, { user_id: user.user_id });
-        can(Action.UPDATE, Subject.PROJECTS, { user_id: user.user_id });
+        can(Action.UPDATE, Subject.USERS);
+        can(Action.UPDATE, Subject.CUSTOMERS);
+        can(Action.UPDATE, Subject.DOCUMENTS);
+        can(Action.UPDATE, Subject.TASKS);
+        can(Action.UPDATE, Subject.PROJECTS);
 
-        can(Action.DELETE, Subject.USERS, { user_id: user.user_id });
-        can(Action.DELETE, Subject.CUSTOMERS, { user_id: user.user_id });
-        can(Action.DELETE, Subject.DOCUMENTS, { user_id: user.user_id });
-        can(Action.DELETE, Subject.TASKS, { user_id: user.user_id });
-        can(Action.DELETE, Subject.PROJECTS, { user_id: user.user_id });
+        can(Action.DELETE, Subject.USERS);
+        can(Action.DELETE, Subject.CUSTOMERS);
+        can(Action.DELETE, Subject.DOCUMENTS);
+        can(Action.DELETE, Subject.TASKS);
+        can(Action.DELETE, Subject.PROJECTS);
         break;
       case Role.USER:
         can(Action.READ, Subject.USERS);
@@ -97,17 +97,17 @@ export class CaslAbilityFactory {
         can(Action.READ, Subject.TASKS);
         can(Action.READ, Subject.PROJECTS);
 
-        can(Action.DELETE, Subject.USERS, { user_id: user.user_id });
-        can(Action.DELETE, Subject.CUSTOMERS, { user_id: user.user_id });
-        can(Action.DELETE, Subject.DOCUMENTS, { user_id: user.user_id });
-        can(Action.DELETE, Subject.TASKS, { user_id: user.user_id });
-        can(Action.DELETE, Subject.PROJECTS, { user_id: user.user_id });
+        can(Action.DELETE, Subject.USERS);
+        can(Action.DELETE, Subject.CUSTOMERS);
+        can(Action.DELETE, Subject.DOCUMENTS);
+        can(Action.DELETE, Subject.TASKS);
+        can(Action.DELETE, Subject.PROJECTS);
 
-        can(Action.UPDATE, Subject.USERS, { user_id: user.user_id });
-        can(Action.UPDATE, Subject.CUSTOMERS, { user_id: user.user_id });
-        can(Action.UPDATE, Subject.DOCUMENTS, { user_id: user.user_id });
-        can(Action.UPDATE, Subject.TASKS, { user_id: user.user_id });
-        can(Action.UPDATE, Subject.PROJECTS, { user_id: user.user_id });
+        can(Action.UPDATE, Subject.USERS);
+        can(Action.UPDATE, Subject.CUSTOMERS);
+        can(Action.UPDATE, Subject.DOCUMENTS);
+        can(Action.UPDATE, Subject.TASKS);
+        can(Action.UPDATE, Subject.PROJECTS);
 
         cannot(Action.CREATE, Subject.CUSTOMERS);
         cannot(Action.CREATE, Subject.DOCUMENTS);

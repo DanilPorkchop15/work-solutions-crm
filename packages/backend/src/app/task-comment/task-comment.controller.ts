@@ -1,16 +1,19 @@
 import { AuthGuard } from "@backend/app/auth/auth.guard";
 import { LoggerService } from "@backend/app/logger/logger.service";
 import { LogType } from "@backend/app/logger/logger.types";
+import { CaslGuard } from "@backend/app/permission/casl.guard";
 import {
   TaskCommentCreateValidationDTO,
   TaskCommentResponseDTO,
   TaskCommentUpdateValidationDTO
 } from "@backend/app/task-comment/task-comment.dto";
+import { CheckPolicies } from "@backend/decorators/check-policies.decorator";
 import { CurrentUser } from "@backend/decorators/current-user.decorator";
 import { Logger } from "@backend/decorators/logger.decorator";
 import { User } from "@backend/models/entities/user.entity";
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { Action, Subject } from "@work-solutions-crm/libs/shared/auth/auth.dto";
 import { TASK_COMMENTS_ROUTES, TaskCommentApi } from "@work-solutions-crm/libs/shared/task-comment/task-comment.api";
 import { TaskCommentDTO } from "@work-solutions-crm/libs/shared/task-comment/task-comment.dto";
 
@@ -63,7 +66,8 @@ export class TaskCommentController implements TaskCommentApi {
     return this.taskCommentsService.update(taskCommentId, text);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, CaslGuard)
+  @CheckPolicies(ability => ability.can(Action.READ, Subject.TASKS))
   @Delete(TASK_COMMENTS_ROUTES.delete(":taskCommentId"))
   @ApiOperation({ summary: "Delete a task comment" })
   @ApiParam({ name: "taskCommentId", required: true, description: "The ID of the task comment" })
@@ -72,7 +76,8 @@ export class TaskCommentController implements TaskCommentApi {
     return this.taskCommentsService.delete(taskCommentId);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, CaslGuard)
+  @CheckPolicies(ability => ability.can(Action.READ, Subject.TASKS))
   @Patch(TASK_COMMENTS_ROUTES.restore(":taskCommentId"))
   @ApiOperation({ summary: "Restore a deleted task comment" })
   @ApiParam({ name: "taskCommentId", required: true, description: "The ID of the task comment" })
