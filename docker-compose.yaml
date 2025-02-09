@@ -16,7 +16,7 @@ services:
         apt-get update &&
         apt-get install -y sudo &&
         chown ${UID:-0}:${GID:-0} ./.nx &&
-        sudo --preserve-env -u \#${UID:-0} -g \#${GID:-0} npm install &&
+        sudo --preserve-env -u \#${UID:-0} -g \#${GID:-0} npm install --legacy-peer-deps &&
         sudo --preserve-env -u \#${UID:-0} -g \#${GID:-0} npm run serve
   frontend:
     image: node:20.11.0-slim
