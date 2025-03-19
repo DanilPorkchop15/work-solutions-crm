@@ -28,7 +28,6 @@ export interface UserWithPermissionsDTO extends UserDTO {
 
 export interface TokenDTO {
   accessToken: string;
-  refreshToken: string;
 }
 
 export interface LoginDTO extends TokenDTO {
