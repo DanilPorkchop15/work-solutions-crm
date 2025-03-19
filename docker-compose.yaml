@@ -78,36 +78,6 @@ services:
       - database_data:/var/lib/postgresql/data
     ports:
       - ${DB_PORT:-5432}:5432
-  frontend-user:
-    image: node:20.11.0-slim
-    volumes:
-      - .:/app
-      - .npmrc:/tmp/.npmrc
-      - nx_cache_frontend-user:/app/.nx
-    working_dir: /app
-    environment:
-      - HOME=/tmp
-      - REACT_APP_BACKEND_URL=http://localhost:${BE_APP_PORT:-3000}
-      - VITE_APP_BACKEND=http://localhost:${BE_APP_PORT:-3000}
-      - FE2_PORT=${FE2_PORT:-5000}
-    ports:
-      - ${FE2_PORT:-5000}:${FE2_PORT:-5000}
-    command:
-      - sh
-      - -c
-      - >
-        apt-get update
-
-        apt-get install -y sudo
-
-        npm run wait
-
-        chown ${UID:-0}:${GID:-0} ./.nx
-
-        npm run wait
-
-        sudo --preserve-env -u \#${UID:-0} -g \#${GID:-0} npx nx serve
-        frontend-user
 volumes:
   nx_cache_root: null
   nx_cache_frontend: null
