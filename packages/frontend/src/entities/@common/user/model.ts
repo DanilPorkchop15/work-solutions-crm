@@ -1,22 +1,32 @@
-import { FilterParams, PaginationParams, PathParams, SortingParams } from "shared/model/additionalRequestParams";
-import type { Pagination, TableDto } from "shared/model/interfaces";
-import { TableModule } from "shared/model/tableModule";
+import { UsersApi } from "@frontend/entities/@common/user/api";
+import {
+  FilterParams,
+  PaginationParams,
+  PathParams,
+  SortingParams
+} from "@frontend/shared/model/additionalRequestParams";
+import type { TableDto } from "@frontend/shared/model/interfaces";
+import { TableModule } from "@frontend/shared/model/tableModule";
+import { Inject, Service } from "typedi";
 
-import type { User, UsersFilter, UsersSorting, UsersSortingKeys, UsersTransport } from "./interfaces";
+import type { User } from "./interfaces";
 
-export class UsersTableModule extends TableModule<User, UsersFilter, UsersSortingKeys> {
-  public readonly filter: FilterParams<UsersFilter> = new FilterParams<UsersFilter>({ role: undefined });
-  public readonly sorting: SortingParams<UsersSortingKeys> = new SortingParams<UsersSortingKeys>();
+@Service()
+export class UsersTableModule extends TableModule<User, never, never> {
+  public readonly filter: FilterParams<never> = new FilterParams<never>(undefined as never);
+
+  public readonly sorting: SortingParams<never> = new SortingParams<never>();
+
   public readonly pagination: PaginationParams = new PaginationParams({ pageIndex: 1, pageSize: 10 });
+
   public pathParams: PathParams<Record<string, never>>;
 
-  constructor(private readonly _transport: UsersTransport) {
+  constructor(@Inject() private readonly _api: UsersApi) {
     super();
-    this.sorting.set("orderBy", "lastName");
     this.pathParams = new PathParams<Record<string, never>>({});
   }
 
-  protected async _getData(additionalQueryParams: Pagination & UsersFilter & UsersSorting): Promise<TableDto<User>> {
-    return this._transport.getUsers({ additionalQueryParams });
+  protected async _getData(): Promise<TableDto<User>> {
+    return this._api.getUsers();
   }
 }

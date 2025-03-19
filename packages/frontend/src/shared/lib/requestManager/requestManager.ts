@@ -95,7 +95,7 @@ export class RequestManager {
     return RequestManager._applyAllBeforeErrorMiddleware(error, axiosRequestConfig);
   }
 
-  public createRequest<DecoderValue>({
+  public createRequest<DecoderValue = void>({
     url,
     method = METHODS.GET,
     requestConfig = {},

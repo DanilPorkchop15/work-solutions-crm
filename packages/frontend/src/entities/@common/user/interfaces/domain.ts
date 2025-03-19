@@ -1,18 +1,26 @@
-import type { Media, UniqueEntity } from "shared/model/interfaces";
+import type { UniqueEntity } from "@frontend/shared/model/interfaces";
+import { Action, Subject } from "@work-solutions-crm/libs/shared/auth/auth.dto";
+import { Role } from "@work-solutions-crm/libs/shared/user/user.dto";
 
-export interface User extends UniqueEntity {
-  avatar: Media | null;
-  firstName: string;
-  lastName: string;
-  fullName: string;
-  blocked: boolean;
-  email: string;
-  role: UserRole;
+export interface User extends UserPreview {
+  role: Role;
+  updatedAt: string;
+  createdAt: string;
 }
 
-export type Author = Pick<User, "firstName" | "lastName" | "fullName">;
+export interface UserPreview extends UniqueEntity {
+  avatarUrl: string | null;
+  fullName: string;
+  email: string;
+  position: string | null;
+}
 
-export enum UserRole {
-  Admin = "Admin",
-  Student = "Student",
+export interface Permission {
+  subject: Subject;
+  action: Action;
+  inverted: boolean;
+}
+
+export interface UserWithPermissions extends User {
+  permissions: Permission[];
 }

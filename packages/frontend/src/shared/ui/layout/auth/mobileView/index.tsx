@@ -24,7 +24,7 @@ export const MobileView = React.memo(function MobileView({ content }: AuthLayout
       </AntdLayout.Content>
       <AntdLayout.Footer className="flex justify-between" style={{ backgroundColor: token.colorWhite }}>
         <Typography.Text type="secondary">
-          2023 <br /> © Work Solutions
+          {new Date().getFullYear()} <br /> © Work Solutions
         </Typography.Text>
         <img alt="" src="/assets/WS-Logo-Copyright.svg" />
       </AntdLayout.Footer>

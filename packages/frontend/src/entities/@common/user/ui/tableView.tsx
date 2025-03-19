@@ -2,33 +2,32 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Table, type TableProps, Typography } from "antd";
 
-import { type User, UserRole } from "../interfaces";
+import { User } from "../interfaces";
 
 import { UserView } from "./index";
+import { Role } from "@work-solutions-crm/libs/shared/user/user.dto";
 
 const columns: TableProps<User>["columns"] = [
   {
     title: "",
-    key: "avatar",
-    render: (user: User) => <UserView.Avatar user={user} />,
+    key: "avatarUrl",
+    render: (user: User) => <UserView.Avatar user={user} />
   },
   {
-    title: "Имя",
-    dataIndex: "firstName",
-    key: "firstName",
-  },
-  {
-    title: "Фамилия",
-    dataIndex: "lastName",
-    sorter: true,
-    defaultSortOrder: "ascend",
-    key: "lastName",
+    title: "Полное имя",
+    dataIndex: "fullName",
+    key: "fullName"
   },
   {
     title: "Email",
     dataIndex: "email",
     key: "email",
-    render: (email) => <Link to={`mailto:${email}`}>{email}</Link>,
+    render: email => <Link to={`mailto:${email}`}>{email}</Link>
+  },
+  {
+    title: "Должность",
+    dataIndex: "position",
+    key: "position"
   },
   {
     title: "Роль",
@@ -36,17 +35,27 @@ const columns: TableProps<User>["columns"] = [
     key: "role",
     filterMultiple: false,
     filters: [
-      { text: "Admin", value: UserRole.Admin },
-      { text: "Student", value: UserRole.Student },
-    ],
+      { text: "Admin", value: Role.ADMIN },
+      { text: "User", value: Role.USER },
+      { text: "Manager", value: Role.MANAGER },
+      { text: "Moderator", value: Role.MODERATOR }
+    ]
   },
   {
-    title: "blocked",
-    key: "blocked",
-    dataIndex: "blocked",
+    title: "Дата создания",
+    dataIndex: "createdAt",
+    key: "createdAt",
     sorter: true,
-    render: (blocked) => <Typography.Text type={blocked ? "danger" : undefined}>{String(blocked)}</Typography.Text>,
+    defaultSortOrder: "ascend",
+    render: date => <Typography.Text>{date}</Typography.Text>
   },
+  {
+    title: "Дата обновления",
+    dataIndex: "updatedAt",
+    key: "updatedAt",
+    sorter: true,
+    render: date => <Typography.Text>{date}</Typography.Text>
+  }
 ];
 
 export const UsersTableView = React.memo(function UsersTableView({

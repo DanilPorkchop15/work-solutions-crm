@@ -4,7 +4,7 @@ export type Request<
     urlParams?: Record<string, any>;
     body?: unknown;
     additionalQueryParams?: Record<string, any>;
-  },
+  }
 > = {
   [K in keyof T]: T[K];
 };

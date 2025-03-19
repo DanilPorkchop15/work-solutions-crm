@@ -1,2 +1,2 @@
-export { AuthTransportToken } from "./api";
-export type { AuthTransport, LoginDto, ResetPasswordDto, ChangePasswordDto } from "./interfaces";
+export type * from "./interfaces";
+export { AuthApi } from "./api";

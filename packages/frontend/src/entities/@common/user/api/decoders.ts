@@ -1,30 +1,28 @@
-import Decoder, { array, boolean, field, number, string, succeed } from "jsonous";
-import { assoc, toLower } from "ramda";
+import { decodeNumberToString, enumDecoder, fieldOrFallback } from "@frontend/shared/api";
+import { Action, Subject } from "@work-solutions-crm/libs/shared/auth/auth.dto";
+import { Role } from "@work-solutions-crm/libs/shared/user/user.dto";
+import Decoder, { array, boolean, field, string, succeed } from "jsonous";
 
-import { decodeNumberToString, fieldOrFallback, mediaDecoder } from "shared/api";
+import { type User, UserPreview, UserWithPermissions } from "../interfaces";
 
-import { type Author, type BackendRole, type User, UserRole } from "../interfaces";
-
-const roleDecoder: Decoder<UserRole> = field("role", string).map((role) =>
-  toLower(role) === "admin" ? UserRole.Admin : UserRole.Student,
-);
-
-export const userDecoder: Decoder<User> = succeed({})
+export const userPreviewDecoder: Decoder<UserPreview> = succeed({})
   .assign("id", field("id", decodeNumberToString))
-  .assign("avatar", fieldOrFallback("avatar", mediaDecoder))
-  .assign("firstName", field("firstName", string))
-  .assign("lastName", field("lastName", string))
-  .assign("blocked", field("blocked", boolean))
+  .assign("avatarUrl", fieldOrFallback("avatar_url", string))
+  .assign("fullName", field("fullName", string))
   .assign("email", field("email", string))
-  .assign("role", roleDecoder)
-  .map((user) => assoc("fullName", user.firstName + " " + user.lastName, user));
+  .assign("position", fieldOrFallback("position", string));
 
-export const backendRolesDecoder: Decoder<BackendRole[]> = field(
-  "roles",
-  array(succeed({}).assign("id", field("id", number)).assign("name", field("name", string))),
+export const userDecoder: Decoder<User> = userPreviewDecoder
+  .assign("role", field("role", enumDecoder(Role)))
+  .assign("createdAt", field("created_at", string))
+  .assign("updatedAt", field("updated_at", string));
+
+const permissionDecoder: Decoder<UserWithPermissions["permissions"][0]> = succeed({})
+  .assign("subject", field("subject", enumDecoder(Subject)))
+  .assign("action", field("action", enumDecoder(Action)))
+  .assign("inverted", field("inverted", boolean));
+
+export const userWithPermissionsDecoder: Decoder<UserWithPermissions> = userDecoder.assign(
+  "permissions",
+  field("permissions", array(permissionDecoder))
 );
-
-export const authorDecoder: Decoder<Author> = succeed({})
-  .assign("firstName", field("firstName", string))
-  .assign("lastName", field("lastName", string))
-  .map((user) => assoc("fullName", user.firstName + " " + user.lastName, user));
