@@ -18,7 +18,7 @@ export class AuthGuard implements CanActivate {
     const request: AuthRequest = context.switchToHttp().getRequest<AuthRequest>();
     const response: Response = context.switchToHttp().getResponse<Response>();
 
-    const accessToken: string | undefined = this.extractTokenFromHeader(request);
+    const accessToken: string | undefined = this.extractTokenFromCookies(request);
     const refreshToken: string | undefined = request.cookies["refreshToken"] as string;
 
     if (!accessToken && !refreshToken) {
@@ -58,8 +58,9 @@ export class AuthGuard implements CanActivate {
     }
   }
 
-  private extractTokenFromHeader(request: Request): string | undefined {
-    const [type, token]: string[] = request.headers.authorization?.split(" ") ?? [];
+  private extractTokenFromCookies(request: Request): string | undefined {
+    const accessToken: string | undefined = request.cookies["accessToken"] as string;
+    const [type, token]: string[] = accessToken?.split(" ") ?? [];
     return type === "Bearer" ? token : undefined;
   }
 }

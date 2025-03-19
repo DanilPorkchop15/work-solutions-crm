@@ -30,12 +30,12 @@ export type UserChangePasswordRequestDTO = {
 };
 
 export interface UserApi {
-  findAll: () => Promise<UserPreviewDTO[]>;
+  findAll: () => Promise<UserDTO[]>;
   create: (dto: UserCreateRequestDTO, ...omitted: never) => Promise<UserDTO>;
   update: (userId: string, dto: UserUpdateRequestDTO, ...omitted: never) => Promise<UserDTO>;
   delete: (userId: string, ...omitted: never) => Promise<void>;
   restore: (userId: string, ...omitted: never) => Promise<void>;
-  bulkCreate: (dto: UserCreateRequestDTO[], ...omitted: never) => Promise<UserPreviewDTO[]>;
+  bulkCreate: (dto: UserCreateRequestDTO[], ...omitted: never) => Promise<UserDTO[]>;
   bulkDelete: (dto: UserBulkDeleteRequestDTO, ...omitted: never) => Promise<void>;
   bulkRestore: (dto: UserBulkRestoreRequestDTO, ...omitted: never) => Promise<void>;
   changeRole: (dto: UserChangeRoleRequestDTO, ...omitted: never) => Promise<void>;

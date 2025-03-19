@@ -37,9 +37,9 @@ export class UserController implements UserApi {
   @CheckPolicies(ability => ability.can(Action.READ, Subject.USERS))
   @Get(USERS_ROUTES.findAll())
   @ApiOperation({ summary: "Retrieve all users" })
-  @ApiResponse({ status: 200, type: [UserPreviewResponseDTO] })
+  @ApiResponse({ status: 200, type: [UserResponseDTO] })
   @Logger("findAll", "users")
-  async findAll(): Promise<UserPreviewDTO[]> {
+  async findAll(): Promise<UserDTO[]> {
     return this.usersService.findAll();
   }
 
@@ -58,9 +58,9 @@ export class UserController implements UserApi {
   @CheckPolicies(ability => ability.can(Action.CREATE, Subject.USERS))
   @Post(USERS_ROUTES.bulkCreate())
   @ApiOperation({ summary: "Bulk create users" })
-  @ApiResponse({ status: 201, type: [UserPreviewResponseDTO] })
-  async bulkCreate(@Body() dto: UserCreateValidationDTO[], @CurrentUser() user: User): Promise<UserPreviewDTO[]> {
-    const createdUsers: UserPreviewDTO[] = await this.usersService.bulkCreate(dto);
+  @ApiResponse({ status: 201, type: [UserResponseDTO] })
+  async bulkCreate(@Body() dto: UserCreateValidationDTO[], @CurrentUser() user: User): Promise<UserDTO[]> {
+    const createdUsers: UserDTO[] = await this.usersService.bulkCreate(dto);
     await this.loggerService.logByType(LogType.USER, "bulk created", "new users", { user_id: user.user_id });
     return createdUsers;
   }

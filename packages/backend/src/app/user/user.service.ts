@@ -26,9 +26,9 @@ export class UserService {
     private readonly userRepository: Repository<User>
   ) {}
 
-  async findAll(): Promise<UserPreviewDTO[]> {
+  async findAll(): Promise<UserDTO[]> {
     const users: User[] = await this.userRepository.find();
-    return users.map(mapUserToPreviewDTO);
+    return users.map(mapUserToDTO);
   }
 
   async findOneByEmail(email: string): Promise<User | null> {
@@ -58,10 +58,10 @@ export class UserService {
     return mapUserToDTO(createdUser);
   }
 
-  async bulkCreate(dto: UserCreateRequestDTO[]): Promise<UserPreviewDTO[]> {
+  async bulkCreate(dto: UserCreateRequestDTO[]): Promise<UserDTO[]> {
     const users: DeepPartial<User[]> = await Promise.all(dto.map(mapCreateRequestDTOToUser));
     const createdUsers: User[] = await this.userRepository.save(users);
-    return createdUsers.map(mapUserToPreviewDTO);
+    return createdUsers.map(mapUserToDTO);
   }
 
   async update(userId: string, dto: UserUpdateRequestDTO): Promise<UserDTO> {
