@@ -1,0 +1,8 @@
+@import "antd/dist/reset.css";
+
+@tailwind utilities;
+
+#root,
+.ant-app {
+  height: 100%;
+}
