@@ -5,13 +5,16 @@ export abstract class AppRoutes {
     `${AppRoutes._calculatePrefix(AppRoutes.getAuthUrl(), withPrefix)}profile`;
 
   public static getUsersUrl = (withPrefix = false) =>
-    `${AppRoutes._calculatePrefix(AppRoutes.getAuthUrl(), withPrefix)}users`;
+    `${AppRoutes._calculatePrefix(AppRoutes.getRootUrl(), withPrefix)}users`;
+
+  public static getUserUrl = (withPrefix = false, id = ":id") =>
+    `${AppRoutes._calculatePrefix(AppRoutes.getRootUrl(), withPrefix)}users/${id}`;
 
   public static getCreateUserUrl = (withPrefix = false) =>
-    `${AppRoutes._calculatePrefix(AppRoutes.getAuthUrl(), withPrefix)}users/create`;
+    `${AppRoutes._calculatePrefix(AppRoutes.getRootUrl(), withPrefix)}users/create`;
 
   public static getUpdateUserUrl = (withPrefix = false, id = ":id") =>
-    `${AppRoutes._calculatePrefix(AppRoutes.getAuthUrl(), withPrefix)}users/${id}/update`;
+    `${AppRoutes._calculatePrefix(AppRoutes.getRootUrl(), withPrefix)}users/${id}/update`;
 
   public static getAuthUrl = () => "/auth";
 
@@ -30,5 +33,12 @@ export abstract class AppRoutes {
   public static getDocumentUrl = (withPrefix = false, id = ":id") =>
     `${AppRoutes._calculatePrefix(AppRoutes.getRootUrl(), withPrefix)}documents/${id}`;
 
-  private static readonly _calculatePrefix = (prefix: string, withPrefix: boolean) => (withPrefix ? `${prefix}/` : "");
+  public static getCustomersUrl = (withPrefix = false) =>
+    `${AppRoutes._calculatePrefix(AppRoutes.getRootUrl(), withPrefix)}customers`;
+
+  public static getCustomerUrl = (withPrefix = false, id = ":id") =>
+    `${AppRoutes._calculatePrefix(AppRoutes.getRootUrl(), withPrefix)}customers/${id}`;
+
+  private static readonly _calculatePrefix = (prefix: string, withPrefix: boolean) =>
+    withPrefix ? (prefix !== "/" ? `${prefix}/` : prefix) : "";
 }

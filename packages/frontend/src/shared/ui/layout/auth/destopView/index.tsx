@@ -1,4 +1,6 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { AppRoutes } from "@frontend/shared/model/services";
 import { Col, Layout as AntdLayout, Row, Space, theme, Typography } from "antd";
 
 interface AuthLayoutProps {
@@ -20,13 +22,15 @@ export const DesktopView = React.memo(function DesktopView({ content }: AuthLayo
           >
             <AntdLayout className="h-full">
               <AntdLayout.Header className="p-0">
-                <img alt="" src="/assets/WS-Logo.svg" />
+                <Link to={AppRoutes.getRootUrl()}>
+                  <img alt="" src="/assets/WS-Logo.svg" />
+                </Link>
               </AntdLayout.Header>
               <AntdLayout.Content className="h-0 flex-1">{content}</AntdLayout.Content>
               <AntdLayout.Footer className="p-0">
                 <Space className="justify-between w-full" size="large">
                   <Typography.Text type="secondary">
-                    2023 <br /> © Work Solutions
+                    {new Date().getFullYear()} <br /> © Work Solutions
                   </Typography.Text>
                   <img alt="" src="/assets/WS-Logo-Copyright.svg" />
                 </Space>

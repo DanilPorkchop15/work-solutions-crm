@@ -1,8 +1,14 @@
 @import "antd/dist/reset.css";
 
+@tailwind base;
+@tailwind components;
 @tailwind utilities;
 
 #root,
 .ant-app {
   height: 100%;
+}
+
+body {
+  background-color: #F2F2F2;
 }

@@ -1,12 +1,12 @@
-import { RequestManager } from "@frontend/shared/lib/requestManager";
 import { AUTH_ROUTES } from "@work-solutions-crm/libs/shared/auth/auth.api";
-import { Service } from "typedi";
+import { singleton } from "tsyringe";
 
+import { RequestManager } from "../../../shared/lib/requestManager/requestManager";
 import type { Viewer, ViewerTransport } from "../interfaces";
 
 import { profileDecoder } from "./decoder";
 
-@Service()
+@singleton()
 export class ViewerApi extends RequestManager implements ViewerTransport {
   public async getProfile(): Promise<Viewer> {
     return this.createRequest({

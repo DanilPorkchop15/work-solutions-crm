@@ -1,9 +1,9 @@
 import type { MessageInstance } from "antd/es/message/interface";
 import type { ModalStaticFunctions } from "antd/es/modal/confirm";
 import type { NotificationInstance } from "antd/es/notification/interface";
-import { Container, Service } from "typedi";
+import { container, singleton } from "tsyringe";
 
-@Service()
+@singleton()
 export class AntdServices {
   public message!: MessageInstance;
 
@@ -24,4 +24,4 @@ export class AntdServices {
   }
 }
 
-export const antdServices = Container.get(AntdServices);
+export const antdServices: AntdServices = container.resolve(AntdServices);

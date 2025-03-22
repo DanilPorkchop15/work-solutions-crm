@@ -1,17 +1,16 @@
-import { UsersApi } from "@frontend/entities/@common/user/api";
-import {
-  FilterParams,
-  PaginationParams,
-  PathParams,
-  SortingParams
-} from "@frontend/shared/model/additionalRequestParams";
-import type { TableDto } from "@frontend/shared/model/interfaces";
-import { TableModule } from "@frontend/shared/model/tableModule";
-import { Inject, Service } from "typedi";
+import { inject, injectable, singleton } from "tsyringe";
 
+import { FilterParams } from "../../../shared/model/additionalRequestParams/filterParams";
+import { PaginationParams } from "../../../shared/model/additionalRequestParams/paginationParams";
+import { PathParams } from "../../../shared/model/additionalRequestParams/pathParams";
+import { SortingParams } from "../../../shared/model/additionalRequestParams/sortingParams";
+import { TableDto } from "../../../shared/model/interfaces/table";
+import { TableModule } from "../../../shared/model/tableModule";
+
+import { UsersApi } from "./api/gateway";
 import type { User } from "./interfaces";
 
-@Service()
+@injectable()
 export class UsersTableModule extends TableModule<User, never, never> {
   public readonly filter: FilterParams<never> = new FilterParams<never>(undefined as never);
 
@@ -21,7 +20,7 @@ export class UsersTableModule extends TableModule<User, never, never> {
 
   public pathParams: PathParams<Record<string, never>>;
 
-  constructor(@Inject() private readonly _api: UsersApi) {
+  constructor(@inject(UsersApi) private readonly _api: UsersApi) {
     super();
     this.pathParams = new PathParams<Record<string, never>>({});
   }

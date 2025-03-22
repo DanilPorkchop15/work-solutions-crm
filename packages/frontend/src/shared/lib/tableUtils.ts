@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import type { PaginationParams } from "@frontend/shared/model/additionalRequestParams";
 import type { UniqueEntity } from "@frontend/shared/model/interfaces";
 import { isArray } from "@worksolutions/utils";
@@ -41,5 +42,50 @@ export function createTableOnChangeHandlerFromTableModule<
         tableModule.sorting.clear();
       }
     }
+  };
+}
+
+export function useLocalTableOnChange<T>(rows: T[], pageIndex = 1, size = 10) {
+  const [data, setData] = useState(rows);
+
+  const [currentPage, setCurrentPage] = useState(pageIndex);
+  const [pageSize, setPageSize] = useState(size);
+
+  useEffect(() => {
+    setData(rows);
+  }, [rows]);
+
+  const handleTableChange: TableProps<T>["onChange"] = (pagination, filters, sorter) => {
+    const { current, pageSize } = pagination;
+    setCurrentPage(current ?? 1);
+    setPageSize(pageSize ?? 10);
+
+    let sortedRows: T[] = [...rows];
+
+    if (!Array.isArray(sorter) && sorter.columnKey) {
+      sortedRows.sort((a, b) => {
+        const field: keyof T = sorter.columnKey as keyof T;
+        const order: number = sorter.order === "ascend" ? 1 : -1;
+
+        if (a[field] < b[field]) return -order;
+        if (a[field] > b[field]) return order;
+        return 0;
+      });
+    }
+
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value && value.length > 0) {
+        sortedRows = sortedRows.filter(item => value.includes(item[key as keyof T]));
+      }
+    });
+
+    setData(sortedRows);
+  };
+
+  return {
+    data,
+    currentPage,
+    pageSize,
+    onChange: handleTableChange
   };
 }

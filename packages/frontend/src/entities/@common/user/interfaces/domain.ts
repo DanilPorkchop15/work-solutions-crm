@@ -4,8 +4,8 @@ import { Role } from "@work-solutions-crm/libs/shared/user/user.dto";
 
 export interface User extends UserPreview {
   role: Role;
-  updatedAt: string;
-  createdAt: string;
+  updatedAt: ISO;
+  createdAt: ISO;
 }
 
 export interface UserPreview extends UniqueEntity {
@@ -13,6 +13,7 @@ export interface UserPreview extends UniqueEntity {
   fullName: string;
   email: string;
   position: string | null;
+  deletedAt: ISO | null;
 }
 
 export interface Permission {

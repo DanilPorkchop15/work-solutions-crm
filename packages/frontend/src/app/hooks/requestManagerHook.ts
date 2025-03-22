@@ -1,17 +1,25 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { redirect } from "react-router-dom";
-import { BASE_API_HOST, IS_PRODUCTION_MODE } from "@frontend/shared/config/const";
-import { AppRequestError, RequestManager } from "@frontend/shared/lib/requestManager";
-import { antdServices, AppRoutes, cookiesStore } from "@frontend/shared/model/services";
+import { antdServices } from "@frontend/shared/model/services";
 import { isPureObject, isString } from "@worksolutions/utils";
+import { container } from "tsyringe";
+
+import { BASE_API_HOST, IS_PRODUCTION_MODE } from "../../shared/config/const";
+import { AppErrorValue } from "../../shared/lib/appError";
+import { AppRequestError } from "../../shared/lib/requestManager/appRequestError";
+import { RequestManager } from "../../shared/lib/requestManager/requestManager";
+import { AppRoutes } from "../../shared/model/services/appRoutes";
+import { CookiesStore } from "../../shared/model/services/cookies";
 
 import type { InstallationHook } from "./interfaces";
 
 export const requestManagerHook: InstallationHook = () => {
   RequestManager.baseURL = BASE_API_HOST;
 
+  const cookiesStore: CookiesStore = container.resolve(CookiesStore);
+
   RequestManager.beforeRequestMiddleware.push(({ config }) => {
-    const token = cookiesStore.get("token");
+    const token: string | undefined = cookiesStore.get("accessToken");
     if (!token || !config.headers) return;
     if (config.url?.startsWith("/auth")) return;
     config.headers.Authorization = token;
@@ -49,7 +57,10 @@ export const requestManagerHook: InstallationHook = () => {
         {
           message: error.message,
           errors: Object.fromEntries(
-            Object.entries(errors).map(([fieldName, err]) => [fieldName, isString(err) ? err : JSON.stringify(err)])
+            Object.entries(errors).map(([fieldName, err]: [string, unknown]) => [
+              fieldName,
+              isString(err) ? err : JSON.stringify(err)
+            ])
           )
         },
         error.statusCode,
@@ -66,8 +77,8 @@ export const requestManagerHook: InstallationHook = () => {
     if (!shareData.decoded) return error;
 
     if (error.hasErrors()) {
-      const errors = Object.entries(error.errors);
-      errors.forEach(([errorKey, errorText]) =>
+      const errors: [string, AppErrorValue][] = Object.entries(error.errors);
+      errors.forEach(([errorKey, errorText]: [string, AppErrorValue]) =>
         antdServices.notification.error({ message: `Ошибка при отправке запроса. Поле «${errorKey}»: ${errorText}` })
       );
     } else {

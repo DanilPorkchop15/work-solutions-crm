@@ -1,24 +1,21 @@
-import { Container, Inject, Service } from "typedi";
+import { inject, singleton } from "tsyringe";
 
-import { ViewerApi } from "./api";
-import type { ViewerTransport } from "./interfaces";
+import { ViewerApi } from "./api/gateway";
+import { Viewer } from "./interfaces";
 import { ViewerModel } from "./model";
 
-@Service()
+@singleton()
 export class ViewerService {
   private _viewerModel: ViewerModel | null = null;
 
-  constructor(
-    @Inject()
-    private readonly _api: ViewerApi
-  ) {}
+  constructor(@inject(ViewerApi) private readonly _api: ViewerApi) {}
 
   public get viewer(): ViewerModel | null {
     return this._viewerModel;
   }
 
   public async loadViewer(): Promise<void> {
-    const profile = await this._api.getProfile();
+    const profile: Viewer = await this._api.getProfile();
     this._viewerModel = new ViewerModel(profile);
   }
 
@@ -26,5 +23,3 @@ export class ViewerService {
     this._viewerModel = null;
   }
 }
-
-export const viewerService: ViewerService = Container.get(ViewerService);

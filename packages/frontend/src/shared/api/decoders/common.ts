@@ -1,9 +1,10 @@
-import { isIsoDate } from "@frontend/shared/lib/isoDateUtils";
-import { SystemClock } from "@frontend/shared/model/dateTime";
 import Decoder, { field, number, succeed } from "jsonous";
 import { isNil, last } from "ramda";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { err, ok } from "resulty";
+
+import { isIsoDate } from "../../lib/isoDateUtils";
+import { SystemClock } from "../../model/dateTime/index";
 
 export const identityValueDecoder: Decoder<unknown> = new Decoder<unknown>(ok);
 
@@ -39,10 +40,15 @@ export function mergeRightDecoders<FIRST, SECOND>(
   });
 }
 
-export function enumDecoder<ENUM extends object, KEY extends keyof ENUM>(matches: ENUM): Decoder<ENUM[KEY]> {
-  return new Decoder<ENUM[KEY]>((key: KEY) => {
-    if (matches[key]) return ok<string, ENUM[KEY]>(matches[key]);
-    return err<string, ENUM[KEY]>(
+export function enumDecoder<ENUM extends Record<string, string>>(matches: ENUM): Decoder<ENUM[keyof ENUM]> {
+  return new Decoder<ENUM[keyof ENUM]>((key: string) => {
+    const match: string | undefined = Object.values(matches).find(value => value === key);
+    if (match) {
+      return ok<string, ENUM[keyof ENUM]>(match as ENUM[keyof ENUM]);
+    }
+
+    console.error("Enum decoding error:", key, matches);
+    return err<string, ENUM[keyof ENUM]>(
       `enum decoder error.\nIncome ${JSON.stringify(key)};\nExpected: ${JSON.stringify(matches)}`
     );
   });

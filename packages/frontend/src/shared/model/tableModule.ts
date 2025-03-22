@@ -7,11 +7,14 @@ export abstract class TableModule<
   T extends object,
   F extends object = Record<string, never>,
   S extends string = never,
-  P extends object = Record<string, never>,
+  P extends object = Record<string, never>
 > {
   public abstract readonly filter: FilterParams<F>;
+
   public abstract readonly sorting: SortingParams<S>;
+
   public abstract readonly pagination: PaginationParams;
+
   public abstract readonly pathParams: PathParams<P>;
 
   @observable
@@ -34,14 +37,14 @@ export abstract class TableModule<
   public get queryParams(): Pagination & F & Sorting<S> {
     return {
       ...this.pagination.snapshot(),
-      ...this.filterAndSortingParams,
+      ...this.filterAndSortingParams
     };
   }
 
   public get filterAndSortingParams(): F & Sorting<S> {
     return {
       ...this.filter.snapshot(),
-      ...this.sorting.snapshot(),
+      ...this.sorting.snapshot()
     };
   }
 

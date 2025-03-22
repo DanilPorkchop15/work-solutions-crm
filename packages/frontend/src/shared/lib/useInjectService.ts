@@ -1,5 +1,7 @@
-import { Container } from "typedi";
+import { container } from "tsyringe";
 
-export const useInjectService = <T, U>(service: new (...args: U[]) => T): T => {
-  return Container.get(service);
+import "reflect-metadata";
+
+export const useInjectService: <T>(service: Constructor<T>) => T = <T>(service: Constructor<T>): T => {
+  return container.resolve(service);
 };

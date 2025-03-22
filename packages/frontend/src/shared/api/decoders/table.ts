@@ -6,5 +6,5 @@ export const tableDecoder: <T>(decoder: Decoder<T>) => Decoder<TableDto<T>> = <T
   decoder: Decoder<T>
 ): Decoder<TableDto<T>> =>
   succeed({})
-    .assign("rows", field("data", array(decoder)))
+    .assign("rows", array(decoder))
     .map(data => assoc("totalCount", data.rows.length, data));

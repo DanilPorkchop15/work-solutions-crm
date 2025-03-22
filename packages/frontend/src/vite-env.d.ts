@@ -1,6 +1,6 @@
 /// <reference types="vite/client" />
 
-type Constructor<T> = { new (): T };
+type Constructor<T> = { new (...args: any[]): T };
 
 type Guid = string;
 type ISO = string;

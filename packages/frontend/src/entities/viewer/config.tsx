@@ -6,9 +6,13 @@ import { PageSpin } from "@worksolutions/antd-react-components";
 
 import { AppRoutes } from "@frontend/shared/model/services";
 
-import { viewerService } from "./service";
+import { ViewerService } from "./service";
+import { useInjectService } from "@frontend/shared/lib/useInjectService";
+import { container } from "tsyringe";
 
 export const ViewerProvider = React.memo(function ViewerProvider({ children }: { children: React.ReactNode }) {
+  const viewerService: ViewerService = container.resolve(ViewerService);
+
   const { loading } = useAsync(viewerService.loadViewer.bind(viewerService), []);
 
   if (loading) return <PageSpin />;

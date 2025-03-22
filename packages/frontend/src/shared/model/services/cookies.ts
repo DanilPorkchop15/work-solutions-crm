@@ -1,9 +1,9 @@
 import type { CookieAttributes } from "js-cookie";
 // eslint-disable-next-line import/no-extraneous-dependencies,no-duplicate-imports
 import Cookies from "js-cookie";
-import { Container, Service } from "typedi";
+import { singleton } from "tsyringe";
 
-@Service()
+@singleton()
 export class CookiesStore {
   public set(key: string, value: string, options?: CookieAttributes) {
     Cookies.set(key, value, options);
@@ -17,5 +17,3 @@ export class CookiesStore {
     Cookies.remove(key);
   }
 }
-
-export const cookiesStore = Container.get(CookiesStore);

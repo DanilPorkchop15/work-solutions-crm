@@ -1,9 +1,9 @@
 import { tableDecoder } from "@frontend/shared/api";
-import { METHODS, RequestManager } from "@frontend/shared/lib/requestManager";
-import type { TableDto } from "@frontend/shared/model/interfaces";
 import { USERS_ROUTES } from "@work-solutions-crm/libs/shared/user/user.api";
-import { Service } from "typedi";
+import { singleton } from "tsyringe";
 
+import { METHODS, RequestManager } from "../../../../shared/lib/requestManager/requestManager";
+import { TableDto } from "../../../../shared/model/interfaces/table";
 import type {
   BulkCreateUserRequest,
   BulkDeleteUserRequest,
@@ -15,13 +15,12 @@ import type {
   RestoreUserRequest,
   UpdateUserRequest,
   User,
-  UserPreview,
   UsersTransport
 } from "../interfaces";
 
-import { userDecoder, userPreviewDecoder } from "./decoders";
+import { userDecoder } from "./decoders";
 
-@Service()
+@singleton()
 export class UsersApi extends RequestManager implements UsersTransport {
   public async getUsers(): Promise<TableDto<User>> {
     return this.createRequest({
