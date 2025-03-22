@@ -39,7 +39,7 @@ export const DesktopView = React.memo(function DesktopView({ content }: AuthLayo
           </AntdLayout.Sider>
         </Col>
         <Col
-          className="h-full bg-right bg-no-repeat bg-contain"
+          className="h-full bg-right bg-no-repeat bg-contain bg-white"
           flex="auto"
           style={{ backgroundImage: `url("/assets/auth-background-desk.png")` }}
         />
