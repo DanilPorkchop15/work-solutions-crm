@@ -6,4 +6,5 @@ export interface UserLogDTO {
   comment: string;
   user: UserPreviewDTO;
   created_at: string;
+  deleted_at?: string;
 }

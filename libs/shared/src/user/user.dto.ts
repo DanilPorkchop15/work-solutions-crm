@@ -14,6 +14,7 @@ export interface UserDTO {
   role: Role;
   created_at: string;
   updated_at: string;
+  deleted_at?: string;
 }
 
 export type UserPreviewDTO = Omit<UserDTO, "role" | "created_at" | "updated_at">;

@@ -8,4 +8,5 @@ export interface TaskLogDTO {
   user: UserPreviewDTO;
   task: TaskPreviewDTO;
   created_at: string;
+  deleted_at?: string;
 }
