@@ -165,6 +165,12 @@ export class CustomerResponseDTO implements CustomerDTO {
     example: "2022-01-01T12:00:00.000Z"
   })
   updated_at: string;
+
+  @ApiProperty({
+    description: "The date and time when the customer was deleted",
+    example: "2022-01-01T12:00:00.000Z"
+  })
+  deleted_at?: string | undefined;
 }
 
 export class CustomerPreviewResponseDTO implements CustomerPreviewDTO {
@@ -191,6 +197,12 @@ export class CustomerPreviewResponseDTO implements CustomerPreviewDTO {
     type: () => UserPreviewResponseDTO
   })
   user_created: UserPreviewDTO;
+
+  @ApiPropertyOptional({
+    description: "The date and time when the customer was deleted",
+    example: "2022-01-01T12:00:00.000Z"
+  })
+  deleted_at?: string | undefined;
 }
 
 export class CustomerBulkDeleteValidationDTO implements CustomerBulkDeleteRequestDTO {

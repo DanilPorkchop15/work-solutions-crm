@@ -150,6 +150,12 @@ export class UserResponseDTO implements UserDTO {
     example: "2022-01-01T12:00:00.000Z"
   })
   updated_at: string;
+
+  @ApiProperty({
+    description: "The date and time when the user was deleted",
+    example: "2022-01-01T12:00:00.000Z"
+  })
+  deleted_at?: string | undefined;
 }
 
 export class UserPreviewResponseDTO implements UserPreviewDTO {
@@ -182,6 +188,12 @@ export class UserPreviewResponseDTO implements UserPreviewDTO {
     example: "https://example.com/avatar.jpg"
   })
   avatar_url?: string | undefined;
+
+  @ApiPropertyOptional({
+    description: "The date and time when the user was deleted",
+    example: "2022-01-01T12:00:00.000Z"
+  })
+  deleted_at?: string | undefined;
 }
 
 export class UserChangePasswordValidationDTO implements UserChangePasswordRequestDTO {

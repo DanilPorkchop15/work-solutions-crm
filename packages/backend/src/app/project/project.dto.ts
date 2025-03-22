@@ -253,6 +253,13 @@ export class ProjectResponseDTO implements ProjectDTO {
     example: "2022-01-01T00:00:00.000Z"
   })
   updated_at: string;
+
+  @ApiProperty({
+    description: "The date when project was deleted",
+    example: "2022-01-01T00:00:00.000Z",
+    required: false
+  })
+  deleted_at?: string;
 }
 
 export class ProjectPreviewResponseDTO implements ProjectPreviewDTO {
@@ -310,6 +317,13 @@ export class ProjectPreviewResponseDTO implements ProjectPreviewDTO {
     type: () => [UserPreviewResponseDTO]
   })
   users_accountable: UserPreviewDTO[];
+
+  @ApiPropertyOptional({
+    description: "The date when project was deleted",
+    example: "2022-01-01T00:00:00.000Z",
+    required: false
+  })
+  deleted_at?: string;
 }
 
 export class ProjectBulkDeleteValidationDTO implements ProjectBulkDeleteRequestDTO {

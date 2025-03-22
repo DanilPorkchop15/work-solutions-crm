@@ -38,7 +38,7 @@ export class TokenResponseDTO implements TokenDTO {
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MmQ3YjUzMmQxZjJkMmE2MjIzYTNhMjEiLCJpYXQiOjE2NTQ3NzY2NjAsImV4cCI6MTY1NDc3NzI2MH0.OTI4YjIyYmI4NzU3MzM3MzgwNmU3MjQ2M2E4OWYyZjUxNDM1YzUxNjliNGU1YmY4MjRhYjUwMjcxNjU3MzA",
     description: "The access token that can be used to access protected routes"
   })
-  accessToken: string;
+  access_token: string;
 
   @ApiProperty({
     example:
@@ -146,6 +146,13 @@ export class UserWithPermissionsResponseDTO implements UserWithPermissionsDTO {
     required: true
   })
   updated_at: string;
+
+  @ApiPropertyOptional({
+    example: "2022-01-01T12:00:00.000Z",
+    description: "The date and time when the user was deleted",
+    required: false
+  })
+  deleted_at?: string | undefined;
 }
 
 export class LoginResponseDTO implements LoginDTO {
@@ -161,13 +168,5 @@ export class LoginResponseDTO implements LoginDTO {
     description: "The access token that can be used to access protected routes",
     required: true
   })
-  accessToken: string;
-
-  @ApiProperty({
-    example:
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MmQ3YjUzMmQxZjJkMmE2MjIzYTNhMjEiLCJpYXQiOjE2NTQ3NzY2NjAsImV4cCI6MTY1NDc4Mzg2MH0.ODliODUyZjU5MzE2YjM1YjY4MzU3OWM3NWI2ZjM0NjYzYzFlZDQxMjM1NmQ4ZjM3MjQxNjZjYzQ3MjE4YjY",
-    description: "The refresh token that can be used to obtain a new access token when the previous one expires",
-    required: true
-  })
-  refreshToken: string;
+  access_token: string;
 }

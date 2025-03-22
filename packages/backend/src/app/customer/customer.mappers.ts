@@ -1,3 +1,4 @@
+import { typeormDateToIsoString, typeormNullableDateToIsoString } from "@backend/common/typeorm-date-to-iso-string";
 import { CustomerDTO, CustomerPreviewDTO } from "@work-solutions-crm/libs/shared/customer/customer.dto";
 
 import { Customer } from "../../models/entities/customer.entity";
@@ -12,8 +13,9 @@ export function mapCustomerToDTO(customer: Customer): CustomerDTO {
     inn: customer.inn,
     website: customer.website,
     user_created: mapUserToPreviewDTO(customer.user_created),
-    created_at: customer.created_at.toISOString(),
-    updated_at: customer.updated_at.toISOString()
+    created_at: typeormDateToIsoString(customer.created_at),
+    updated_at: typeormDateToIsoString(customer.updated_at),
+    deleted_at: typeormNullableDateToIsoString(customer.deleted_at)
   };
 }
 
@@ -22,6 +24,7 @@ export function mapCustomerToPreviewDTO(customer: Customer): CustomerPreviewDTO 
     id: customer.customer_id,
     name: customer.name,
     user_created: mapUserToPreviewDTO(customer.user_created),
-    email: customer.email
+    email: customer.email,
+    deleted_at: typeormNullableDateToIsoString(customer.deleted_at)
   };
 }

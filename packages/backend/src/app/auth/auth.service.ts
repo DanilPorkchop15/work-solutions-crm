@@ -56,7 +56,7 @@ export class AuthService {
         ...userDTO,
         permissions
       },
-      accessToken: accessToken
+      access_token: accessToken
     };
   }
 

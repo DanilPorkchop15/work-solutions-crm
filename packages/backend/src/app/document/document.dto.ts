@@ -113,14 +113,21 @@ export class DocumentResponseDTO implements DocumentDTO {
     example: "2022-01-01T00:00:00.000Z",
     required: true
   })
-  readonly createdAt: string;
+  readonly created_at: string;
 
   @ApiProperty({
     description: "The date when the document was updated",
     example: "2022-01-01T00:00:00.000Z",
     required: true
   })
-  readonly updatedAt: string;
+  readonly updated_at: string;
+
+  @ApiPropertyOptional({
+    description: "The date when the document was deleted",
+    example: "2022-01-01T00:00:00.000Z",
+    required: false
+  })
+  readonly deleted_at?: string | undefined;
 }
 
 export class DocumentPreviewResponseDTO implements DocumentPreviewDTO {
@@ -150,14 +157,20 @@ export class DocumentPreviewResponseDTO implements DocumentPreviewDTO {
     example: "2022-01-01T00:00:00.000Z",
     required: true
   })
-  readonly createdAt: string;
+  readonly created_at: string;
 
   @ApiProperty({
     description: "The date when the document was updated",
     example: "2022-01-01T00:00:00.000Z",
     required: true
   })
-  readonly updatedAt: string;
+  readonly updated_at: string;
+
+  @ApiPropertyOptional({
+    description: "The date when the document was deleted",
+    example: "2022-01-01T00:00:00.000Z"
+  })
+  readonly deleted_at?: string | undefined;
 }
 
 export class DocumentBulkDeleteValidationDTO implements DocumentBulkDeleteRequestDTO {

@@ -1,3 +1,4 @@
+import { typeormDateToIsoString, typeormNullableDateToIsoString } from "@backend/common/typeorm-date-to-iso-string";
 import { UserCreateRequestDTO, UserUpdateRequestDTO } from "@work-solutions-crm/libs/shared/user/user.api";
 import { UserDTO, UserPreviewDTO } from "@work-solutions-crm/libs/shared/user/user.dto";
 import * as bcrypt from "bcryptjs";
@@ -11,7 +12,8 @@ export function mapUserToPreviewDTO(user: User): UserPreviewDTO {
     avatar_url: user.avatar_url,
     email: user.email,
     full_name: user.full_name,
-    position: user.position
+    position: user.position,
+    deleted_at: typeormNullableDateToIsoString(user.deleted_at)
   };
 }
 
@@ -23,8 +25,9 @@ export function mapUserToDTO(user: User): UserDTO {
     full_name: user.full_name,
     position: user.position,
     role: user.role,
-    created_at: user.created_at.toISOString(),
-    updated_at: user.updated_at.toISOString()
+    created_at: typeormDateToIsoString(user.created_at),
+    updated_at: typeormDateToIsoString(user.updated_at),
+    deleted_at: typeormNullableDateToIsoString(user.deleted_at)
   };
 }
 

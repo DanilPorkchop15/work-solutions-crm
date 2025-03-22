@@ -1,3 +1,4 @@
+import { typeormDateToIsoString, typeormNullableDateToIsoString } from "@backend/common/typeorm-date-to-iso-string";
 import { TaskLogDTO } from "@work-solutions-crm/libs/shared/task-log/task-log.dto";
 
 import { TaskLog } from "../../models/entities/task-log.entity";
@@ -11,6 +12,7 @@ export function mapTaskLogToDTO(taskLog: TaskLog): TaskLogDTO {
     comment: taskLog.comment ?? "",
     user: mapUserToPreviewDTO(taskLog.user),
     task: mapTaskToPreviewDTO(taskLog.task),
-    created_at: taskLog.created_at.toISOString()
+    created_at: typeormDateToIsoString(taskLog.created_at),
+    deleted_at: typeormNullableDateToIsoString(taskLog.deleted_at)
   };
 }

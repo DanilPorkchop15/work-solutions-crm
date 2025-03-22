@@ -25,7 +25,7 @@ export class AuthController implements AuthApi {
   @ApiOperation({ summary: "User login" })
   @ApiResponse({ status: 200, type: LoginResponseDTO })
   async login(@Body() dto: LoginValidationDTO, @Res({ passthrough: true }) res: Response): Promise<LoginDTO> {
-    const { accessToken, user }: LoginDTO = await this.authService.login(dto);
+    const { access_token, user }: LoginDTO = await this.authService.login(dto);
 
     const refreshToken: string = await this.authService.getRefreshToken(user.id);
 
@@ -36,7 +36,7 @@ export class AuthController implements AuthApi {
       maxAge: 7 * 24 * 60 * 60 * 1000 // 7 дней
     });
 
-    return { accessToken, user };
+    return { access_token, user };
   }
 
   @UseGuards(AuthGuard)
