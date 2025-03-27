@@ -4,9 +4,8 @@ import react from "@vitejs/plugin-react-swc";
 import { defineConfig } from "vite";
 import { esbuildDecorators } from "@anatine/esbuild-decorators";
 import { join } from "path";
+import tailwindcss from "@tailwindcss/vite";
 
-// @ts-ignore
-// @ts-ignore
 export default defineConfig({
   root: __dirname,
   cacheDir: "../../node_modules/.vite/packages/frontend",
@@ -50,7 +49,8 @@ export default defineConfig({
         swcOptions.jsc.parser.decorators = true;
       }
     }),
-    nxViteTsPaths()
+    nxViteTsPaths(),
+    tailwindcss()
   ],
   build: {
     outDir: "../../dist/packages/frontend",

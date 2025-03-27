@@ -31,6 +31,7 @@
     "@nestjs/serve-static": "^5.0.1",
     "@nestjs/swagger": "^7.4.2",
     "@nestjs/typeorm": "10.0.1",
+    "@tailwindcss/vite": "^4.0.17",
     "@types/lodash": "4.17.4",
     "@types/qs": "^6.9.18",
     "@vitejs/plugin-react-swc": "^3.8.1",
