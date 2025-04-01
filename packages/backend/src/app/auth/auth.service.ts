@@ -1,4 +1,10 @@
-import { ForbiddenException, Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException
+} from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { LoginRequestDTO } from "@work-solutions-crm/libs/shared/auth/auth.api";
 import { LoginDTO, PermissionDTO, TokenDTO } from "@work-solutions-crm/libs/shared/auth/auth.dto";
@@ -68,16 +74,22 @@ export class AuthService {
     }
   }
 
-  refresh(refreshToken: string): Tokens {
+  async refresh(refreshToken: string): Promise<Tokens> {
     try {
-      const user: User = this.jwtService.verify<User>(refreshToken);
+      const user: User | null = await this.usersService.findOneByRefreshToken(refreshToken);
 
-      if (!user || user.refresh_token !== refreshToken) {
-        throw new UnauthorizedException("Invalid refresh token");
+      if (!user?.refresh_token || !user.refreshed_at) {
+        throw new UnauthorizedException("User not found");
       }
 
-      const newAccessToken: string = this.jwtService.sign(toPlainObject(user), { expiresIn: "15m" });
-      return { accessToken: newAccessToken, refreshToken };
+      const newAccessToken = this.jwtService.sign(toPlainObject(user), { expiresIn: "15m" });
+
+      if (user.refreshed_at >= new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)) {
+        const newRefreshToken = this.jwtService.sign(toPlainObject(user), { expiresIn: "7d" });
+        const hashedRefreshToken: string = await this.usersService.updateRefreshToken(user.user_id, newRefreshToken);
+        return { accessToken: newAccessToken, refreshToken: hashedRefreshToken };
+      }
+      return { accessToken: newAccessToken, refreshToken: user.refresh_token };
     } catch (error) {
       throw new UnauthorizedException("Invalid refresh token");
     }
@@ -85,7 +97,11 @@ export class AuthService {
 
   async getRefreshToken(userId: string): Promise<string> {
     const user: User | null = await this.usersService.findOneById(userId);
-    if (!user?.refresh_token) throw new NotFoundException("Session   not found");
+    if (!user?.refresh_token) throw new NotFoundException("Session not found");
     return user.refresh_token;
+  }
+
+  async changePassword(userId: string, newPassword: string, oldPassword: string): Promise<void> {
+    return this.usersService.changePassword(userId, newPassword, oldPassword);
   }
 }

@@ -1,4 +1,4 @@
-import { UserWithPermissions } from "@frontend/entities/@common/user/interfaces";
+import { UserWithPermissions } from "../../@common/user/interfaces/domain";
 
 export interface LoginData {
   user: UserWithPermissions;

@@ -22,11 +22,7 @@ export function mountApp(): void {
 
   const AppInstance = withProviders(App);
 
-  ReactDOM.createRoot(root).render(
-    <React.StrictMode>
-      <AppInstance />
-    </React.StrictMode>
-  );
+  ReactDOM.createRoot(root).render(<AppInstance />);
 
   postInstallHooks.forEach(call);
 }

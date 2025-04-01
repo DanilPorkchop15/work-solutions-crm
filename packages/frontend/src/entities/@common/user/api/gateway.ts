@@ -8,10 +8,10 @@ import type {
   BulkCreateUserRequest,
   BulkDeleteUserRequest,
   BulkRestoreUserRequest,
-  ChangeUserPasswordRequest,
   ChangeUserRoleRequest,
   CreateUserRequest,
   DeleteUserRequest,
+  FindOneUserRequest,
   RestoreUserRequest,
   UpdateUserRequest,
   User,
@@ -27,6 +27,13 @@ export class UsersApi extends RequestManager implements UsersTransport {
       url: USERS_ROUTES.findAll(),
       serverDataDecoder: tableDecoder(userDecoder)
     })();
+  }
+
+  public async getUser(request: FindOneUserRequest): Promise<User> {
+    return this.createRequest({
+      url: USERS_ROUTES.findOne(request.urlParams.id),
+      serverDataDecoder: userDecoder
+    })(request);
   }
 
   public async createUser(request: CreateUserRequest): Promise<User> {
@@ -54,15 +61,8 @@ export class UsersApi extends RequestManager implements UsersTransport {
 
   public async bulkRestoreUser(request: BulkRestoreUserRequest): Promise<void> {
     return this.createRequest({
-      method: METHODS.POST,
-      url: USERS_ROUTES.bulkRestore()
-    })(request);
-  }
-
-  public async changeUserPassword(request: ChangeUserPasswordRequest): Promise<void> {
-    return this.createRequest({
       method: METHODS.PATCH,
-      url: USERS_ROUTES.changePassword()
+      url: USERS_ROUTES.bulkRestore()
     })(request);
   }
 
@@ -82,14 +82,14 @@ export class UsersApi extends RequestManager implements UsersTransport {
 
   public async restoreUser(request: RestoreUserRequest): Promise<void> {
     return this.createRequest({
-      method: METHODS.POST,
+      method: METHODS.PATCH,
       url: USERS_ROUTES.restore(request.urlParams.id)
     })(request);
   }
 
   public async updateUser(request: UpdateUserRequest): Promise<User> {
     return this.createRequest({
-      method: METHODS.PUT,
+      method: METHODS.PATCH,
       url: USERS_ROUTES.update(request.urlParams.id),
       serverDataDecoder: userDecoder
     })(request);

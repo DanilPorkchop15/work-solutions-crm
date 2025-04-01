@@ -1,19 +1,29 @@
 export class AppTitles {
-  public static getRootTitle = () => "WS CRM";
+  public static getRootTitle = () => "Work Solutions CRM";
 
-  public static getUsersTitle = () => "WS CRM: Пользователи";
+  public static getUsersTitle = () => "Пользователи";
 
-  public static getAuthTitle = () => "WS CRM: Авторизация";
+  public static getUserTitle = () => "Пользователь";
 
-  public static getProfileTitle = () => "WS CRM: Профиль";
+  public static getAuthTitle = () => "Авторизация";
 
-  public static getProjectsTitle = () => "WS CRM: Проекты";
+  public static getProfileTitle = () => "Профиль";
 
-  public static getTasksTitle = () => "WS CRM: Задачи";
+  public static getProjectsTitle = () => "Проекты";
 
-  public static getTaskTitle = () => "WS CRM: Задача";
+  public static getProjectTitle = () => "Проект";
 
-  public static getDocumentsTitle = () => "WS CRM: Документы";
+  public static getTasksTitle = () => "Задачи";
+
+  public static getTaskTitle = () => "Задача";
+
+  public static getDocumentsTitle = () => "Документы";
+
+  public static getDocumentTitle = () => "Документ";
+
+  public static getCustomersTitle = () => "Заказчики";
+
+  public static getCustomerTitle = () => "Заказчик";
 
   public static getNotFoundTitle = () => "WS CRM: 404";
 }

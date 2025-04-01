@@ -1,8 +1,8 @@
 import React from "react";
 import { useTitle } from "react-use";
 
-import { AppTitles } from "@frontend/shared/model/services";
-import { LoginFeature } from "@frontend/features/auth/login";
+import { LoginFeature } from "../../../../features/auth/login/index";
+import { AppTitles } from "../../../../shared/model/services/appTitles";
 
 function LoginPage() {
   useTitle(AppTitles.getAuthTitle());

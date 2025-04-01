@@ -9,8 +9,9 @@ import { CustomerDTO, CustomerPreviewDTO } from "@work-solutions-crm/libs/shared
 import { Repository } from "typeorm";
 
 import { Customer } from "../../models/entities/customer.entity";
+import { User } from "../../models/entities/user.entity";
 
-import { mapCustomerToDTO, mapCustomerToPreviewDTO } from "./customer.mappers";
+import { mapCustomerCreateRequestDTOToCustomer, mapCustomerToDTO, mapCustomerToPreviewDTO } from "./customer.mappers";
 
 @Injectable()
 export class CustomerService {
@@ -21,7 +22,8 @@ export class CustomerService {
 
   async findAll(): Promise<CustomerPreviewDTO[]> {
     const customers: Customer[] = await this.customerRepository.find({
-      relations: ["user_created"]
+      relations: ["user_created"],
+      withDeleted: true
     });
     return customers.map(mapCustomerToPreviewDTO);
   }
@@ -39,12 +41,11 @@ export class CustomerService {
     return mapCustomerToDTO(customer);
   }
 
-  async create(dto: CustomerCreateRequestDTO): Promise<Customer> {
-    const customer: Customer = this.customerRepository.create(dto);
-    return this.customerRepository.save(customer);
+  async create(dto: CustomerCreateRequestDTO, user: User): Promise<Customer> {
+    return this.customerRepository.save({ ...mapCustomerCreateRequestDTOToCustomer(dto), user_created: user });
   }
 
-  async update(customerId: string, dto: CustomerUpdateRequestDTO): Promise<void> {
+  async update(customerId: string, dto: CustomerUpdateRequestDTO, user: User): Promise<void> {
     const customer: Customer | null = await this.customerRepository.findOne({
       where: { customer_id: customerId }
     });
@@ -53,8 +54,8 @@ export class CustomerService {
       throw new Error("Customer not found");
     }
 
-    Object.assign(customer, dto);
-    await this.customerRepository.save(customer);
+    Object.assign(customer, mapCustomerCreateRequestDTOToCustomer(dto));
+    await this.customerRepository.save({ ...customer, user_created: user });
   }
 
   async delete(customerId: string): Promise<void> {

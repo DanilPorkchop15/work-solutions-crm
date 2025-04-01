@@ -11,7 +11,7 @@ export class ModelSyncWithUrl<TYPE extends object> implements BaseModel<TYPE> {
   constructor(
     private readonly _urlSearchParamNames: (keyof TYPE)[],
     private readonly _browserHistory: History,
-    private readonly _model: BaseModel<TYPE>,
+    private readonly _model: BaseModel<TYPE>
   ) {
     this._syncModelStateAndUrlSearchParams();
   }
@@ -56,7 +56,7 @@ export class ModelSyncWithUrl<TYPE extends object> implements BaseModel<TYPE> {
       this._model.set<KEY>(key, searchParams[key]);
     }
 
-    this._urlSearchParamNames.forEach((fieldName) => {
+    this._urlSearchParamNames.forEach(fieldName => {
       this._setUrlSearchParam(url, { fieldName, value: this._model.state[fieldName] });
     });
 

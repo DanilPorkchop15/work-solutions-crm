@@ -7,8 +7,8 @@ export class SortingParams<S extends string> extends Model<Sorting<S>> implement
   constructor(
     config: Sorting<S> = {
       orderBy: undefined,
-      isDescendingOrder: undefined,
-    },
+      isDescendingOrder: undefined
+    }
   ) {
     super(config);
   }

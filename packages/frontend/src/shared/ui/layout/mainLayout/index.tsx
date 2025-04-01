@@ -7,9 +7,16 @@ const theme: ThemeConfig = {
       bodyBg: "#F2F2F2",
       headerBg: "#F2F2F2",
       footerBg: "#F2F2F2",
-      siderBg: "#F2F2F2",
+      siderBg: "#F2F2F2"
     },
+    Tooltip: {
+      colorBgSpotlight: "#F2F2F2",
+      colorTextLightSolid: "rgb(70, 70, 70)"
+    }
   },
+  token: {
+    colorTextDisabled: "#D9D9D9"
+  }
 };
 
 interface MainLayoutProps {

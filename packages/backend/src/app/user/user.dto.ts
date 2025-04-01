@@ -1,8 +1,8 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
+import { AuthChangePasswordRequestDTO } from "@work-solutions-crm/libs/shared/auth/auth.api";
 import {
   UserBulkDeleteRequestDTO,
   UserBulkRestoreRequestDTO,
-  UserChangePasswordRequestDTO,
   UserChangeRoleRequestDTO,
   UserCreateRequestDTO,
   UserUpdateRequestDTO
@@ -196,7 +196,7 @@ export class UserPreviewResponseDTO implements UserPreviewDTO {
   deleted_at?: string | undefined;
 }
 
-export class UserChangePasswordValidationDTO implements UserChangePasswordRequestDTO {
+export class UserChangePasswordValidationDTO implements AuthChangePasswordRequestDTO {
   @ApiProperty({
     description: "The ID of the user",
     example: "c7d2ee27-0a5d-4c5d-a3ca-66d9b2b6c5a1"

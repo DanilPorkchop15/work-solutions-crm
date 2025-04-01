@@ -1,14 +1,15 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useAsyncFn } from "react-use";
+import { LoginRequestDTO } from "@work-solutions-crm/libs/shared/auth/auth.api";
 import { Button, Form, Input, theme, Typography } from "antd";
 
-import { validationRules } from "./config";
-import { AppRoutes } from "@frontend/shared/model/services";
-import { useInjectService } from "@frontend/shared/lib/useInjectService";
+import { translateError } from "../../../shared/api/config";
+import { useInjectService } from "../../../shared/lib/useInjectService";
+import { AppRoutes } from "../../../shared/model/services/appRoutes";
 import { AuthService } from "../service";
-import { translateError } from "@frontend/shared/api";
-import { LoginRequestDTO } from "@work-solutions-crm/libs/shared/auth/auth.api";
+
+import { validationRules } from "./config";
 
 export const LoginFeature = React.memo(function LoginForm() {
   const { token } = theme.useToken();

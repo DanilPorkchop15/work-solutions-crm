@@ -1,14 +1,13 @@
 import { inject, injectable, singleton } from "tsyringe";
 
-import { FilterParams } from "../../../shared/model/additionalRequestParams/filterParams";
-import { PaginationParams } from "../../../shared/model/additionalRequestParams/paginationParams";
-import { PathParams } from "../../../shared/model/additionalRequestParams/pathParams";
-import { SortingParams } from "../../../shared/model/additionalRequestParams/sortingParams";
-import { TableDto } from "../../../shared/model/interfaces/table";
-import { TableModule } from "../../../shared/model/tableModule";
-
-import { UsersApi } from "./api/gateway";
-import type { User } from "./interfaces";
+import { FilterParams } from "../../../../../shared/model/additionalRequestParams/filterParams";
+import { PaginationParams } from "../../../../../shared/model/additionalRequestParams/paginationParams";
+import { PathParams } from "../../../../../shared/model/additionalRequestParams/pathParams";
+import { SortingParams } from "../../../../../shared/model/additionalRequestParams/sortingParams";
+import { TableDto } from "../../../../../shared/model/interfaces/table";
+import { TableModule } from "../../../../../shared/model/tableModule";
+import { UsersApi } from "../../api/gateway";
+import type { User } from "../../interfaces";
 
 @injectable()
 export class UsersTableModule extends TableModule<User, never, never> {

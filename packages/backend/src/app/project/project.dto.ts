@@ -1,5 +1,3 @@
-import { CustomerPreviewResponseDTO } from "@backend/app/customer/customer.dto";
-import { UserPreviewResponseDTO } from "@backend/app/user/user.dto";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { CustomerPreviewDTO } from "@work-solutions-crm/libs/shared/customer/customer.dto";
 import {
@@ -12,8 +10,8 @@ import { ProjectDTO, ProjectPreviewDTO, ProjectStatus } from "@work-solutions-cr
 import { UserPreviewDTO } from "@work-solutions-crm/libs/shared/user/user.dto";
 import {
   IsArray,
-  IsDate,
   IsEnum,
+  IsISO8601,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -21,6 +19,9 @@ import {
   Length,
   ValidateNested
 } from "class-validator";
+
+import { CustomerPreviewResponseDTO } from "../customer/customer.dto";
+import { UserPreviewResponseDTO } from "../user/user.dto";
 
 export class UserAccountable {
   @IsString()
@@ -56,7 +57,7 @@ export class ProjectCreateValidationDTO implements ProjectCreateRequestDTO {
   })
   description?: string | undefined;
 
-  @IsDate()
+  @IsISO8601()
   @ApiProperty({
     description: "Project start date",
     example: "2022-01-01T00:00:00.000Z",
@@ -64,7 +65,7 @@ export class ProjectCreateValidationDTO implements ProjectCreateRequestDTO {
   })
   start_date: string;
 
-  @IsDate()
+  @IsISO8601()
   @ApiProperty({
     description: "Project end date",
     example: "2022-01-01T00:00:00.000Z",
@@ -133,7 +134,7 @@ export class ProjectUpdateValidationDTO implements ProjectUpdateRequestDTO {
   })
   description?: string;
 
-  @IsDate()
+  @IsISO8601()
   @IsOptional()
   @ApiPropertyOptional({
     description: "Project start date",
@@ -142,7 +143,7 @@ export class ProjectUpdateValidationDTO implements ProjectUpdateRequestDTO {
   })
   start_date?: string;
 
-  @IsDate()
+  @IsISO8601()
   @IsOptional()
   @ApiPropertyOptional({
     description: "Project end date",

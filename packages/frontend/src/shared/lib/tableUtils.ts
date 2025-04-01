@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import type { PaginationParams } from "@frontend/shared/model/additionalRequestParams";
-import type { UniqueEntity } from "@frontend/shared/model/interfaces";
 import { isArray } from "@worksolutions/utils";
 import type { TablePaginationConfig, TableProps } from "antd";
 import { equals, isNil } from "ramda";
 
+import { PaginationParams } from "../model/additionalRequestParams/paginationParams";
+import { UniqueEntity } from "../model/interfaces/entity";
 import type { TableModule } from "../model/tableModule";
 
 export function convertDataToTableDataSource<D extends UniqueEntity>(data: D[]): (D & { key: string })[] {

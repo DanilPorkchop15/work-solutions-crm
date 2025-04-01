@@ -1,6 +1,7 @@
-import type { TableDto } from "@frontend/shared/model/interfaces";
 import Decoder, { array, field, succeed } from "jsonous";
 import { assoc } from "ramda";
+
+import { TableDto } from "../../model/interfaces/table";
 
 export const tableDecoder: <T>(decoder: Decoder<T>) => Decoder<TableDto<T>> = <T>(
   decoder: Decoder<T>

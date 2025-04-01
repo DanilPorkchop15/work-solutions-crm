@@ -1,10 +1,10 @@
 import React, { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { useInjectService } from "@frontend/shared/lib/useInjectService";
-import { AppRoutes } from "@frontend/shared/model/services";
 import { useConfirmationModal } from "@worksolutions/antd-react-components";
 import { Button, Typography } from "antd";
 
+import { useInjectService } from "../../../shared/lib/useInjectService";
+import { AppRoutes } from "../../../shared/model/services/appRoutes";
 import { AuthService } from "../service";
 
 interface LogoutFeatureProps {
@@ -29,7 +29,7 @@ export const LogoutFeature: React.FC<LogoutFeatureProps> = React.memo(function L
       <ConfirmationDialog cancelText="Отменить" okText="Выйти" subtitle="Вы уверены, что хотите выйти?" title="Выйти" />
       {isButton ? (
         <Button danger type="primary" onClick={withConfirmation(logout)}>
-          Выйти
+          Выйти из системы
         </Button>
       ) : (
         <Typography.Text type="danger" onClick={withConfirmation(logout)}>

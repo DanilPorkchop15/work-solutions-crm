@@ -8,11 +8,12 @@ import {
   TeamOutlined,
   UserAddOutlined
 } from "@ant-design/icons";
-import { AppRoutes } from "@frontend/shared/model/services";
-import { CrmLogo } from "@frontend/shared/ui/crmLogo";
 import { string1 } from "@worksolutions/utils";
 import { Layout, Menu, type MenuProps, Row } from "antd";
 import { memoizeWith } from "ramda";
+
+import { AppRoutes } from "../../shared/model/services/appRoutes";
+import { CrmLogo } from "../../shared/ui/crmLogo/index";
 
 const menuItemRoutes: MenuProps["items"] = [
   {

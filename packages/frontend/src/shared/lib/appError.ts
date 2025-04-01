@@ -4,7 +4,7 @@ export type AppErrorValue = string | undefined;
 
 export class AppError {
   @observable
-  public message: string = "";
+  public message = "";
 
   @observable
   public errors: Record<string, AppErrorValue> = {};
@@ -62,6 +62,6 @@ export class AppError {
   };
 
   private _runErrorsObserver(): void {
-    this._errorsObservers.forEach((func) => func());
+    this._errorsObservers.forEach(func => func());
   }
 }

@@ -1,32 +1,24 @@
 import React from "react";
-import { useViewer } from "@frontend/entities/viewer";
-import { LogoutFeature } from "@frontend/features/auth/logout";
-import { Button, Flex, Typography } from "antd";
+import { Flex, Typography } from "antd";
 
-export const Profile = React.memo(function Profile() {
-  const viewer = useViewer();
+import { UserView } from "../../entities/@common/user/ui/index";
+import { useViewer } from "../../entities/viewer/hooks";
+import { ViewerModel } from "../../entities/viewer/model";
+import { LogoutFeature } from "../../features/auth/logout/index";
+import { UserUpdateFeature } from "../../features/user/update/index";
+
+export const ProfileWidget = React.memo(function Profile() {
+  const viewer: ViewerModel = useViewer();
 
   return (
     <>
-      <Typography.Title className="block mb-4" level={3}>
-        Редактирование профиля
-      </Typography.Title>
-      <Flex vertical justify="space-between" className="h-full">
-        <Flex className="mt-4 w-full">
-          <Flex vertical className="w-2/4">
-            <Flex vertical>
-              <Typography.Title level={5}>Имя</Typography.Title>
-              <Typography.Paragraph>{viewer.state.fullName}</Typography.Paragraph>
-            </Flex>
-            <Flex vertical>
-              <Typography.Title level={5}>Почта</Typography.Title>
-              <Typography.Paragraph>{viewer.state.email}</Typography.Paragraph>
-            </Flex>
-          </Flex>
-        </Flex>
-        <div>
-          <LogoutFeature isButton />
-        </div>
+      <Flex gap={36} style={{ marginBottom: 20 }} align="center">
+        <Typography.Title level={2}>Редактирование профиля</Typography.Title>
+        <LogoutFeature isButton />
+      </Flex>
+      <Flex vertical justify="space-between" gap={48} className="w-[50%]">
+        <UserView.Avatar user={viewer.state} size={250} shape="square" />
+        <UserUpdateFeature.Form />
       </Flex>
     </>
   );

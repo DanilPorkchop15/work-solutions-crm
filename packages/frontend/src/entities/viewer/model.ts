@@ -1,4 +1,4 @@
-import { Model } from "@frontend/shared/model/abstractModel";
+import { Model } from "../../shared/model/abstractModel";
 
 import type { Viewer } from "./interfaces";
 

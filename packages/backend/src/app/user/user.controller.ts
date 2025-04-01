@@ -1,27 +1,27 @@
-import { AuthGuard } from "@backend/app/auth/auth.guard";
-import { LoggerService } from "@backend/app/logger/logger.service";
-import { LogType } from "@backend/app/logger/logger.types";
-import { CaslGuard } from "@backend/app/permission/casl.guard";
-import {
-  UserBulkDeleteValidationDTO,
-  UserBulkRestoreValidationDTO,
-  UserChangePasswordValidationDTO,
-  UserChangeRoleValidationDTO,
-  UserCreateValidationDTO,
-  UserPreviewResponseDTO,
-  UserResponseDTO,
-  UserUpdateValidationDTO
-} from "@backend/app/user/user.dto";
-import { CheckPolicies } from "@backend/decorators/check-policies.decorator";
-import { CurrentUser } from "@backend/decorators/current-user.decorator";
-import { Logger } from "@backend/decorators/logger.decorator";
-import { User } from "@backend/models/entities/user.entity";
-import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { Action, Subject } from "@work-solutions-crm/libs/shared/auth/auth.dto";
 import { UserApi, USERS_ROUTES } from "@work-solutions-crm/libs/shared/user/user.api";
-import { UserDTO, UserPreviewDTO } from "@work-solutions-crm/libs/shared/user/user.dto";
+import { UserDTO } from "@work-solutions-crm/libs/shared/user/user.dto";
 
+import { CheckPolicies } from "../../decorators/check-policies.decorator";
+import { CurrentUser } from "../../decorators/current-user.decorator";
+import { Logger } from "../../decorators/logger.decorator";
+import { User } from "../../models/entities/user.entity";
+import { AuthGuard } from "../auth/auth.guard";
+import { LoggerService } from "../logger/logger.service";
+import { LogType } from "../logger/logger.types";
+import { CaslGuard } from "../permission/casl.guard";
+
+import {
+  UserBulkDeleteValidationDTO,
+  UserBulkRestoreValidationDTO,
+  UserChangeRoleValidationDTO,
+  UserCreateValidationDTO,
+  UserResponseDTO,
+  UserUpdateValidationDTO
+} from "./user.dto";
+import { mapUserToDTO } from "./user.mappers";
 import { UserService } from "./user.service";
 
 @ApiTags("Users")
@@ -41,6 +41,20 @@ export class UserController implements UserApi {
   @Logger("findAll", "users")
   async findAll(): Promise<UserDTO[]> {
     return this.usersService.findAll();
+  }
+
+  @UseGuards(AuthGuard, CaslGuard)
+  @CheckPolicies(ability => ability.can(Action.READ, Subject.USERS))
+  @Get(USERS_ROUTES.findOne(":userId"))
+  @ApiOperation({ summary: "Retrieve a user by id" })
+  @ApiResponse({ status: 200, type: UserResponseDTO })
+  @Logger("findOne", "user")
+  async findOne(@Param("userId") userId: string): Promise<UserDTO> {
+    const user: User | null = await this.usersService.findOneById(userId);
+    if (!user) {
+      throw new NotFoundException("User not found");
+    }
+    return mapUserToDTO(user);
   }
 
   @UseGuards(AuthGuard, CaslGuard)
@@ -131,15 +145,5 @@ export class UserController implements UserApi {
   async changeRole(@Body() dto: UserChangeRoleValidationDTO): Promise<void> {
     await this.usersService.changeRole(dto.user_id, dto.role);
     await this.loggerService.logByType(LogType.USER, "role changed", "user", { user_id: dto.user_id });
-  }
-
-  @Patch(USERS_ROUTES.changePassword())
-  @ApiOperation({ summary: "Change user password" })
-  @ApiBody({ type: UserChangePasswordValidationDTO })
-  @ApiResponse({ status: 204 })
-  @UseGuards(AuthGuard)
-  async changePassword(@Body() dto: UserChangePasswordValidationDTO, @CurrentUser() user: User): Promise<void> {
-    await this.usersService.changePassword(user.user_id, dto.new_password, dto.old_password);
-    return this.loggerService.logByType(LogType.USER, "password changed", "user", { user_id: user.user_id });
   }
 }

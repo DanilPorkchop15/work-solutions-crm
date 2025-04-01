@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { formatToLocalDate } from "@frontend/shared/lib/isoDateUtils";
-import { AppRoutes } from "@frontend/shared/model/services";
 import { Role } from "@work-solutions-crm/libs/shared/user/user.dto";
 import { Table, type TableProps, Typography } from "antd";
 
+import { formatToLocalDate } from "../../../../shared/lib/isoDateUtils";
+import { AppRoutes } from "../../../../shared/model/services/appRoutes";
 import { User } from "../interfaces";
 
 import { UserView } from "./index";
@@ -52,15 +52,14 @@ const columns: TableProps<User>["columns"] = [
     title: "Дата создания",
     dataIndex: "createdAt",
     key: "createdAt",
-    sorter: true,
-    defaultSortOrder: "ascend",
+    sorter: (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
     render: (date: ISO) => <Typography.Text>{formatToLocalDate(date)}</Typography.Text>
   },
   {
     title: "Дата обновления",
     dataIndex: "updatedAt",
     key: "updatedAt",
-    sorter: true,
+    sorter: (a, b) => new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime(),
     render: (date: ISO) => <Typography.Text>{formatToLocalDate(date)}</Typography.Text>
   },
   {

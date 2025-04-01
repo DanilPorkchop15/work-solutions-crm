@@ -27,7 +27,7 @@ export class UserService {
   ) {}
 
   async findAll(): Promise<UserDTO[]> {
-    const users: User[] = await this.userRepository.find();
+    const users: User[] = await this.userRepository.find({ withDeleted: true });
     return users.map(mapUserToDTO);
   }
 
@@ -40,7 +40,15 @@ export class UserService {
   }
 
   async findOneById(id: string): Promise<User | null> {
-    const user: User | null = await this.userRepository.findOne({ where: { user_id: id } });
+    const user: User | null = await this.userRepository.findOne({ where: { user_id: id }, withDeleted: true });
+    if (!user) {
+      return null;
+    }
+    return user;
+  }
+
+  async findOneByRefreshToken(refreshToken: string): Promise<User | null> {
+    const user: User | null = await this.userRepository.findOne({ where: { refresh_token: refreshToken } });
     if (!user) {
       return null;
     }
@@ -82,9 +90,10 @@ export class UserService {
     await this.userRepository.restore(userId);
   }
 
-  async updateRefreshToken(userId: string, refreshToken: string): Promise<void> {
+  async updateRefreshToken(userId: string, refreshToken: string): Promise<string> {
     const hashedToken: string = await bcrypt.hash(refreshToken, 10);
-    await this.userRepository.update(userId, { refresh_token: hashedToken });
+    await this.userRepository.update(userId, { refresh_token: hashedToken, refreshed_at: new Date() });
+    return hashedToken;
   }
 
   async changePassword(userId: string, newPassword: string, oldPassword: string): Promise<void> {

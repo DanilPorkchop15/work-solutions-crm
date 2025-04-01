@@ -1,11 +1,11 @@
 import React from "react";
-import { observer } from "mobx-react-lite";
 import { Avatar, type AvatarProps } from "antd";
+import { observer } from "mobx-react-lite";
 
-import type { User } from "../interfaces";
+import type { User, UserPreview } from "../interfaces";
 
 interface UserAvatarProps extends AvatarProps {
-  user: User;
+  user: UserPreview | User;
 }
 
 export const UserAvatar = observer(function UserAvatar({ user, ...props }: UserAvatarProps) {

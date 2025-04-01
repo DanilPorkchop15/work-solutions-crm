@@ -24,13 +24,9 @@ export type UserChangeRoleRequestDTO = {
   role: Role;
 };
 
-export type UserChangePasswordRequestDTO = {
-  old_password: string;
-  new_password: string;
-};
-
 export interface UserApi {
   findAll: () => Promise<UserDTO[]>;
+  findOne: (userId: string) => Promise<UserDTO>;
   create: (dto: UserCreateRequestDTO, ...omitted: never) => Promise<UserDTO>;
   update: (userId: string, dto: UserUpdateRequestDTO, ...omitted: never) => Promise<UserDTO>;
   delete: (userId: string, ...omitted: never) => Promise<void>;
@@ -39,11 +35,11 @@ export interface UserApi {
   bulkDelete: (dto: UserBulkDeleteRequestDTO, ...omitted: never) => Promise<void>;
   bulkRestore: (dto: UserBulkRestoreRequestDTO, ...omitted: never) => Promise<void>;
   changeRole: (dto: UserChangeRoleRequestDTO, ...omitted: never) => Promise<void>;
-  changePassword: (dto: UserChangePasswordRequestDTO, ...omitted: never) => Promise<void>;
 }
 
 export const USERS_ROUTES: APIRoutes<UserApi> = {
   findAll: () => "/users",
+  findOne: (userId: string) => `/users/${userId}`,
   create: () => "/users",
   update: (userId: string) => `/users/${userId}`,
   delete: (userId: string) => `/users/${userId}`,
@@ -51,6 +47,5 @@ export const USERS_ROUTES: APIRoutes<UserApi> = {
   bulkCreate: () => "/users/bulk-create",
   bulkDelete: () => "/user/bulk-delete",
   bulkRestore: () => "/user/bulk-restore",
-  changeRole: () => "/user/role",
-  changePassword: () => "/user/password "
+  changeRole: () => "/user/role"
 };

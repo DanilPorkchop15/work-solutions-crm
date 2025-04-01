@@ -1,6 +1,7 @@
-import type { UniqueEntity } from "@frontend/shared/model/interfaces";
 import { Action, Subject } from "@work-solutions-crm/libs/shared/auth/auth.dto";
 import { Role } from "@work-solutions-crm/libs/shared/user/user.dto";
+
+import { UniqueEntity } from "../../../../shared/model/interfaces/entity";
 
 export interface User extends UserPreview {
   role: Role;

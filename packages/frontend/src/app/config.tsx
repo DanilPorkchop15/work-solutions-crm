@@ -1,11 +1,11 @@
 import { createBrowserRouter, Outlet } from "react-router-dom";
-import { Sidebar } from "@frontend/widgets/sidebar";
 import { PageSpin } from "@worksolutions/antd-react-components";
 
 import { ViewerProvider } from "../entities/viewer/config";
 import { AppRoutes } from "../shared/model/services/appRoutes";
 import { Layout } from "../shared/ui/layout/index";
 import { Header, HeaderProvider } from "../widgets/header/index";
+import { Sidebar } from "../widgets/sidebar/index";
 
 export const browserRouter = createBrowserRouter([
   {
@@ -32,23 +32,39 @@ export const browserRouter = createBrowserRouter([
       },
       {
         path: AppRoutes.getUsersUrl(),
-        lazy: async () => import("@frontend/pages/user/root")
+        lazy: async () => import("@frontend/pages/user/root"),
+        children: [
+          {
+            path: AppRoutes.getCreateUserUrl(),
+            lazy: async () => import("@frontend/pages/user/create")
+          },
+          {
+            path: AppRoutes.getUpdateUserUrl(),
+            lazy: async () => import("@frontend/pages/user/update")
+          }
+        ]
       },
       {
         path: AppRoutes.getUserUrl(),
-        element: <PageSpin />
-      },
-      {
-        path: AppRoutes.getCreateUserUrl(),
-        element: <PageSpin />
-      },
-      {
-        path: AppRoutes.getUpdateUserUrl(),
-        element: <PageSpin />
+        lazy: async () => import("@frontend/pages/user/details")
       },
       {
         path: AppRoutes.getProjectsUrl(),
-        element: <PageSpin />
+        lazy: async () => import("@frontend/pages/project/root"),
+        children: [
+          {
+            path: AppRoutes.getCreateProjectUrl(),
+            lazy: async () => import("@frontend/pages/project/create")
+          },
+          {
+            path: AppRoutes.getUpdateProjectUrl(),
+            lazy: async () => import("@frontend/pages/project/update")
+          }
+        ]
+      },
+      {
+        path: AppRoutes.getProjectUrl(),
+        lazy: async () => import("@frontend/pages/project/details")
       },
       {
         path: AppRoutes.getTasksUrl(),
@@ -68,11 +84,21 @@ export const browserRouter = createBrowserRouter([
       },
       {
         path: AppRoutes.getCustomersUrl(),
-        element: <PageSpin />
+        lazy: async () => import("@frontend/pages/customer/root"),
+        children: [
+          {
+            path: AppRoutes.getCreateCustomerUrl(),
+            lazy: async () => import("@frontend/pages/customer/create")
+          },
+          {
+            path: AppRoutes.getUpdateCustomerUrl(),
+            lazy: async () => import("@frontend/pages/customer/update")
+          }
+        ]
       },
       {
         path: AppRoutes.getCustomerUrl(),
-        element: <PageSpin />
+        lazy: async () => import("@frontend/pages/customer/details")
       }
     ]
   },

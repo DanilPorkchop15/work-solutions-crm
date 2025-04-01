@@ -13,4 +13,4 @@ export interface CustomerDTO {
   deleted_at?: string;
 }
 
-export type CustomerPreviewDTO = Pick<CustomerDTO, "id" | "name" | "user_created" | "email" | "deleted_at">;
+export type CustomerPreviewDTO = Omit<CustomerDTO, "phone" | "inn" | "website">;

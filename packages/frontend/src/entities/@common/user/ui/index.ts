@@ -1,9 +1,11 @@
 import { UserAvatar } from "./avatar";
-import { UserListItemView } from "./listItem";
+import { UserPreviewTooltip } from "./preview";
+import { UserSelectView } from "./selectView";
 import { UsersTableView } from "./tableView";
 
 export const UserView = {
   Table: UsersTableView,
   Avatar: UserAvatar,
-  ListItem: UserListItemView
+  Select: UserSelectView,
+  Preview: UserPreviewTooltip
 };

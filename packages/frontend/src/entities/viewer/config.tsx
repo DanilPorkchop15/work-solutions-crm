@@ -3,12 +3,12 @@ import { ErrorBoundary } from "react-error-boundary";
 import { Navigate } from "react-router-dom";
 import { useAsync } from "react-use";
 import { PageSpin } from "@worksolutions/antd-react-components";
+import { container } from "tsyringe";
 
-import { AppRoutes } from "@frontend/shared/model/services";
+import { useInjectService } from "../../shared/lib/useInjectService";
+import { AppRoutes } from "../../shared/model/services/appRoutes";
 
 import { ViewerService } from "./service";
-import { useInjectService } from "@frontend/shared/lib/useInjectService";
-import { container } from "tsyringe";
 
 export const ViewerProvider = React.memo(function ViewerProvider({ children }: { children: React.ReactNode }) {
   const viewerService: ViewerService = container.resolve(ViewerService);

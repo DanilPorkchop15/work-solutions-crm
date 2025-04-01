@@ -1,12 +1,13 @@
 import React, { memo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { UserView } from "@frontend/entities/@common/user";
-import { useViewer } from "@frontend/entities/viewer";
-import { LogoutFeature } from "@frontend/features/auth/logout";
-import { AppRoutes } from "@frontend/shared/model/services";
-import { CrmLogo } from "@frontend/shared/ui/crmLogo";
 import { Dropdown, type MenuProps, Typography } from "antd";
 import { observer } from "mobx-react-lite";
+
+import { UserView } from "../../entities/@common/user/ui/index";
+import { useViewer } from "../../entities/viewer/hooks";
+import { LogoutFeature } from "../../features/auth/logout/index";
+import { AppRoutes } from "../../shared/model/services/appRoutes";
+import { CrmLogo } from "../../shared/ui/crmLogo/index";
 
 import { useHeaderContext } from "./config";
 
@@ -18,7 +19,13 @@ const UserWidget = observer(function UserWidget() {
   const userWidgetItems: MenuProps["items"] = React.useMemo(
     () => [
       {
-        label: <Typography.Text onClick={() => navigate(AppRoutes.getProfileUrl())}>Профиль</Typography.Text>,
+        label: (
+          <Typography.Text
+            onClick={() => navigate(AppRoutes.getProfileUrl(false, viewer.state.id), { relative: "path" })}
+          >
+            Профиль
+          </Typography.Text>
+        ),
         key: "0"
       },
       {

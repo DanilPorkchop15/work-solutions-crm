@@ -1,4 +1,4 @@
-import type { Endpoint } from "@frontend/shared/model/interfaces";
+import { Endpoint } from "../../../shared/model/interfaces/transport";
 
 import type { Viewer } from "./domain";
 

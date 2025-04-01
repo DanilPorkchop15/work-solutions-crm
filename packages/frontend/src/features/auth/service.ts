@@ -1,5 +1,5 @@
 import { AuthApi, LoginData } from "@frontend/entities/auth";
-import { LoginRequestDTO } from "@work-solutions-crm/libs/shared/auth/auth.api";
+import { AuthChangePasswordRequestDTO, LoginRequestDTO } from "@work-solutions-crm/libs/shared/auth/auth.api";
 import { inject, singleton } from "tsyringe";
 
 import { ViewerService } from "../../entities/viewer/service";
@@ -22,5 +22,9 @@ export class AuthService {
     await this._api.logoutRequest();
     this._cookiesStore.remove("accessToken");
     this._viewerService.logout();
+  }
+
+  public async changePassword(dto: AuthChangePasswordRequestDTO): Promise<void> {
+    return this._api.changePasswordRequest({ body: dto });
   }
 }

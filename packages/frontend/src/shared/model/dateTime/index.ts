@@ -16,7 +16,7 @@ export type {
   MonthNumbers,
   QuarterNumbers,
   SecondNumbers,
-  Zone,
+  Zone
 } from "luxon";
 
 export type DateTimeObject = DateTime;
@@ -50,7 +50,7 @@ const KNOWN_FORMATTING_KEYS = [
   "DATETIME_SHORT_WITH_SECONDS",
   "DATETIME_MED_WITH_SECONDS",
   "DATETIME_FULL_WITH_SECONDS",
-  "DATETIME_HUGE_WITH_SECONDS",
+  "DATETIME_HUGE_WITH_SECONDS"
 ] as const;
 
 export const DateTimeFormat = pick(KNOWN_FORMATTING_KEYS, DateTime);
@@ -58,6 +58,7 @@ export const DateTimeFormat = pick(KNOWN_FORMATTING_KEYS, DateTime);
 /* eslint-disable @typescript-eslint/naming-convention, @typescript-eslint/typedef */
 export class SystemClock {
   public static UTCZone: DateTimeZone = "utc";
+
   public static LocalZone: DateTimeZone = "local";
 
   public static DateTime = DateTime;

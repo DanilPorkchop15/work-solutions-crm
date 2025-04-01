@@ -1,7 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { AppRoutes } from "@frontend/shared/model/services";
 import { Col, Layout as AntdLayout, Row, Space, theme, Typography } from "antd";
+
+import { AppRoutes } from "../../../../model/services/appRoutes";
 
 interface AuthLayoutProps {
   content: React.ReactNode;
