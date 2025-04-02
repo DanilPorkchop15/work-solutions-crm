@@ -5,9 +5,6 @@ export class AddDeletedAtToLogs1743370641623 implements MigrationInterface {
     await queryRunner.query(`
         ALTER TABLE "customer_logs" ADD COLUMN "deleted_at" TIMESTAMP;
         ALTER TABLE "project_logs" ADD COLUMN "deleted_at" TIMESTAMP;
-        ALTER TABLE "task_logs" ADD COLUMN "deleted_at" TIMESTAMP;
-        ALTER TABLE "user_logs" ADD COLUMN "deleted_at" TIMESTAMP;
-        ALTER TABLE "document_logs" ADD COLUMN "deleted_at" TIMESTAMP;
       `);
   }
 
