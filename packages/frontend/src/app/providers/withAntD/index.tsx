@@ -1,7 +1,9 @@
 import React from "react";
 import { antdServices } from "@frontend/shared/model/services";
+import { ThemeProvider, useTheme } from "@frontend/shared/ui/theme";
+import { darkTheme } from "@frontend/shared/ui/theme/config";
 import { BreakpointProvider, theme } from "@worksolutions/antd-react-components";
-import { App as AntdApp, ConfigProvider } from "antd";
+import { App as AntdApp, ConfigProvider, theme as antdTheme } from "antd";
 
 import type { AppProvider } from "../types";
 
@@ -14,16 +16,26 @@ const AntdServicesInitializer = React.memo(function AppServicesInitializer() {
   return null;
 });
 
+function AntDProvider({ App }: { App: React.FC }) {
+  const { theme: algorithm } = useTheme();
+
+  return (
+    <ConfigProvider theme={algorithm === "dark" ? darkTheme : theme}>
+      <BreakpointProvider>
+        <AntdApp>
+          <AntdServicesInitializer />
+          <App />
+        </AntdApp>
+      </BreakpointProvider>
+    </ConfigProvider>
+  );
+}
+
 export const withAntD: AppProvider = App =>
-  function AntDProvider() {
+  function AppWithAntD() {
     return (
-      <ConfigProvider theme={theme}>
-        <BreakpointProvider>
-          <AntdApp>
-            <AntdServicesInitializer />
-            <App />
-          </AntdApp>
-        </BreakpointProvider>
-      </ConfigProvider>
+      <ThemeProvider>
+        <AntDProvider App={App} />
+      </ThemeProvider>
     );
   };

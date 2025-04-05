@@ -21,9 +21,10 @@ function DocumentsRootPage() {
       <DocumentsTableModuleProvider>
         <Flex vertical gap={12}>
           <div>
-            <DocumentCreateFeature.Button />
+            <DocumentCreateFeature.Button size="large" type="primary" />
           </div>
           <DocumentsTableWidget
+            showSearch
             selectedRowColumnTitleOptions={(documents: DocumentPreview[], onSuccess?: () => Promise<void>) => (
               <Flex gap={5} justify="center">
                 <DocumentBulkDeleteFeature.Icon documents={documents} onSuccess={onSuccess} />

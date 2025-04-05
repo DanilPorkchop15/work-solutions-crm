@@ -21,9 +21,10 @@ function ProjectsRootPage() {
       <ProjectsTableModuleProvider>
         <Flex vertical gap={12}>
           <div>
-            <ProjectCreateFeature.Button />
+            <ProjectCreateFeature.Button size="large" type="primary" />
           </div>
           <ProjectsTableWidget
+            showSearch
             selectedRowColumnTitleOptions={(projects: ProjectPreview[], onSuccess?: () => Promise<void>) => (
               <Flex gap={5} justify="center">
                 <ProjectBulkDeleteFeature.Icon projects={projects} onSuccess={onSuccess} />

@@ -1,20 +1,20 @@
 import React from "react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { UserCreateModal } from "@frontend/features/user/forms";
-import { Button } from "antd";
+import { Button, ButtonProps } from "antd";
 
 import { AppRoutes } from "../../../shared/model/services/appRoutes";
 
-export const UserCreateButton = React.memo(function CreateTariffFeature() {
+export const UserCreateButton = React.memo(function CreateUserFeature(props: ButtonProps) {
   const navigate: NavigateFunction = useNavigate();
 
   return (
     <Button
       size="large"
-      type="primary"
       onClick={() => {
-        navigate(AppRoutes.getCreateUserUrl(), { relative: "path" });
+        navigate(AppRoutes.getCreateUserUrl(true), { relative: "path" });
       }}
+      {...props}
     >
       Создать пользователя
     </Button>

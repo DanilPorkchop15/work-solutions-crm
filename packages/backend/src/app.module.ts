@@ -1,3 +1,4 @@
+import { StatsModule } from "@backend/app/stats/stats.module";
 import { Module } from "@nestjs/common";
 import { EventEmitterModule } from "@nestjs/event-emitter";
 import { ServeStaticModule } from "@nestjs/serve-static";
@@ -47,6 +48,7 @@ import { entitiesAndMigrations } from "./app.migrations";
     TaskModule,
     TaskCommentModule,
     TaskLogModule,
+    StatsModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

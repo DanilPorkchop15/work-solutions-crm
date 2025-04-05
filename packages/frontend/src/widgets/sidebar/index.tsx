@@ -37,7 +37,7 @@ const menuItemRoutes: MenuProps["items"] = [
     icon: <BookOutlined />
   },
   {
-    key: AppRoutes.getUsersUrl(),
+    key: AppRoutes.getUsersUrl(true),
     label: <Link to={AppRoutes.getUsersUrl()}>Пользователи</Link>,
     icon: <UserAddOutlined />
   }

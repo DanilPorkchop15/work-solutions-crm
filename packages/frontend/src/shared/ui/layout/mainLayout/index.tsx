@@ -1,4 +1,6 @@
 import React from "react";
+import { useTheme } from "@frontend/shared/ui/theme";
+import { darkTheme } from "@frontend/shared/ui/theme/config";
 import { Col, ConfigProvider, Layout, Row, theme as antdTheme, type ThemeConfig } from "antd";
 
 const theme: ThemeConfig = {
@@ -32,8 +34,10 @@ interface MainLayoutProps {
 export const MainLayout = React.memo(function MainLayout({ sidebar, header, content }: MainLayoutProps) {
   const { token } = antdTheme.useToken();
 
+  const { theme: algorithm } = useTheme();
+
   return (
-    <ConfigProvider theme={theme}>
+    <ConfigProvider theme={algorithm === "dark" ? darkTheme : theme}>
       <Layout className="h-full w-full block">
         <Row className="w-full h-full flex-nowrap">
           {sidebar}

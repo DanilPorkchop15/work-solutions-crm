@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAsyncFn } from "react-use";
-import { ExclamationCircleOutlined, InfoCircleOutlined, UploadOutlined } from "@ant-design/icons";
+import {
+  DownCircleOutlined,
+  ExclamationCircleOutlined,
+  ImportOutlined,
+  InfoCircleOutlined,
+  UploadOutlined
+} from "@ant-design/icons";
 import { AntdServices } from "@frontend/shared/model/services";
 import { Role } from "@work-solutions-crm/libs/shared/user/user.dto";
 import { Button, ButtonProps, Flex, Input, Modal, Select, Table, Tooltip, Typography, Upload } from "antd";
@@ -333,10 +339,9 @@ const UserImportButton = React.memo(function UserImportButton(props: ButtonProps
 
   return (
     <Button
-      type="primary"
       size="large"
-      onClick={() => navigate(AppRoutes.getUserImportUrl())}
-      icon={<UploadOutlined />}
+      onClick={() => navigate(AppRoutes.getUserImportUrl(true))}
+      icon={<ImportOutlined />}
       {...props}
     >
       Импорт пользователей

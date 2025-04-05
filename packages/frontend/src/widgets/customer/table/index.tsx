@@ -1,13 +1,12 @@
 import React from "react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { useAsyncFn } from "react-use";
-import { DocumentPreview } from "@frontend/entities/document";
+import { DeleteFilled } from "@ant-design/icons";
 import { paginationLocale, tableLocale } from "@worksolutions/antd-react-components";
-import { Flex, Input, Row, type TableProps } from "antd";
+import { Flex, Input, Row, Switch, type TableProps } from "antd";
 import { observer } from "mobx-react-lite";
 
 import {
-  Customer,
   CustomerPreview,
   CustomersTableModule,
   CustomerView,
@@ -19,12 +18,15 @@ import { CustomerUpdateFeature } from "../../../features/customer/update";
 import { convertDataToTableDataSource, useLocalTableOnChange } from "../../../shared/lib/tableUtils";
 import { AppRoutes } from "../../../shared/model/services";
 
-interface CustomersTableWidgetProps extends TableProps<Customer> {
+interface CustomersTableWidgetProps extends TableProps<CustomerPreview> {
   selectedRowColumnTitleOptions?: (customers: CustomerPreview[], onSuccess?: () => Promise<void>) => React.ReactNode;
+  showSearch?: boolean;
 }
 
 export const CustomersTableWidget: React.FC<CustomersTableWidgetProps> = observer(function CustomersTableWidget({
-  selectedRowColumnTitleOptions
+  selectedRowColumnTitleOptions,
+  showSearch,
+  ...props
 }: CustomersTableWidgetProps) {
   const customersTableModule: CustomersTableModule = useCustomersTableModule();
   const { rows } = customersTableModule;
@@ -38,8 +40,12 @@ export const CustomersTableWidget: React.FC<CustomersTableWidgetProps> = observe
 
   const [searchValue, setSearchValue] = React.useState("");
 
-  const applySearch: (data: CustomerPreview[]) => CustomerPreview[] = (data: CustomerPreview[]) =>
-    data.filter(project => project.name.toLowerCase().includes(searchValue.toLowerCase()));
+  const [showDeleted, setShowDeleted] = React.useState(false);
+
+  const applySearchAndFilter: (data: CustomerPreview[]) => CustomerPreview[] = (data: CustomerPreview[]) =>
+    data
+      .filter(item => item.name.toLowerCase().includes(searchValue.toLowerCase()))
+      .filter(item => showDeleted || item.deletedAt === null);
 
   React.useEffect(() => {
     void loadFn();
@@ -66,8 +72,18 @@ export const CustomersTableWidget: React.FC<CustomersTableWidgetProps> = observe
   );
 
   return (
-    <Flex vertical gap={4}>
-      <Input value={searchValue} onChange={e => setSearchValue(e.target.value)} placeholder="Поиск по названию" />
+    <Flex vertical gap={12}>
+      {showSearch && (
+        <Flex gap={12} align="center">
+          <Input value={searchValue} onChange={e => setSearchValue(e.target.value)} placeholder="Поиск по названию" />
+          <Switch
+            checked={showDeleted}
+            onChange={setShowDeleted}
+            unCheckedChildren={<DeleteFilled style={{ color: "salmon" }} />}
+            size="default"
+          />
+        </Flex>
+      )}
       <CustomerView.Table
         virtual
         columns={extraColumns}
@@ -76,7 +92,7 @@ export const CustomersTableWidget: React.FC<CustomersTableWidgetProps> = observe
             onDoubleClick: () => navigate(AppRoutes.getCustomerUrl(true, record.id))
           };
         }}
-        dataSource={convertDataToTableDataSource(data)}
+        dataSource={convertDataToTableDataSource(applySearchAndFilter(data))}
         loading={loading}
         rowClassName={record => (record.deletedAt === null ? "" : "line-through")}
         locale={tableLocale}
@@ -86,7 +102,7 @@ export const CustomersTableWidget: React.FC<CustomersTableWidgetProps> = observe
           showQuickJumper: true,
           responsive: true,
           showLessItems: true,
-          total: data.length,
+          total: applySearchAndFilter(data).length,
           current: currentPage,
           pageSize: pageSize
         }}
@@ -98,6 +114,7 @@ export const CustomersTableWidget: React.FC<CustomersTableWidgetProps> = observe
           selectedRowKeys: selectedRows.map(customer => customer.id),
           columnTitle: selectedRowColumnTitleOptions?.(selectedRows, loadFn)
         }}
+        {...props}
       />
     </Flex>
   );

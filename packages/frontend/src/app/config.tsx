@@ -24,7 +24,7 @@ export const browserRouter = createBrowserRouter([
     children: [
       {
         path: AppRoutes.getRootUrl(),
-        element: "home"
+        lazy: async () => import("@frontend/pages/common/home")
       },
       {
         path: AppRoutes.getProfileUrl(),

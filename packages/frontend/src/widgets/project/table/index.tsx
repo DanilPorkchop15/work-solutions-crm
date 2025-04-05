@@ -1,10 +1,11 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useAsyncFn } from "react-use";
+import { DeleteFilled } from "@ant-design/icons";
 import { User } from "@frontend/entities/@common/user";
 import { Project, ProjectPreview, useProjectsTableModule } from "@frontend/entities/project";
 import { paginationLocale, tableLocale } from "@worksolutions/antd-react-components";
-import { Flex, Input, Row, type TableProps } from "antd";
+import { Flex, Input, Row, Switch, type TableProps } from "antd";
 import { observer } from "mobx-react-lite";
 
 import { ProjectView } from "../../../entities/project/ui";
@@ -14,12 +15,15 @@ import { ProjectUpdateFeature } from "../../../features/project/update";
 import { convertDataToTableDataSource, useLocalTableOnChange } from "../../../shared/lib/tableUtils";
 import { AppRoutes } from "../../../shared/model/services/appRoutes";
 
-interface ProjectsTableWidgetProps extends TableProps<Project> {
+interface ProjectsTableWidgetProps extends TableProps<ProjectPreview> {
   selectedRowColumnTitleOptions?: (projects: ProjectPreview[], onSuccess?: () => Promise<void>) => React.ReactNode;
+  showSearch?: boolean;
 }
 
 export const ProjectsTableWidget: React.FC<ProjectsTableWidgetProps> = observer(function ProjectsTableWidget({
-  selectedRowColumnTitleOptions
+  selectedRowColumnTitleOptions,
+  showSearch,
+  ...props
 }: ProjectsTableWidgetProps) {
   const projectsTableModule = useProjectsTableModule();
   const { rows } = projectsTableModule;
@@ -31,8 +35,12 @@ export const ProjectsTableWidget: React.FC<ProjectsTableWidgetProps> = observer(
 
   const [searchValue, setSearchValue] = React.useState("");
 
-  const applySearch: (data: ProjectPreview[]) => ProjectPreview[] = (data: ProjectPreview[]) =>
-    data.filter(project => project.name.toLowerCase().includes(searchValue.toLowerCase()));
+  const [showDeleted, setShowDeleted] = React.useState(false);
+
+  const applySearchAndFilter: (data: ProjectPreview[]) => ProjectPreview[] = (data: ProjectPreview[]) =>
+    data
+      .filter(project => project.name.toLowerCase().includes(searchValue.toLowerCase()))
+      .filter(project => showDeleted || project.deletedAt === null);
 
   React.useEffect(() => {
     void loadFn();
@@ -59,15 +67,25 @@ export const ProjectsTableWidget: React.FC<ProjectsTableWidgetProps> = observer(
   );
 
   return (
-    <Flex vertical gap={4}>
-      <Input value={searchValue} onChange={e => setSearchValue(e.target.value)} placeholder="Поиск по названию" />
+    <Flex vertical gap={12}>
+      {showSearch && (
+        <Flex gap={12} align="center">
+          <Input value={searchValue} onChange={e => setSearchValue(e.target.value)} placeholder="Поиск по названию" />
+          <Switch
+            checked={showDeleted}
+            onChange={setShowDeleted}
+            unCheckedChildren={<DeleteFilled style={{ color: "salmon" }} />}
+            size="default"
+          />
+        </Flex>
+      )}
       <ProjectView.Table
         virtual
         columns={extraColumns}
         onRow={record => ({
           onDoubleClick: () => navigate(AppRoutes.getProjectUrl(true, record.id))
         })}
-        dataSource={convertDataToTableDataSource(applySearch(data))}
+        dataSource={convertDataToTableDataSource(applySearchAndFilter(data))}
         loading={loading}
         rowClassName={record => (record.deletedAt === null ? "" : "line-through")}
         locale={tableLocale}
@@ -77,7 +95,7 @@ export const ProjectsTableWidget: React.FC<ProjectsTableWidgetProps> = observer(
           showQuickJumper: true,
           responsive: true,
           showLessItems: true,
-          total: data.length,
+          total: applySearchAndFilter(data).length,
           current: currentPage,
           pageSize: pageSize
         }}
@@ -89,6 +107,7 @@ export const ProjectsTableWidget: React.FC<ProjectsTableWidgetProps> = observer(
           selectedRowKeys: selectedRows.map(project => project.id),
           columnTitle: selectedRowColumnTitleOptions?.(selectedRows, loadFn)
         }}
+        {...props}
       />
     </Flex>
   );

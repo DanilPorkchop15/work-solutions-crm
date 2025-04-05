@@ -20,9 +20,10 @@ function CustomersRootPage() {
       <CustomersTableModuleProvider>
         <Flex vertical gap={12}>
           <div>
-            <CustomerCreateFeature.Button />
+            <CustomerCreateFeature.Button size="large" type="primary" />
           </div>
           <CustomersTableWidget
+            showSearch
             selectedRowColumnTitleOptions={(customers: CustomerPreview[], onSuccess?: () => Promise<void>) => (
               <Flex gap={5} justify="center">
                 <CustomerBulkDeleteFeature.Icon customers={customers} onSuccess={onSuccess} />

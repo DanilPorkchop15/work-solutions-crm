@@ -1,5 +1,6 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { ThemeSwitcherButton } from "@frontend/shared/ui/theme";
 import { Dropdown, type MenuProps, Typography } from "antd";
 import { observer } from "mobx-react-lite";
 
@@ -50,6 +51,7 @@ export const Header: React.FC = observer(function HeaderComponent() {
     <div className="w-full flex justify-between p-4">
       <div>{node}</div>
       <div className="flex items-center">
+        <ThemeSwitcherButton />
         <UserWidget />
       </div>
     </div>

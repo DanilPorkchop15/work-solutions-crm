@@ -23,13 +23,14 @@ function UsersRootPage() {
         <Flex vertical gap={12}>
           <Flex gap={12}>
             <div>
-              <UserCreateFeature.Button />
+              <UserCreateFeature.Button type="primary" size="large" />
             </div>
             <div>
-              <UserImportFeature.Button size="large" />
+              <UserImportFeature.Button type="primary" size="large" />
             </div>
           </Flex>
           <UsersTableWidget
+            showSearch
             selectedRowColumnTitleOptions={(users: User[], onSuccess?: () => Promise<void>) => (
               <Flex gap={5} justify="center">
                 <UserBulkDeleteFeature.Icon users={users} onSuccess={onSuccess} />

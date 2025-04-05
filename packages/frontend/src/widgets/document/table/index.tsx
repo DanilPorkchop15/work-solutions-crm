@@ -1,9 +1,9 @@
 import React from "react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { useAsyncFn } from "react-use";
-import { ProjectPreview } from "@frontend/entities/project";
+import { DeleteFilled } from "@ant-design/icons";
 import { paginationLocale, tableLocale } from "@worksolutions/antd-react-components";
-import { Input, Row, type TableProps } from "antd";
+import { Flex, Input, Row, Switch, type TableProps } from "antd";
 import { observer } from "mobx-react-lite";
 
 import {
@@ -18,12 +18,15 @@ import { DocumentUpdateFeature } from "../../../features/document/update";
 import { convertDataToTableDataSource, useLocalTableOnChange } from "../../../shared/lib/tableUtils";
 import { AppRoutes } from "../../../shared/model/services";
 
-interface DocumentsTableWidgetProps extends TableProps<Document> {
+interface DocumentsTableWidgetProps extends TableProps<DocumentPreview> {
   selectedRowColumnTitleOptions?: (documents: DocumentPreview[], onSuccess?: () => Promise<void>) => React.ReactNode;
+  showSearch?: boolean;
 }
 
 export const DocumentsTableWidget: React.FC<DocumentsTableWidgetProps> = observer(function DocumentsTableWidget({
-  selectedRowColumnTitleOptions
+  selectedRowColumnTitleOptions,
+  showSearch,
+  ...props
 }: DocumentsTableWidgetProps) {
   const documentsTableModule: DocumentsTableModule = useDocumentsTableModule();
   const { rows } = documentsTableModule;
@@ -37,8 +40,12 @@ export const DocumentsTableWidget: React.FC<DocumentsTableWidgetProps> = observe
 
   const [searchValue, setSearchValue] = React.useState("");
 
-  const applySearch: (data: DocumentPreview[]) => DocumentPreview[] = (data: DocumentPreview[]) =>
-    data.filter(project => project.name.toLowerCase().includes(searchValue.toLowerCase()));
+  const [showDeleted, setShowDeleted] = React.useState(false);
+
+  const applySearchAndFilter: (data: DocumentPreview[]) => DocumentPreview[] = (data: DocumentPreview[]) =>
+    data
+      .filter(item => item.name.toLowerCase().includes(searchValue.toLowerCase()))
+      .filter(item => showDeleted || item.deletedAt === null);
 
   React.useEffect(() => {
     void loadFn();
@@ -65,8 +72,18 @@ export const DocumentsTableWidget: React.FC<DocumentsTableWidgetProps> = observe
   );
 
   return (
-    <>
-      <Input value={searchValue} onChange={e => setSearchValue(e.target.value)} placeholder="Поиск по названию" />
+    <Flex vertical gap={12}>
+      {showSearch && (
+        <Flex gap={12} align="center">
+          <Input value={searchValue} onChange={e => setSearchValue(e.target.value)} placeholder="Поиск по названию" />
+          <Switch
+            checked={showDeleted}
+            onChange={setShowDeleted}
+            unCheckedChildren={<DeleteFilled style={{ color: "salmon" }} />}
+            size="default"
+          />
+        </Flex>
+      )}
       <DocumentView.Table
         virtual
         columns={extraColumns}
@@ -75,7 +92,7 @@ export const DocumentsTableWidget: React.FC<DocumentsTableWidgetProps> = observe
             onDoubleClick: () => navigate(AppRoutes.getDocumentUrl(true, record.id))
           };
         }}
-        dataSource={convertDataToTableDataSource(applySearch(data))}
+        dataSource={convertDataToTableDataSource(applySearchAndFilter(data))}
         loading={loading}
         rowClassName={record => (record.deletedAt === null ? "" : "line-through")}
         locale={tableLocale}
@@ -85,7 +102,7 @@ export const DocumentsTableWidget: React.FC<DocumentsTableWidgetProps> = observe
           showQuickJumper: true,
           responsive: true,
           showLessItems: true,
-          total: data.length,
+          total: applySearchAndFilter(data).length,
           current: currentPage,
           pageSize: pageSize
         }}
@@ -97,7 +114,8 @@ export const DocumentsTableWidget: React.FC<DocumentsTableWidgetProps> = observe
           selectedRowKeys: selectedRows.map(document => document.id),
           columnTitle: selectedRowColumnTitleOptions?.(selectedRows, loadFn)
         }}
+        {...props}
       />
-    </>
+    </Flex>
   );
 });
