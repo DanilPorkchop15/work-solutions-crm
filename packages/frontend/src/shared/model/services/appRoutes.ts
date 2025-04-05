@@ -13,6 +13,9 @@ export abstract class AppRoutes {
   public static getCreateUserUrl = (withPrefix = false) =>
     `${AppRoutes._calculatePrefix(AppRoutes.getUsersUrl(true), withPrefix)}create`;
 
+  public static getUserImportUrl = (withPrefix = false) =>
+    `${AppRoutes._calculatePrefix(AppRoutes.getUsersUrl(true), withPrefix)}import`;
+
   public static getUpdateUserUrl = (withPrefix = false, id = ":id") =>
     `${AppRoutes._calculatePrefix(AppRoutes.getUsersUrl(true), withPrefix)}${id}/update`;
 
@@ -41,6 +44,12 @@ export abstract class AppRoutes {
 
   public static getDocumentUrl = (withPrefix = false, id = ":id") =>
     `${AppRoutes._calculatePrefix(AppRoutes.getRootUrl(), withPrefix)}documents/${id}`;
+
+  public static getCreateDocumentUrl = (withPrefix = false) =>
+    `${AppRoutes._calculatePrefix(AppRoutes.getDocumentsUrl(true), withPrefix)}create`;
+
+  public static getUpdateDocumentUrl = (withPrefix = false, id = ":id") =>
+    `${AppRoutes._calculatePrefix(AppRoutes.getDocumentsUrl(true), withPrefix)}${id}/update`;
 
   public static getCustomersUrl = (withPrefix = false) =>
     `${AppRoutes._calculatePrefix(AppRoutes.getRootUrl(), withPrefix)}customers`;

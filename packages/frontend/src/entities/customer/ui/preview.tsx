@@ -1,8 +1,6 @@
 import React from "react";
 import { InfoCircleOutlined } from "@ant-design/icons";
-import { Descriptions, Flex, List, Tooltip, Typography } from "antd";
-
-import { formatToLocalDate } from "../../../shared/lib/isoDateUtils";
+import { List, Tooltip } from "antd";
 import { CustomerPreview } from "../interfaces";
 
 export const CustomerPreviewTooltip: React.FC<{ customer: CustomerPreview }> = ({ customer }) => (

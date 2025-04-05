@@ -1,9 +1,8 @@
-import { CustomerCreateRequestDTO } from "@work-solutions-crm/libs/shared/customer/customer.api";
 import { ProjectCreateRequestDTO } from "@work-solutions-crm/libs/shared/project/project.api";
 import { ProjectStatus } from "@work-solutions-crm/libs/shared/project/project.dto";
 import { RuleObject } from "antd/es/form";
 
-import { ValidationRules } from "../../../shared/lib/types";
+import { ValidationRules } from "../../../../shared/lib/types";
 
 export const validationRules: ValidationRules<ProjectCreateRequestDTO> = {
   name: [

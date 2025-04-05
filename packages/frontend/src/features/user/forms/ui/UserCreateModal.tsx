@@ -5,7 +5,7 @@ import { AntdServices } from "@frontend/shared/model/services";
 import { UserCreateRequestDTO } from "@work-solutions-crm/libs/shared/user/user.api";
 import { Button, Form } from "antd";
 import { observer } from "mobx-react-lite";
-import { assoc, pipe } from "ramda";
+import { pipe } from "ramda";
 
 import { useInjectService } from "../../../../shared/lib/useInjectService";
 import { AppRoutes } from "../../../../shared/model/services/appRoutes";
@@ -13,7 +13,7 @@ import { UserService } from "../../services/UserService";
 import { mapUserCreateFormValuesToCreateUserDto } from "../api";
 import { UserCreateFormValues } from "../interfaces";
 
-import { UserInput } from "./UserInput";
+import { UserInput } from "../../../../entities/@common/user";
 import { CreationModal } from "@frontend/shared/ui/creationModal";
 import { FormErrorMessage } from "@frontend/shared/ui/forms";
 import { useUsersTableModule } from "@frontend/entities/@common/user";

@@ -1,7 +1,8 @@
-import type { LoginDto } from "entities/auth";
-import type { ValidationRules } from "shared/lib/types";
+import { LoginRequestDTO } from "@work-solutions-crm/libs/shared/auth/auth.api";
 
-export const validationRules: ValidationRules<LoginDto> = {
+import { ValidationRules } from "../../../shared/lib/types";
+
+export const validationRules: ValidationRules<LoginRequestDTO> = {
   email: [
     {
       type: "email",

@@ -1,6 +1,6 @@
-import { typeormDateToIsoString, typeormNullableDateToIsoString } from "@backend/common/typeorm-date-to-iso-string";
 import { DocumentDTO, DocumentPreviewDTO } from "@work-solutions-crm/libs/shared/document/document.dto";
 
+import { typeormDateToIsoString, typeormNullableDateToIsoString } from "../../common/typeorm-date-to-iso-string";
 import { Document } from "../../models/entities/document.entity";
 import { mapUserToPreviewDTO } from "../user/user.mappers";
 
@@ -11,6 +11,7 @@ export function mapDocumentToDTO(document: Document): DocumentDTO {
     description: document.description,
     user_created: mapUserToPreviewDTO(document.user_created),
     created_at: typeormDateToIsoString(document.created_at),
+    roles: document.document_permissions.map(permission => permission.role),
     updated_at: typeormDateToIsoString(document.updated_at),
     deleted_at: typeormNullableDateToIsoString(document.deleted_at)
   };

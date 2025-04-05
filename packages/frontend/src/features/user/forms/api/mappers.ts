@@ -3,17 +3,17 @@ import { UserCreateRequestDTO, UserUpdateRequestDTO } from "@work-solutions-crm/
 import type { UserCreateFormValues, UserUpdateFormValues } from "../interfaces";
 
 export const mapUserCreateFormValuesToCreateUserDto = (values: UserCreateFormValues): UserCreateRequestDTO => ({
-  fullName: values.fullName,
+  full_name: values.fullName,
   email: values.email,
   role: values.role,
   password: values.password,
   position: values.position,
-  avatarUrl: values.avatarUrl
+  avatar_url: values.avatarUrl
 });
 
 export const mapUserUpdateFormValuesToUpdateUserDto = (values: UserUpdateFormValues): UserUpdateRequestDTO => ({
-  fullName: values.fullName,
+  full_name: values.fullName,
   email: values.email,
   position: values.position,
-  avatarUrl: values.avatarUrl
+  avatar_url: values.avatarUrl
 });

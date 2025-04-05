@@ -104,4 +104,14 @@ export class AuthService {
   async changePassword(userId: string, newPassword: string, oldPassword: string): Promise<void> {
     return this.usersService.changePassword(userId, newPassword, oldPassword);
   }
+
+  async actualizeUser(user: User): Promise<User> {
+    const u: User | null = await this.usersService.findOneById(user.user_id);
+
+    if (!u) {
+      throw new NotFoundException("User not found");
+    }
+
+    return u;
+  }
 }

@@ -1,4 +1,5 @@
 import React from "react";
+import { useDeepCompareEffect, useShallowCompareEffect } from "react-use";
 import { isNil } from "ramda";
 
 interface HeaderContext {
@@ -23,14 +24,14 @@ export function useHeaderContext(): HeaderContext {
   return context;
 }
 
-export function useHeader(node: React.ReactNode): void {
+export function useHeader(node: React.ReactNode, deps?: React.DependencyList): void {
   const context = useHeaderContext();
 
-  React.useEffect(() => {
+  useShallowCompareEffect(() => {
     context.setNode(node);
 
     return () => {
       context.setNode(null);
     };
-  }, []);
+  }, [deps]);
 }

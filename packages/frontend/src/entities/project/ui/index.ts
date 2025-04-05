@@ -5,3 +5,5 @@ export const ProjectView = {
   Table: ProjectsTableView,
   Preview: ProjectPreviewTooltip
 };
+
+export * from "./ProjectInput";

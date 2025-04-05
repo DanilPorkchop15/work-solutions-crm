@@ -1,20 +1,19 @@
 import React from "react";
-import { useAsyncFn, useEffectOnce } from "react-use";
+import { useAsyncFn } from "react-use";
 import { AntdServices } from "@frontend/shared/model/services";
 import { CustomerUpdateRequestDTO } from "@work-solutions-crm/libs/shared/customer/customer.api";
-import { Button, Form, message } from "antd";
+import { Button, Form } from "antd";
 import { observer } from "mobx-react-lite";
 
 import { useInjectService } from "../../../../shared/lib/useInjectService";
 import { CustomerUpdateService } from "../../services";
 import { CustomerUpdateFormValues } from "../interfaces";
 
-import { CustomerInput } from "./CustomerInput";
+import { CustomerInput } from "../../../../entities/customer/ui/CustomerInput";
 import { pipe } from "ramda";
 import { mapCustomerUpdateFormValuesToUpdateCustomerDto } from "@frontend/features/customer/forms/api";
 import { FormErrorMessage } from "@frontend/shared/ui/forms";
 import { useCustomersTableModule } from "@frontend/entities/customer";
-import { useViewer, ViewerModel } from "@frontend/entities/viewer";
 
 interface CustomerUpdateFormProps {
   additionalOnFinish?: () => void;
@@ -26,8 +25,6 @@ export const CustomerUpdateForm = observer(function CustomerUpdateFeature({
   additionalOnFinish
 }: CustomerUpdateFormProps) {
   const [editCustomerForm] = Form.useForm<CustomerUpdateFormValues>();
-
-  const viewer: ViewerModel = useViewer();
 
   const customersTableModule = useCustomersTableModule();
 

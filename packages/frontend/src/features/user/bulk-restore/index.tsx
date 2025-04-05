@@ -1,5 +1,5 @@
 import React from "react";
-import { DeleteFilled, RedoOutlined } from "@ant-design/icons";
+import { RedoOutlined } from "@ant-design/icons";
 import { User } from "@frontend/entities/@common/user";
 import { AntdServices } from "@frontend/shared/model/services";
 import { useConfirmationModal } from "@worksolutions/antd-react-components";

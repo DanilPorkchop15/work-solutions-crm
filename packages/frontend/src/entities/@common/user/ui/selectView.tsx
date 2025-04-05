@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { useAsync } from "react-use";
-import { Flex, Form, Select, SelectProps, Spin, Typography } from "antd";
+import { Flex, Select, SelectProps, Spin, Typography } from "antd";
 import { Rule } from "antd/es/form";
 
 import { useInjectService } from "../../../../shared/lib/useInjectService";

@@ -3,9 +3,11 @@ import { ProjectStatus } from "@work-solutions-crm/libs/shared/project/project.d
 import { DatePicker, Form, Input, InputNumber, Select } from "antd";
 import dayjs from "dayjs";
 
-import { UserView } from "../../../../entities/@common/user/ui/index";
-import { CustomerView } from "../../../../entities/customer/ui/index";
-import { validationRules } from "../config";
+import { UserView } from "../../../@common/user/ui";
+import { CustomerView } from "../../../customer/ui";
+import { translateStatus } from "../../lib";
+
+import { validationRules } from "./config";
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -147,21 +149,6 @@ interface ProjectStatusInputProps {
   initialValue?: ProjectStatus;
   error?: Error;
   disabled?: boolean;
-}
-
-function translateStatus(status: ProjectStatus) {
-  switch (status) {
-    case ProjectStatus.ACTIVE:
-      return "Активный";
-    case ProjectStatus.COMPLETED:
-      return "Завершен";
-    case ProjectStatus.CANCELED:
-      return "Отменен";
-    case ProjectStatus.INACTIVE:
-      return "Неактивный";
-    case ProjectStatus.PAUSED:
-      return "Приостановлен";
-  }
 }
 
 export const ProjectStatusInput = ({ initialValue, error, disabled }: ProjectStatusInputProps) => (

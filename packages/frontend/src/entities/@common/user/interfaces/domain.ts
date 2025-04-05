@@ -5,8 +5,8 @@ import { UniqueEntity } from "../../../../shared/model/interfaces/entity";
 
 export interface User extends UserPreview {
   role: Role;
-  updatedAt: ISO;
-  createdAt: ISO;
+  updatedAt: string;
+  createdAt: string;
 }
 
 export interface UserPreview extends UniqueEntity {
@@ -14,7 +14,7 @@ export interface UserPreview extends UniqueEntity {
   fullName: string;
   email: string;
   position: string | null;
-  deletedAt: ISO | null;
+  deletedAt: string | null;
 }
 
 export interface Permission {

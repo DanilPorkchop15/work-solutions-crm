@@ -15,12 +15,14 @@ import { AuthService } from "./auth.service";
 import { UserChangePasswordValidationDTO } from "@backend/app/user/user.dto";
 import { LogType } from "@backend/app/logger/logger.types";
 import { LoggerService } from "@backend/app/logger/logger.service";
+import { UserService } from "@backend/app/user/user.service";
 
 @ApiTags("Auth")
 @Controller()
 export class AuthController implements AuthApi {
   constructor(
     private readonly authService: AuthService,
+    private readonly userService: UserService,
     private readonly caslAbilityFactory: CaslAbilityFactory,
     private readonly loggerService: LoggerService
   ) {}
@@ -48,7 +50,7 @@ export class AuthController implements AuthApi {
   @ApiBearerAuth()
   @ApiOperation({ summary: "Get current user info" })
   @ApiResponse({ status: 200, type: UserWithPermissionsResponseDTO })
-  me(@CurrentUser() user: User): UserWithPermissionsDTO {
+  async me(@CurrentUser() user: User): Promise<UserWithPermissionsDTO> {
     const ability: AppAbility = this.caslAbilityFactory.createForUser(user);
 
     const permissions: PermissionDTO[] = ability.rules.map(rule => ({
@@ -68,7 +70,7 @@ export class AuthController implements AuthApi {
   @ApiOperation({ summary: "User logout" })
   @ApiResponse({ status: 200 })
   async logout(@Res({ passthrough: true }) res: Response): Promise<void> {
-    res.clearCookie("refreshToken");
+    res.clearCookie("refreshToken").clearCookie("accessToken").sendStatus(200).end();
   }
 
   @Patch(AUTH_ROUTES.changePassword())

@@ -1,9 +1,10 @@
 import React from "react";
-import { NavigateFunction, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAsyncFn } from "react-use";
-import { Project, ProjectPreview, ProjectsTableModule, useProjectsTableModule } from "@frontend/entities/project";
+import { User } from "@frontend/entities/@common/user";
+import { Project, ProjectPreview, useProjectsTableModule } from "@frontend/entities/project";
 import { paginationLocale, tableLocale } from "@worksolutions/antd-react-components";
-import { Row, type TableProps } from "antd";
+import { Flex, Input, Row, type TableProps } from "antd";
 import { observer } from "mobx-react-lite";
 
 import { ProjectView } from "../../../entities/project/ui";
@@ -27,6 +28,11 @@ export const ProjectsTableWidget: React.FC<ProjectsTableWidgetProps> = observer(
   const { data, pageSize, currentPage, onChange } = useLocalTableOnChange(rows, 1, 10);
   const [selectedRows, setSelectedRows] = React.useState<ProjectPreview[]>([]);
   const navigate = useNavigate();
+
+  const [searchValue, setSearchValue] = React.useState("");
+
+  const applySearch: (data: ProjectPreview[]) => ProjectPreview[] = (data: ProjectPreview[]) =>
+    data.filter(project => project.name.toLowerCase().includes(searchValue.toLowerCase()));
 
   React.useEffect(() => {
     void loadFn();
@@ -53,34 +59,37 @@ export const ProjectsTableWidget: React.FC<ProjectsTableWidgetProps> = observer(
   );
 
   return (
-    <ProjectView.Table
-      virtual
-      columns={extraColumns}
-      onRow={record => ({
-        onDoubleClick: () => navigate(AppRoutes.getProjectUrl(true, record.id))
-      })}
-      dataSource={convertDataToTableDataSource(data)}
-      loading={loading}
-      rowClassName={record => (record.deletedAt === null ? "" : "line-through")}
-      locale={tableLocale}
-      pagination={{
-        locale: paginationLocale,
-        position: ["bottomLeft"],
-        showQuickJumper: true,
-        responsive: true,
-        showLessItems: true,
-        total: data.length,
-        current: currentPage,
-        pageSize: pageSize
-      }}
-      onChange={onChange}
-      rowSelection={{
-        type: "checkbox",
-        onChange: (_, rows) => setSelectedRows(rows),
-        hideSelectAll: true,
-        selectedRowKeys: selectedRows.map(project => project.id),
-        columnTitle: selectedRowColumnTitleOptions?.(selectedRows, loadFn)
-      }}
-    />
+    <Flex vertical gap={4}>
+      <Input value={searchValue} onChange={e => setSearchValue(e.target.value)} placeholder="Поиск по названию" />
+      <ProjectView.Table
+        virtual
+        columns={extraColumns}
+        onRow={record => ({
+          onDoubleClick: () => navigate(AppRoutes.getProjectUrl(true, record.id))
+        })}
+        dataSource={convertDataToTableDataSource(applySearch(data))}
+        loading={loading}
+        rowClassName={record => (record.deletedAt === null ? "" : "line-through")}
+        locale={tableLocale}
+        pagination={{
+          locale: paginationLocale,
+          position: ["bottomLeft"],
+          showQuickJumper: true,
+          responsive: true,
+          showLessItems: true,
+          total: data.length,
+          current: currentPage,
+          pageSize: pageSize
+        }}
+        onChange={onChange}
+        rowSelection={{
+          type: "checkbox",
+          onChange: (_, rows) => setSelectedRows(rows),
+          hideSelectAll: true,
+          selectedRowKeys: selectedRows.map(project => project.id),
+          columnTitle: selectedRowColumnTitleOptions?.(selectedRows, loadFn)
+        }}
+      />
+    </Flex>
   );
 });

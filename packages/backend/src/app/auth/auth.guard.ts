@@ -3,6 +3,7 @@ import { JwtService } from "@nestjs/jwt";
 import { Request, Response } from "express";
 
 import { User } from "../../models/entities/user.entity";
+import { UserService } from "../user/user.service";
 
 import { AuthService } from "./auth.service";
 import { AuthRequest, Tokens } from "./auth.types";
@@ -41,7 +42,12 @@ export class AuthGuard implements CanActivate {
         maxAge: 7 * 24 * 60 * 60 * 1000
       });
 
-      request.user = decodedAccessToken;
+      const user: User | null = await this.authService.actualizeUser(decodedAccessToken);
+      if (!user) {
+        throw new UnauthorizedException("User not found");
+      }
+
+      request.user = user;
       return true;
     } catch (accessTokenError) {
       try {

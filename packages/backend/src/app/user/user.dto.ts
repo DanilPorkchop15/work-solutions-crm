@@ -17,7 +17,7 @@ export class UserCreateValidationDTO implements UserCreateRequestDTO {
   })
   @IsOptional()
   @IsString()
-  avatarUrl?: string;
+  avatar_url?: string;
 
   @ApiProperty({
     description: "The email of the user",
@@ -33,7 +33,7 @@ export class UserCreateValidationDTO implements UserCreateRequestDTO {
   })
   @IsString()
   @Length(1, 255)
-  fullName: string;
+  full_name: string;
 
   @ApiProperty({
     description: "The password of the user",

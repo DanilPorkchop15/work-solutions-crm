@@ -1,10 +1,5 @@
 /// <reference types="vite/client" />
 
-type Constructor<T> = { new (...args: any[]): T };
-
-type Guid = string;
-type ISO = string;
-
 type RequiredKeys<T> = {
   [K in keyof T]-?: Record<string, never> extends Pick<T, K> ? never : K;
 }[keyof T];

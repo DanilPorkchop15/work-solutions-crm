@@ -69,7 +69,7 @@ export class SystemClock {
     return DateTime.now();
   }
 
-  public static nowISO(): ISO {
+  public static nowISO(): string {
     return SystemClock.now().setZone(SystemClock.UTCZone).toISO();
   }
 }

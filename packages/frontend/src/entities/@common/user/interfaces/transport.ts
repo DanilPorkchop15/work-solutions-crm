@@ -11,11 +11,11 @@ import { Endpoint, Request } from "../../../../shared/model/interfaces/transport
 
 import type { User } from "./domain";
 
-export type FindOneUserRequest = Request<{ urlParams: { id: Guid } }>;
+export type FindOneUserRequest = Request<{ urlParams: { id: string } }>;
 export type CreateUserRequest = Request<{ body: UserCreateRequestDTO }>;
-export type UpdateUserRequest = Request<{ urlParams: { id: Guid }; body: UserUpdateRequestDTO }>;
-export type DeleteUserRequest = Request<{ urlParams: { id: Guid } }>;
-export type RestoreUserRequest = Request<{ urlParams: { id: Guid } }>;
+export type UpdateUserRequest = Request<{ urlParams: { id: string }; body: UserUpdateRequestDTO }>;
+export type DeleteUserRequest = Request<{ urlParams: { id: string } }>;
+export type RestoreUserRequest = Request<{ urlParams: { id: string } }>;
 export type BulkCreateUserRequest = Request<{ body: UserCreateRequestDTO[] }>;
 export type BulkDeleteUserRequest = Request<{ body: UserBulkDeleteRequestDTO }>;
 export type BulkRestoreUserRequest = Request<{ body: UserBulkRestoreRequestDTO }>;

@@ -7,3 +7,5 @@ export const CustomerView = {
   Preview: CustomerPreviewTooltip,
   Select: CustomerSelectView
 };
+
+export * from "./CustomerInput";

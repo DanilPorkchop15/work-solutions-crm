@@ -4,8 +4,6 @@ import { Navigate } from "react-router-dom";
 import { useAsync } from "react-use";
 import { PageSpin } from "@worksolutions/antd-react-components";
 import { container } from "tsyringe";
-
-import { useInjectService } from "../../shared/lib/useInjectService";
 import { AppRoutes } from "../../shared/model/services/appRoutes";
 
 import { ViewerService } from "./service";

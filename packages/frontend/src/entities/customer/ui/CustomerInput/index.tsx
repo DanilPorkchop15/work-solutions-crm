@@ -1,7 +1,7 @@
 import React from "react";
 import { Form, Input } from "antd";
 
-import { validationRules } from "../config";
+import { validationRules } from "./config";
 
 interface CustomerNameProps {
   initialValue?: string;

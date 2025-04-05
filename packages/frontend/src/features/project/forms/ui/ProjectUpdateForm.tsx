@@ -1,5 +1,5 @@
 import React from "react";
-import { useAsyncFn, useEffectOnce } from "react-use";
+import { useAsyncFn } from "react-use";
 import { AntdServices } from "@frontend/shared/model/services";
 import { ProjectUpdateRequestDTO } from "@work-solutions-crm/libs/shared/project/project.api";
 import { Button, Form } from "antd";
@@ -8,7 +8,7 @@ import { observer } from "mobx-react-lite";
 import { useInjectService } from "../../../../shared/lib/useInjectService";
 import { ProjectUpdateService } from "../../services";
 import { ProjectUpdateFormValues } from "../interfaces";
-import { ProjectInput } from "./ProjectInput";
+import { ProjectInput } from "../../../../entities/project/ui/ProjectInput";
 import { pipe } from "ramda";
 import { mapProjectUpdateFormValuesToUpdateProjectDto } from "../api";
 import { FormErrorMessage } from "@frontend/shared/ui/forms";

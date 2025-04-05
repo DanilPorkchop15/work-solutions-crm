@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { isArray } from "@worksolutions/utils";
 import type { TablePaginationConfig, TableProps } from "antd";
 import { equals, isNil } from "ramda";
@@ -51,6 +51,8 @@ export function useLocalTableOnChange<T>(rows: T[], pageIndex = 1, size = 10) {
   const [currentPage, setCurrentPage] = useState(pageIndex);
   const [pageSize, setPageSize] = useState(size);
 
+  const [searchValue, setSearchValue] = React.useState("");
+
   useEffect(() => {
     setData(rows);
   }, [rows]);
@@ -75,6 +77,8 @@ export function useLocalTableOnChange<T>(rows: T[], pageIndex = 1, size = 10) {
 
     Object.entries(filters).forEach(([key, value]) => {
       if (value && value.length > 0) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
         sortedRows = sortedRows.filter(item => value.includes(item[key as keyof T]));
       }
     });

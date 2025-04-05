@@ -19,7 +19,6 @@ export const UserDetailsProvider = React.memo(function UserDetailsProvider({
 
   const userDetailsService: UserDetailsService = useInjectService(UserDetailsService);
 
-  console.info(id);
   const { loading } = useAsync(async () => {
     if (!isNil(id)) await userDetailsService.loadUserDetails.bind(userDetailsService)({ urlParams: { id } });
   }, [id]);

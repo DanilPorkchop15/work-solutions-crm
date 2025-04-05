@@ -1,11 +1,9 @@
 import React from "react";
 import { Flex, Typography } from "antd";
 
-import { UserView } from "../../entities/@common/user/ui/index";
-import { useViewer } from "../../entities/viewer/hooks";
-import { ViewerModel } from "../../entities/viewer/model";
-import { LogoutFeature } from "../../features/auth/logout/index";
-import { UserUpdateFeature } from "../../features/user/update/index";
+import { useViewer, ViewerModel } from "../../entities/viewer";
+import { LogoutFeature } from "../../features/auth/logout";
+import { ViewerUpdateFeature } from "../../features/viewer/update";
 
 export const ProfileWidget = React.memo(function Profile() {
   const viewer: ViewerModel = useViewer();
@@ -16,10 +14,7 @@ export const ProfileWidget = React.memo(function Profile() {
         <Typography.Title level={2}>Редактирование профиля</Typography.Title>
         <LogoutFeature isButton />
       </Flex>
-      <Flex vertical justify="space-between" gap={48} className="w-[50%]">
-        <UserView.Avatar user={viewer.state} size={250} shape="square" />
-        <UserUpdateFeature.Form />
-      </Flex>
+      <ViewerUpdateFeature />
     </>
   );
 });

@@ -1,4 +1,4 @@
-import Decoder, { array, field, succeed } from "jsonous";
+import Decoder, { array, succeed } from "jsonous";
 import { assoc } from "ramda";
 
 import { TableDto } from "../../model/interfaces/table";

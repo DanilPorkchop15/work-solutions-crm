@@ -1,4 +1,3 @@
-import { LOGGER_SERVICE_NAME } from "@backend/app/logger/logger.constraints";
 import { LogData, LogOptions, LogType } from "@backend/app/logger/logger.types";
 import { CustomerLog } from "@backend/models/entities/customer-log.entity";
 import { DocumentLog } from "@backend/models/entities/document-log.entity";
@@ -15,7 +14,7 @@ type LogRepository = Repository<ProjectLog | DocumentLog | TaskLog | UserLog | C
 export class LoggerService {
   private static instance: LoggerService;
 
-  private readonly logger: Logger = new Logger(LOGGER_SERVICE_NAME, {
+  private readonly logger: Logger = new Logger(LoggerService.name, {
     timestamp: true
   });
 
@@ -106,7 +105,7 @@ export class LoggerService {
     const logDetails: string = sections
       .slice(3)
       .filter(Boolean)
-      .map(section => `| ${section.padEnd(30, " ")}|`)
+      .map(section => `[${section.padEnd(30, " ")}]`)
       .join("\n");
 
     return `${logHeader}\n${logDetails}`;

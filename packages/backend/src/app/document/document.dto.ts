@@ -1,4 +1,3 @@
-import { UserPreviewResponseDTO } from "@backend/app/user/user.dto";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import {
   DocumentBulkDeleteRequestDTO,
@@ -9,6 +8,8 @@ import {
 import { DocumentDTO, DocumentPreviewDTO } from "@work-solutions-crm/libs/shared/document/document.dto";
 import { Role, UserPreviewDTO } from "@work-solutions-crm/libs/shared/user/user.dto";
 import { IsArray, IsEnum, IsOptional, IsString, IsUrl, Length } from "class-validator";
+
+import { UserPreviewResponseDTO } from "../user/user.dto";
 
 export class DocumentCreateValidationDTO implements DocumentCreateRequestDTO {
   @ApiProperty({
@@ -128,6 +129,14 @@ export class DocumentResponseDTO implements DocumentDTO {
     required: false
   })
   readonly deleted_at?: string | undefined;
+
+  @ApiProperty({
+    description: "The roles of document",
+    example: ["user", "admin"],
+    required: true,
+    enum: Role
+  })
+  readonly roles: Role[];
 }
 
 export class DocumentPreviewResponseDTO implements DocumentPreviewDTO {

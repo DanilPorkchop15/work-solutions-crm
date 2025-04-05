@@ -1,6 +1,7 @@
 import { User, UsersApi } from "@frontend/entities/@common/user";
 import { UserDetailsService } from "@frontend/entities/@common/user/model";
 import { UserUpdateRequestDTO } from "@work-solutions-crm/libs/shared/user/user.api";
+import { makeAutoObservable } from "mobx";
 import { inject, singleton } from "tsyringe";
 
 @singleton()
@@ -8,7 +9,9 @@ export class UserUpdateService {
   constructor(
     @inject(UsersApi) private readonly _api: UsersApi,
     @inject(UserDetailsService) private readonly _userDetailsService: UserDetailsService
-  ) {}
+  ) {
+    makeAutoObservable(this);
+  }
 
   public get userDetails(): User {
     const userDetails: User | null = this._userDetailsService.userDetails;

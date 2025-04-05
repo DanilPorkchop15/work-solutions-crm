@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Global, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import {
   UserBulkDeleteRequestDTO,
@@ -8,7 +8,7 @@ import {
 } from "@work-solutions-crm/libs/shared/user/user.api";
 import { Role, UserDTO, UserPreviewDTO } from "@work-solutions-crm/libs/shared/user/user.dto";
 import * as bcrypt from "bcryptjs";
-import { DeepPartial, Repository } from "typeorm";
+import { DeepPartial, In, Repository } from "typeorm";
 
 import { User } from "../../models/entities/user.entity";
 
@@ -19,6 +19,7 @@ import {
   mapUserToPreviewDTO
 } from "./user.mappers";
 
+@Global()
 @Injectable()
 export class UserService {
   constructor(
@@ -68,6 +69,12 @@ export class UserService {
 
   async bulkCreate(dto: UserCreateRequestDTO[]): Promise<UserDTO[]> {
     const users: DeepPartial<User[]> = await Promise.all(dto.map(mapCreateRequestDTOToUser));
+
+    const existingUsers: User[] = await this.userRepository.find({ where: { email: In(dto.map(u => u.email)) } });
+    if (existingUsers.length > 0) {
+      throw new BadRequestException("Some emails are not unique or already exists");
+    }
+
     const createdUsers: User[] = await this.userRepository.save(users);
     return createdUsers.map(mapUserToDTO);
   }

@@ -10,11 +10,11 @@ import { Endpoint, Request } from "../../../shared/model/interfaces/transport";
 
 import type { Customer, CustomerPreview } from "./domain";
 
-export type FindOneCustomerRequest = Request<{ urlParams: { id: Guid } }>;
+export type FindOneCustomerRequest = Request<{ urlParams: { id: string } }>;
 export type CreateCustomerRequest = Request<{ body: CustomerCreateRequestDTO }>;
-export type UpdateCustomerRequest = Request<{ urlParams: { id: Guid }; body: CustomerUpdateRequestDTO }>;
-export type DeleteCustomerRequest = Request<{ urlParams: { id: Guid } }>;
-export type RestoreCustomerRequest = Request<{ urlParams: { id: Guid } }>;
+export type UpdateCustomerRequest = Request<{ urlParams: { id: string }; body: CustomerUpdateRequestDTO }>;
+export type DeleteCustomerRequest = Request<{ urlParams: { id: string } }>;
+export type RestoreCustomerRequest = Request<{ urlParams: { id: string } }>;
 
 export type BulkDeleteCustomerRequest = Request<{ body: CustomerBulkDeleteRequestDTO }>;
 export type BulkRestoreCustomerRequest = Request<{ body: CustomerBulkRestoreRequestDTO }>;

@@ -1,6 +1,5 @@
-import { Role } from "@work-solutions-crm/libs/shared/user/user.dto";
-
 import { APIRoutes } from "../api-routes";
+import { Role } from "../user/user.dto";
 
 import { DocumentDTO, DocumentPreviewDTO } from "./document.dto";
 
@@ -20,7 +19,7 @@ export type DocumentBulkRestoreRequestDTO = DocumentBulkDeleteRequestDTO;
 export type DocumentUpdateRequestDTO = Partial<DocumentCreateRequestDTO>;
 
 export interface DocumentApi {
-  findAll: () => Promise<DocumentPreviewDTO[]>;
+  findAll: (...omitted: never) => Promise<DocumentPreviewDTO[]>;
   findOne: (documentId: string) => Promise<DocumentDTO>;
   create: (dto: DocumentCreateRequestDTO, ...omitted: never) => Promise<DocumentDTO>;
   update: (documentId: string, dto: DocumentUpdateRequestDTO, ...omitted: never) => Promise<DocumentDTO>;

@@ -3,7 +3,7 @@ import { NavigateFunction, useNavigate } from "react-router-dom";
 import { useAsyncFn } from "react-use";
 import { User } from "@frontend/entities/@common/user";
 import { paginationLocale, tableLocale } from "@worksolutions/antd-react-components";
-import { Row, type TableProps } from "antd";
+import { Flex, Input, Row, type TableProps } from "antd";
 import { observer } from "mobx-react-lite";
 
 import { useUsersTableModule } from "../../../entities/@common/user/model/table/config";
@@ -32,6 +32,15 @@ export const UsersTableWidget: React.FC<UsersTableWidgetProps> = observer(functi
 
   const [selectedRows, setSelectedRows] = React.useState<User[]>([]);
 
+  const [searchValue, setSearchValue] = React.useState("");
+
+  const applySearch: (data: User[]) => User[] = (data: User[]) =>
+    data.filter(
+      user =>
+        user.fullName.toLowerCase().includes(searchValue.toLowerCase()) ||
+        user.email.toLowerCase().includes(searchValue.toLowerCase())
+    );
+
   React.useEffect(() => {
     void loadFn();
   }, []);
@@ -57,36 +66,43 @@ export const UsersTableWidget: React.FC<UsersTableWidgetProps> = observer(functi
   );
 
   return (
-    <UserView.Table
-      virtual
-      columns={extraColumns}
-      onRow={(record, rowIndex) => {
-        return {
-          onDoubleClick: () => navigate(AppRoutes.getUserUrl(true, record.id))
-        };
-      }}
-      dataSource={convertDataToTableDataSource(data)}
-      loading={loading}
-      rowClassName={record => (record.deletedAt === null ? "" : "line-through")}
-      locale={tableLocale}
-      pagination={{
-        locale: paginationLocale,
-        position: ["bottomLeft"],
-        showQuickJumper: true,
-        responsive: true,
-        showLessItems: true,
-        total: data.length,
-        current: currentPage,
-        pageSize: pageSize
-      }}
-      onChange={onChange}
-      rowSelection={{
-        type: "checkbox",
-        onChange: (_, rows, __) => setSelectedRows(rows),
-        hideSelectAll: true,
-        selectedRowKeys: selectedRows.map(user => user.id),
-        columnTitle: selectedRowColumnTitleOptions?.(selectedRows, loadFn)
-      }}
-    />
+    <Flex vertical gap={4}>
+      <Input
+        value={searchValue}
+        onChange={e => setSearchValue(e.target.value)}
+        placeholder="Поиск по полному имени или email"
+      />
+      <UserView.Table
+        virtual
+        columns={extraColumns}
+        onRow={(record, rowIndex) => {
+          return {
+            onDoubleClick: () => navigate(AppRoutes.getUserUrl(true, record.id))
+          };
+        }}
+        dataSource={convertDataToTableDataSource(applySearch(data))}
+        loading={loading}
+        rowClassName={record => (record.deletedAt === null ? "" : "line-through")}
+        locale={tableLocale}
+        pagination={{
+          locale: paginationLocale,
+          position: ["bottomLeft"],
+          showQuickJumper: true,
+          responsive: true,
+          showLessItems: true,
+          total: data.length,
+          current: currentPage,
+          pageSize: pageSize
+        }}
+        onChange={onChange}
+        rowSelection={{
+          type: "checkbox",
+          onChange: (_, rows, __) => setSelectedRows(rows),
+          hideSelectAll: true,
+          selectedRowKeys: selectedRows.map(user => user.id),
+          columnTitle: selectedRowColumnTitleOptions?.(selectedRows, loadFn)
+        }}
+      />
+    </Flex>
   );
 });

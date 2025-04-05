@@ -53,20 +53,21 @@ const columns: TableProps<User>["columns"] = [
     dataIndex: "createdAt",
     key: "createdAt",
     sorter: (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
-    render: (date: ISO) => <Typography.Text>{formatToLocalDate(date)}</Typography.Text>
+    defaultSortOrder: "descend",
+    render: (date: string) => <Typography.Text>{formatToLocalDate(date)}</Typography.Text>
   },
   {
     title: "Дата обновления",
     dataIndex: "updatedAt",
     key: "updatedAt",
     sorter: (a, b) => new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime(),
-    render: (date: ISO) => <Typography.Text>{formatToLocalDate(date)}</Typography.Text>
+    render: (date: string) => <Typography.Text>{formatToLocalDate(date)}</Typography.Text>
   },
   {
     title: "Архивирован",
     dataIndex: "deletedAt",
     key: "deletedAt",
-    render: (date: ISO | null) => <Typography.Text>{date ? "Да" : "Нет"}</Typography.Text>
+    render: (date: string | null) => <Typography.Text>{date ? "Да" : "Нет"}</Typography.Text>
   }
 ];
 

@@ -89,7 +89,8 @@
     "tsyringe": "^4.8.0",
     "typeorm": "0.3.19",
     "uuid": "10.0.0",
-    "web-vitals": "^3.5.0"
+    "web-vitals": "^3.5.0",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@anatine/esbuild-decorators": "^0.2.19",

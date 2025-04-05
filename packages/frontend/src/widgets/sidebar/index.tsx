@@ -27,11 +27,6 @@ const menuItemRoutes: MenuProps["items"] = [
     icon: <AppstoreOutlined />
   },
   {
-    key: AppRoutes.getTasksUrl(true),
-    label: <Link to={AppRoutes.getTasksUrl()}>Задачи</Link>,
-    icon: <SolutionOutlined />
-  },
-  {
     key: AppRoutes.getCustomersUrl(true),
     label: <Link to={AppRoutes.getCustomersUrl()}>Клиенты</Link>,
     icon: <TeamOutlined />
@@ -60,12 +55,12 @@ const menuItems: MenuProps["items"] = [
   {
     type: "group",
     label: "УПРЕВЛЕНИЕ ПРОЕКТАМИ",
-    children: menuItemRoutes.slice(1, 4)
+    children: menuItemRoutes.slice(1, 3)
   },
   {
     type: "group",
     label: "ДОКУМЕНТООБОРОТ",
-    children: [menuItemRoutes[4]]
+    children: [menuItemRoutes[3]]
   },
   {
     type: "divider"
@@ -73,7 +68,7 @@ const menuItems: MenuProps["items"] = [
   {
     type: "group",
     label: "УПРЕВЛЕНИЕ ПОЛЬЗОВАТЕЛЯМИ",
-    children: [menuItemRoutes[5]]
+    children: [menuItemRoutes[4]]
   }
 ];
 

@@ -1,16 +1,15 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import { useTitle } from "react-use";
-import { CustomerPreview } from "@frontend/entities/customer";
+import { CustomerPreview, CustomersTableModuleProvider } from "@frontend/entities/customer";
 import { Flex, Typography } from "antd";
 
-import { CustomersTableModuleProvider } from "../../../entities/customer/model/table/config";
-import { CustomerBulkDeleteFeature } from "../../../features/customer/bulk-delete/index";
-import { CustomerBulkRestoreFeature } from "../../../features/customer/bulk-restore/index";
-import { CustomerCreateFeature } from "../../../features/customer/create/index";
-import { AppTitles } from "../../../shared/model/services/appTitles";
-import { CustomersTableWidget } from "../../../widgets/customer/table/index";
-import { useHeader } from "../../../widgets/header/config";
+import { CustomerBulkDeleteFeature } from "../../../features/customer/bulk-delete";
+import { CustomerBulkRestoreFeature } from "../../../features/customer/bulk-restore";
+import { CustomerCreateFeature } from "../../../features/customer/create";
+import { AppTitles } from "../../../shared/model/services";
+import { CustomersTableWidget } from "../../../widgets/customer/table";
+import { useHeader } from "../../../widgets/header";
 
 function CustomersRootPage() {
   useTitle(AppTitles.getCustomersTitle());

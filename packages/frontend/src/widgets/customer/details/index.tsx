@@ -1,6 +1,8 @@
 import React from "react";
 import { useAsyncFn } from "react-use";
 import { Customer, CustomerDetailsService, useCustomerDetails } from "@frontend/entities/customer";
+import { Back } from "@frontend/shared/ui/back";
+import { useHeader } from "@frontend/widgets/header";
 import { PageSpin } from "@worksolutions/antd-react-components";
 import { Flex, Typography } from "antd";
 import { observer } from "mobx-react-lite";
@@ -15,6 +17,30 @@ export const CustomerDetailsWidget = observer(function CustomerDetailsWidget() {
 
   const customerDetailsService: CustomerDetailsService = useInjectService(CustomerDetailsService);
 
+  const onSuccess: () => Promise<void> = () =>
+    customerDetailsService.loadCustomerDetails({
+      urlParams: {
+        id: customerDetails.id
+      }
+    });
+
+  useHeader(
+    <Flex gap={36} align="center">
+      <Back />
+      {customerDetails.deletedAt !== null ? (
+        <Typography.Title level={2}>Информация о клиенте</Typography.Title>
+      ) : (
+        <Typography.Title level={2}>Редактирование клиента</Typography.Title>
+      )}
+      {customerDetails.deletedAt === null ? (
+        <CustomerDeleteFeature.Button customer={customerDetails} onSuccess={onSuccess} size="small" />
+      ) : (
+        <CustomerRestoreFeature.Button customer={customerDetails} onSuccess={onSuccess} size="small" />
+      )}
+    </Flex>,
+    [customerDetails.deletedAt]
+  );
+
   const [{ loading }] = useAsyncFn(
     async () =>
       customerDetailsService.loadCustomerDetails({
@@ -24,33 +50,11 @@ export const CustomerDetailsWidget = observer(function CustomerDetailsWidget() {
       }),
     []
   );
-
   if (loading) return <PageSpin />;
 
-  const onSuccess: () => Promise<void> = () =>
-    customerDetailsService.loadCustomerDetails({
-      urlParams: {
-        id: customerDetails.id
-      }
-    });
-
   return (
-    <>
-      <Flex gap={36} style={{ marginBottom: 20 }} align="center">
-        {customerDetails.deletedAt !== null ? (
-          <Typography.Title level={2}>Информация о клиенте</Typography.Title>
-        ) : (
-          <Typography.Title level={2}>Редактирование клиента</Typography.Title>
-        )}
-        {customerDetails.deletedAt === null ? (
-          <CustomerDeleteFeature.Button customer={customerDetails} onSuccess={onSuccess} size="small" />
-        ) : (
-          <CustomerRestoreFeature.Button customer={customerDetails} onSuccess={onSuccess} size="small" />
-        )}
-      </Flex>
-      <Flex vertical justify="space-between" gap={48} className="w-[50%]">
-        <CustomerUpdateFeature.Form />
-      </Flex>
-    </>
+    <Flex vertical justify="space-between" gap={48} className="w-[50%]">
+      <CustomerUpdateFeature.Form />
+    </Flex>
   );
 });

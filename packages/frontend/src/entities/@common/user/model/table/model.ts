@@ -1,4 +1,4 @@
-import { inject, injectable, singleton } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 
 import { FilterParams } from "../../../../../shared/model/additionalRequestParams/filterParams";
 import { PaginationParams } from "../../../../../shared/model/additionalRequestParams/paginationParams";

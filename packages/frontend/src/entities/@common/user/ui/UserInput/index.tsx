@@ -2,7 +2,7 @@ import React from "react";
 import { Role } from "@work-solutions-crm/libs/shared/user/user.dto";
 import { Form, Input, Select } from "antd";
 
-import { validationRules } from "../config";
+import { validationRules } from "./config";
 
 interface UserTitleProps {
   initialValue?: string;
@@ -15,7 +15,7 @@ const UserFullNameInput = ({ initialValue, error, disabled }: UserTitleProps) =>
     initialValue={initialValue}
     label="Имя"
     name="fullName"
-    rules={validationRules.fullName}
+    rules={validationRules.full_name}
     validateStatus={error ? "error" : undefined}
   >
     <Input maxLength={100} placeholder="Имя" disabled={disabled} />
@@ -87,7 +87,7 @@ const UserAvatarUrlInput = ({ initialValue, error, disabled }: UserAvatarUrlProp
     initialValue={initialValue}
     label="Ссылка на аватар"
     name="avatarUrl"
-    rules={validationRules.avatarUrl}
+    rules={validationRules.avatar_url}
     validateStatus={error ? "error" : undefined}
   >
     <Input placeholder="Ссылка на аватар" disabled={disabled} className={disabled ? "bg-black" : ""} />
@@ -100,7 +100,7 @@ interface UserRolesProps {
   disabled?: boolean;
 }
 
-const UserRoleInput = ({ initialValue, error, disabled }: UserRolesProps) => (
+const UserRoleInput = ({ initialValue, error, disabled, ...props }: UserRolesProps) => (
   <Form.Item
     initialValue={initialValue}
     label="Роль"
@@ -108,10 +108,11 @@ const UserRoleInput = ({ initialValue, error, disabled }: UserRolesProps) => (
     rules={validationRules.role}
     validateStatus={error ? "error" : undefined}
   >
-    <Select placeholder="Роль" disabled={disabled}>
-      <Select.Option value={Role.ADMIN}>Администратор</Select.Option>
+    <Select placeholder="Роль" disabled={disabled} {...props}>
       <Select.Option value={Role.USER}>Пользователь</Select.Option>
       <Select.Option value={Role.MANAGER}>Менеджер</Select.Option>
+      <Select.Option value={Role.MODERATOR}>Модератор</Select.Option>
+      <Select.Option value={Role.ADMIN}>Администратор</Select.Option>
     </Select>
   </Form.Item>
 );

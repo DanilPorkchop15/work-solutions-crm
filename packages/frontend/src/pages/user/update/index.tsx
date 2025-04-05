@@ -1,5 +1,5 @@
 import React from "react";
-import { UserDetailsProvider, UsersTableModuleProvider } from "@frontend/entities/@common/user/model";
+import { UserDetailsProvider } from "@frontend/entities/@common/user/model";
 
 import { UserUpdateFeature } from "../../../features/user/update";
 

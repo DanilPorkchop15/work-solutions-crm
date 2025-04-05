@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import { NavigateFunction, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { EditFilled } from "@ant-design/icons";
 import { ProjectUpdateForm } from "@frontend/features/project/forms";
 import { Button, Tooltip } from "antd";

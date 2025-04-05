@@ -56,7 +56,7 @@ export function enumDecoder<ENUM extends Record<string, string>>(matches: ENUM):
 
 export const decodeNumberToString: Decoder<string> = number.map(num => num.toString());
 
-export const ISODateDecoder: Decoder<ISO> = new Decoder<ISO>((value: unknown) => {
+export const ISODateDecoder: Decoder<string> = new Decoder<string>((value: unknown) => {
   if (typeof value !== "string") {
     return err(`Failed to parse ISO Date, expected to get string, got ${typeof value}: ${value}`);
   }

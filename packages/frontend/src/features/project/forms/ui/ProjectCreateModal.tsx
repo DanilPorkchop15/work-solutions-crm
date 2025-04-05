@@ -1,5 +1,5 @@
 import React from "react";
-import { NavigateFunction, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAsyncFn } from "react-use";
 import { AntdServices } from "@frontend/shared/model/services";
 import { ProjectCreateRequestDTO } from "@work-solutions-crm/libs/shared/project/project.api";
@@ -11,7 +11,7 @@ import { useInjectService } from "../../../../shared/lib/useInjectService";
 import { AppRoutes } from "../../../../shared/model/services/appRoutes";
 import { mapProjectCreateFormValuesToCreateProjectDto } from "../api";
 import { ProjectCreateFormValues } from "../interfaces";
-import { ProjectInput } from "./ProjectInput";
+import { ProjectInput } from "../../../../entities/project/ui/ProjectInput";
 import { CreationModal } from "@frontend/shared/ui/creationModal";
 import { FormErrorMessage } from "@frontend/shared/ui/forms";
 import { useProjectsTableModule } from "@frontend/entities/project";

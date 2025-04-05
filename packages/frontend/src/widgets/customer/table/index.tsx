@@ -1,17 +1,23 @@
 import React from "react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { useAsyncFn } from "react-use";
-import { Customer, CustomerPreview, CustomersTableModule, useCustomersTableModule } from "@frontend/entities/customer";
+import { DocumentPreview } from "@frontend/entities/document";
 import { paginationLocale, tableLocale } from "@worksolutions/antd-react-components";
-import { Row, type TableProps } from "antd";
+import { Flex, Input, Row, type TableProps } from "antd";
 import { observer } from "mobx-react-lite";
 
-import { CustomerView } from "../../../entities/customer/ui/index";
-import { CustomerDeleteFeature } from "../../../features/customer/delete/index";
-import { CustomerRestoreFeature } from "../../../features/customer/restore/index";
-import { CustomerUpdateFeature } from "../../../features/customer/update/index";
+import {
+  Customer,
+  CustomerPreview,
+  CustomersTableModule,
+  CustomerView,
+  useCustomersTableModule
+} from "../../../entities/customer";
+import { CustomerDeleteFeature } from "../../../features/customer/delete";
+import { CustomerRestoreFeature } from "../../../features/customer/restore";
+import { CustomerUpdateFeature } from "../../../features/customer/update";
 import { convertDataToTableDataSource, useLocalTableOnChange } from "../../../shared/lib/tableUtils";
-import { AppRoutes } from "../../../shared/model/services/appRoutes";
+import { AppRoutes } from "../../../shared/model/services";
 
 interface CustomersTableWidgetProps extends TableProps<Customer> {
   selectedRowColumnTitleOptions?: (customers: CustomerPreview[], onSuccess?: () => Promise<void>) => React.ReactNode;
@@ -29,6 +35,11 @@ export const CustomersTableWidget: React.FC<CustomersTableWidgetProps> = observe
   const [selectedRows, setSelectedRows] = React.useState<CustomerPreview[]>([]);
 
   const navigate: NavigateFunction = useNavigate();
+
+  const [searchValue, setSearchValue] = React.useState("");
+
+  const applySearch: (data: CustomerPreview[]) => CustomerPreview[] = (data: CustomerPreview[]) =>
+    data.filter(project => project.name.toLowerCase().includes(searchValue.toLowerCase()));
 
   React.useEffect(() => {
     void loadFn();
@@ -55,36 +66,39 @@ export const CustomersTableWidget: React.FC<CustomersTableWidgetProps> = observe
   );
 
   return (
-    <CustomerView.Table
-      virtual
-      columns={extraColumns}
-      onRow={(record, rowIndex) => {
-        return {
-          onDoubleClick: () => navigate(AppRoutes.getCustomerUrl(true, record.id))
-        };
-      }}
-      dataSource={convertDataToTableDataSource(data)}
-      loading={loading}
-      rowClassName={record => (record.deletedAt === null ? "" : "line-through")}
-      locale={tableLocale}
-      pagination={{
-        locale: paginationLocale,
-        position: ["bottomLeft"],
-        showQuickJumper: true,
-        responsive: true,
-        showLessItems: true,
-        total: data.length,
-        current: currentPage,
-        pageSize: pageSize
-      }}
-      onChange={onChange}
-      rowSelection={{
-        type: "checkbox",
-        onChange: (_, rows, __) => setSelectedRows(rows),
-        hideSelectAll: true,
-        selectedRowKeys: selectedRows.map(customer => customer.id),
-        columnTitle: selectedRowColumnTitleOptions?.(selectedRows, loadFn)
-      }}
-    />
+    <Flex vertical gap={4}>
+      <Input value={searchValue} onChange={e => setSearchValue(e.target.value)} placeholder="Поиск по названию" />
+      <CustomerView.Table
+        virtual
+        columns={extraColumns}
+        onRow={(record, rowIndex) => {
+          return {
+            onDoubleClick: () => navigate(AppRoutes.getCustomerUrl(true, record.id))
+          };
+        }}
+        dataSource={convertDataToTableDataSource(data)}
+        loading={loading}
+        rowClassName={record => (record.deletedAt === null ? "" : "line-through")}
+        locale={tableLocale}
+        pagination={{
+          locale: paginationLocale,
+          position: ["bottomLeft"],
+          showQuickJumper: true,
+          responsive: true,
+          showLessItems: true,
+          total: data.length,
+          current: currentPage,
+          pageSize: pageSize
+        }}
+        onChange={onChange}
+        rowSelection={{
+          type: "checkbox",
+          onChange: (_, rows, __) => setSelectedRows(rows),
+          hideSelectAll: true,
+          selectedRowKeys: selectedRows.map(customer => customer.id),
+          columnTitle: selectedRowColumnTitleOptions?.(selectedRows, loadFn)
+        }}
+      />
+    </Flex>
   );
 });

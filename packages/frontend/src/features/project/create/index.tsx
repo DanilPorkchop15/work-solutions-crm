@@ -1,5 +1,5 @@
 import React from "react";
-import { NavigateFunction, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ProjectCreateModal } from "@frontend/features/project/forms";
 import { Button } from "antd";
 

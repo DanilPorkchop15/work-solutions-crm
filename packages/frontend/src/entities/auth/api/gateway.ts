@@ -1,5 +1,4 @@
 import { AUTH_ROUTES } from "@work-solutions-crm/libs/shared/auth/auth.api";
-import { USERS_ROUTES } from "@work-solutions-crm/libs/shared/user/user.api";
 import { singleton } from "tsyringe";
 
 import { METHODS, RequestManager } from "../../../shared/lib/requestManager/requestManager";

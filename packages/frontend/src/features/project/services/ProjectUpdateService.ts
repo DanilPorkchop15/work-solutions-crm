@@ -1,6 +1,7 @@
 import { Project, ProjectsApi } from "@frontend/entities/project";
 import { ProjectDetailsService } from "@frontend/entities/project/model";
 import { ProjectUpdateRequestDTO } from "@work-solutions-crm/libs/shared/project/project.api";
+import { makeAutoObservable } from "mobx";
 import { inject, singleton } from "tsyringe";
 
 @singleton()
@@ -8,7 +9,9 @@ export class ProjectUpdateService {
   constructor(
     @inject(ProjectsApi) private readonly _api: ProjectsApi,
     @inject(ProjectDetailsService) private readonly _projectDetailsService: ProjectDetailsService
-  ) {}
+  ) {
+    makeAutoObservable(this);
+  }
 
   public get projectDetails(): Project {
     const projectDetails: Project | null = this._projectDetailsService.projectDetails;

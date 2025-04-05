@@ -1,4 +1,4 @@
-import { User } from "@backend/models/entities/user.entity";
+import { Role, User } from "@backend/models/entities/user.entity";
 import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
 import { Observable } from "rxjs";
 
@@ -14,13 +14,19 @@ export class DocumentPermissionGuard implements CanActivate {
     const request: AuthRequest = context.switchToHttp().getRequest();
     const user: User | undefined = request.user;
     const documentId: string = request.params.documentId;
-    if (!user || !documentId) {
+    if (!user?.role || !documentId) {
       return false;
     }
     return this.documentPermissionService
       .findAll(documentId)
-      .then(documentPermissions =>
-        documentPermissions.some(documentPermission => documentPermission.role === user.role)
+      .then(
+        documentPermissions =>
+          documentPermissions.some(
+            documentPermission =>
+              documentPermission.role === user.role || user.user_id === documentPermission.document.user_created.user_id
+          ) ||
+          user.role === Role.ADMIN ||
+          user.role === Role.MODERATOR
       );
   }
 }

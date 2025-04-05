@@ -17,7 +17,7 @@ export type AuthChangePasswordRequestDTO = {
 };
 
 export interface AuthApi {
-  me(...omitted: never): UserWithPermissionsDTO;
+  me(...omitted: never): Promise<UserWithPermissionsDTO>;
   login(dto: LoginRequestDTO, ...omitted: never): Promise<LoginDTO>;
   logout(...omitted: never): void;
   changePassword: (dto: AuthChangePasswordRequestDTO, ...omitted: never) => Promise<void>;

@@ -1,13 +1,12 @@
-import React, { memo } from "react";
+import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Dropdown, type MenuProps, Typography } from "antd";
 import { observer } from "mobx-react-lite";
 
-import { UserView } from "../../entities/@common/user/ui/index";
-import { useViewer } from "../../entities/viewer/hooks";
-import { LogoutFeature } from "../../features/auth/logout/index";
-import { AppRoutes } from "../../shared/model/services/appRoutes";
-import { CrmLogo } from "../../shared/ui/crmLogo/index";
+import { UserView } from "../../entities/@common/user";
+import { useViewer } from "../../entities/viewer";
+import { LogoutFeature } from "../../features/auth/logout";
+import { AppRoutes } from "../../shared/model/services";
 
 import { useHeaderContext } from "./config";
 

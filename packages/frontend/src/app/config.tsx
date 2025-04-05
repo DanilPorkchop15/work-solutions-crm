@@ -41,6 +41,10 @@ export const browserRouter = createBrowserRouter([
           {
             path: AppRoutes.getUpdateUserUrl(),
             lazy: async () => import("@frontend/pages/user/update")
+          },
+          {
+            path: AppRoutes.getUserImportUrl(),
+            lazy: async () => import("@frontend/pages/user/import")
           }
         ]
       },
@@ -76,11 +80,21 @@ export const browserRouter = createBrowserRouter([
       },
       {
         path: AppRoutes.getDocumentsUrl(),
-        element: <PageSpin />
+        lazy: async () => import("@frontend/pages/document/root"),
+        children: [
+          {
+            path: AppRoutes.getCreateDocumentUrl(),
+            lazy: async () => import("@frontend/pages/document/create")
+          },
+          {
+            path: AppRoutes.getUpdateDocumentUrl(),
+            lazy: async () => import("@frontend/pages/document/update")
+          }
+        ]
       },
       {
         path: AppRoutes.getDocumentUrl(),
-        element: <PageSpin />
+        lazy: async () => import("@frontend/pages/document/details")
       },
       {
         path: AppRoutes.getCustomersUrl(),

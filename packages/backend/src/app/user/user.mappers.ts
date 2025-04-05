@@ -1,9 +1,9 @@
-import { typeormDateToIsoString, typeormNullableDateToIsoString } from "@backend/common/typeorm-date-to-iso-string";
 import { UserCreateRequestDTO, UserUpdateRequestDTO } from "@work-solutions-crm/libs/shared/user/user.api";
 import { UserDTO, UserPreviewDTO } from "@work-solutions-crm/libs/shared/user/user.dto";
 import * as bcrypt from "bcryptjs";
 import { DeepPartial } from "typeorm";
 
+import { typeormDateToIsoString, typeormNullableDateToIsoString } from "../../common/typeorm-date-to-iso-string";
 import { User } from "../../models/entities/user.entity";
 
 export function mapUserToPreviewDTO(user: User): UserPreviewDTO {
@@ -33,19 +33,19 @@ export function mapUserToDTO(user: User): UserDTO {
 
 export function mapUpdateRequestDTOToUser(dto: UserUpdateRequestDTO): DeepPartial<User> {
   return {
-    avatar_url: dto.avatarUrl,
+    avatar_url: dto.avatar_url,
     email: dto.email,
-    full_name: dto.fullName,
+    full_name: dto.full_name,
     position: dto.position
   };
 }
 
 export async function mapCreateRequestDTOToUser(dto: UserCreateRequestDTO): Promise<DeepPartial<User>> {
   return {
-    avatar_url: dto.avatarUrl,
+    avatar_url: dto.avatar_url,
     email: dto.email,
     password: await bcrypt.hash(dto.password, 10),
-    full_name: dto.fullName,
+    full_name: dto.full_name,
     position: dto.position,
     role: dto.role
   };

@@ -1,8 +1,6 @@
 import React from "react";
 import { InfoCircleOutlined } from "@ant-design/icons";
-import { Descriptions, Flex, List, Tooltip, Typography } from "antd";
-
-import { formatToLocalDate } from "../../../../shared/lib/isoDateUtils";
+import { Flex, List, Tooltip } from "antd";
 import { UserPreview } from "../interfaces";
 
 import { UserView } from "./index";

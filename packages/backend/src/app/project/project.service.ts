@@ -47,13 +47,40 @@ export class ProjectService {
   }
 
   async update(projectId: string, dto: ProjectUpdateRequestDTO): Promise<ProjectDTO> {
-    const project: Project = await this.projectRepository.findOneOrFail({ where: { project_id: projectId } });
-
-    const updatedProject: Project = await this.projectRepository.save({
-      ...project,
-      ...mapCreateOrUpdateProjectDtoToProject(dto)
+    const project: Project = await this.projectRepository.findOneOrFail({
+      where: { project_id: projectId },
+      relations: ["users_accountable"]
     });
-    return this.findOne(updatedProject.project_id);
+
+    const oldUsers = project.users_accountable.map(user => user.user_id);
+
+    Object.assign(project, mapCreateOrUpdateProjectDtoToProject(dto));
+
+    if (dto.users_accountable) {
+      const newUsers = dto.users_accountable.map(u => u.id);
+
+      if (oldUsers.length !== 0) {
+        await this.projectRepository
+          .createQueryBuilder()
+          .delete()
+          .from("projects_users_accountable")
+          .where("project_id = :projectId AND user_id IN (:...userIds)", {
+            projectId,
+            userIds: oldUsers.length ? oldUsers : [null]
+          })
+          .execute();
+      }
+      await this.projectRepository
+        .createQueryBuilder()
+        .relation("users_accountable")
+        .of(project)
+        .add(newUsers.map(id => ({ user_id: id })));
+    }
+
+    const { users_accountable, ...rest } = project;
+
+    await this.projectRepository.save(rest);
+    return this.findOne(projectId);
   }
 
   async delete(projectId: string): Promise<void> {

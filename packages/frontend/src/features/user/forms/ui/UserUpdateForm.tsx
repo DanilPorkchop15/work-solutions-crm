@@ -1,22 +1,22 @@
 import React from "react";
-import { useAsyncFn, useEffectOnce } from "react-use";
+import { useAsyncFn } from "react-use";
 import { AntdServices } from "@frontend/shared/model/services";
 import { UserUpdateRequestDTO } from "@work-solutions-crm/libs/shared/user/user.api";
-import { Button, Form, message } from "antd";
+import { Button, Form } from "antd";
 import { observer } from "mobx-react-lite";
 
 import { useInjectService } from "../../../../shared/lib/useInjectService";
 import { UserUpdateService } from "../../services/UserUpdateService";
 import { UserUpdateFormValues } from "../interfaces";
 
-import { UserInput } from "./UserInput";
+import { UserInput } from "../../../../entities/@common/user/ui/UserInput";
 import { pipe } from "ramda";
 import { mapUserUpdateFormValuesToUpdateUserDto } from "@frontend/features/user/forms/api";
 import { FormErrorMessage } from "@frontend/shared/ui/forms";
 import { useUsersTableModule } from "@frontend/entities/@common/user";
 
 interface UserUpdateFormProps {
-  additionalOnFinish?: () => void;
+  additionalOnFinish?: () => void | Promise<void>;
   onLoad?: () => void;
 }
 
@@ -36,7 +36,7 @@ export const UserUpdateForm = observer(function UserUpdateFeature({ additionalOn
       await updateUserService.update(body);
       await usersTableModule.load();
       antdServices.notification.success({ message: SUCCESS_MESSAGE });
-      additionalOnFinish?.();
+      void additionalOnFinish?.();
     },
     [additionalOnFinish]
   );

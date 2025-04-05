@@ -12,10 +12,14 @@ const theme: ThemeConfig = {
     Tooltip: {
       colorBgSpotlight: "#F2F2F2",
       colorTextLightSolid: "rgb(70, 70, 70)"
+    },
+    Input: {
+      colorTextPlaceholder: "#CCCCCC"
     }
   },
   token: {
-    colorTextDisabled: "#D9D9D9"
+    colorTextDisabled: "#D1D1D1",
+    colorBgBase: "#FFFFFF"
   }
 };
 

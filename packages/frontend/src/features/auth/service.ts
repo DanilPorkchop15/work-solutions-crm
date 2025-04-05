@@ -20,7 +20,6 @@ export class AuthService {
 
   public async logout(): Promise<void> {
     await this._api.logoutRequest();
-    this._cookiesStore.remove("accessToken");
     this._viewerService.logout();
   }
 

@@ -6,6 +6,7 @@ import { Button, Tooltip } from "antd";
 
 import { AppRoutes } from "../../../shared/model/services/appRoutes";
 import { CreationModal } from "../../../shared/ui/creationModal/index";
+
 const UserUpdateModal = memo(function UserUpdateFeature() {
   const navigate: NavigateFunction = useNavigate();
 
