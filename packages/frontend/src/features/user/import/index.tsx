@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAsyncFn } from "react-use";
 import {
-  DownCircleOutlined,
+  DeleteFilled,
   ExclamationCircleOutlined,
   ImportOutlined,
   InfoCircleOutlined,
@@ -172,6 +172,20 @@ export const UserImportModal = observer(function UserImportModal() {
     }
   }, [fileData, navigate]);
 
+  const handleRemoveRow = (index: number) => {
+    setFileData(prev => prev.filter((_, i) => i !== index));
+    setValidationErrors(prev => prev.filter(e => e.row !== index + 1));
+
+    setValidationErrors(prev =>
+      prev.map(error => {
+        if (error.row > index + 1) {
+          return { ...error, row: error.row - 1 };
+        }
+        return error;
+      })
+    );
+  };
+
   const columns = [
     {
       title: "ФИО",
@@ -270,6 +284,14 @@ export const UserImportModal = observer(function UserImportModal() {
           "-"
         );
       }
+    },
+    {
+      title: "",
+      key: "actions",
+      width: 50,
+      render: (_: any, __: any, index: number) => (
+        <Button danger type="link" icon={<DeleteFilled />} onClick={() => handleRemoveRow(index)} />
+      )
     }
   ];
 
@@ -278,7 +300,7 @@ export const UserImportModal = observer(function UserImportModal() {
       title="Импорт пользователей"
       open={true}
       width={1200}
-      onCancel={() => navigate(AppRoutes.getUsersUrl())}
+      onCancel={() => navigate(AppRoutes.getUsersUrl(true))}
       footer={[
         <Button key="cancel" onClick={() => navigate(AppRoutes.getUsersUrl(true))}>
           Отмена
@@ -286,15 +308,26 @@ export const UserImportModal = observer(function UserImportModal() {
         <Button key="add" onClick={addEmptyRow}>
           Добавить строку
         </Button>,
-        <Button
-          key="import"
-          type="primary"
-          loading={loading}
-          onClick={handleImport}
-          disabled={fileData.length === 0 || validationErrors.length > 0}
+        <Tooltip
+          title={
+            fileData.length === 0
+              ? "Добавьте хотя бы одну строку"
+              : validationErrors.length > 0
+                ? "Исправьте ошибки в данных"
+                : undefined
+          }
+          placement="topLeft"
         >
-          Импортировать ({fileData.length - validationErrors.length}/{fileData.length})
-        </Button>
+          <Button
+            key="import"
+            type="primary"
+            loading={loading}
+            onClick={handleImport}
+            disabled={fileData.length === 0 || validationErrors.length > 0}
+          >
+            Импортировать ({fileData.length - validationErrors.length}/{fileData.length})
+          </Button>
+        </Tooltip>
       ]}
     >
       <Flex vertical gap={16}>
