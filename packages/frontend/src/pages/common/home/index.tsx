@@ -26,15 +26,7 @@ import { Layout } from "../../../shared/ui/layout/index";
 import styles from "./index.module.scss";
 
 export function HomePage() {
-  useTitle(AppTitles.getUserTitle());
-
-  // Примерные данные для демонстрации
-  const stats = {
-    projects: 12,
-    customers: 45,
-    documents: 178,
-    activeProjects: 5
-  };
+  useTitle(AppTitles.getRootTitle());
 
   const [activeTab, setActiveTab] = React.useState("projects");
   const [pdfLoading, setPdfLoading] = React.useState(false);
@@ -146,7 +138,7 @@ export function HomePage() {
             onChange={setActiveTab}
             tabBarExtraContent={
               <Space>
-                <Button type="link" onClick={handleExportToPDF} loading={pdfLoading}>
+                <Button type="text" onClick={handleExportToPDF} loading={pdfLoading}>
                   Экспорт таблицы в PDF
                 </Button>
               </Space>
