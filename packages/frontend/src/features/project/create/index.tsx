@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { CustomerPreview } from "@frontend/entities/customer";
 import { ProjectCreateModal } from "@frontend/features/project/forms";
 import { Button, ButtonProps } from "antd";
 
@@ -15,7 +16,29 @@ export const ProjectCreateButton = React.memo(function ProjectCreateButton(props
   );
 });
 
+interface ProjectCreateForCustomerButtonProps extends ButtonProps {
+  customer: CustomerPreview;
+}
+
+export const ProjectCreateForCustomerButton = React.memo(function ProjectCreateButton({
+  customer,
+  ...props
+}: ProjectCreateForCustomerButtonProps) {
+  const navigate = useNavigate();
+
+  return (
+    <Button
+      size="large"
+      onClick={() => navigate(AppRoutes.getCreateProjectForCustomerUrl(true, customer.id), { relative: "path" })}
+      {...props}
+    >
+      Добавить проект для {customer.name}
+    </Button>
+  );
+});
+
 export const ProjectCreateFeature = {
   Button: ProjectCreateButton,
-  Modal: ProjectCreateModal
+  Modal: ProjectCreateModal,
+  ForCustomerButton: ProjectCreateForCustomerButton
 };

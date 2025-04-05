@@ -15,7 +15,7 @@ interface DocumentDeleteFeatureProps extends ButtonProps {
   children?: React.ReactNode;
 }
 
-const SUCCESS_MESSAGE = "Документ успешно удален";
+const SUCCESS_MESSAGE = "Документ успешно архивирован";
 
 const DocumentDeleteFeatureBase = React.memo(function DeleteDocumentFeature({
   document,
@@ -40,13 +40,13 @@ const DocumentDeleteFeatureBase = React.memo(function DeleteDocumentFeature({
     <>
       <ConfirmationDialog
         cancelText="Отменить"
-        okText="Удалить"
+        okText="Архивировать"
         subtitle={
           <Typography.Text>
             Вы уверены, что хотите удалить документ — <Typography.Text type="danger">{document.name}</Typography.Text>
           </Typography.Text>
         }
-        title="Удалить документ"
+        title="Архивировать документ"
       />
       <Button danger disabled={disabled} onClick={withConfirmation(documentDeleteFn)} {...props}>
         {children}
@@ -58,14 +58,14 @@ const DocumentDeleteFeatureBase = React.memo(function DeleteDocumentFeature({
 const DocumentDeleteButton = React.memo(function DocumentDeleteButton(props: DocumentDeleteFeatureProps) {
   return (
     <DocumentDeleteFeatureBase type="primary" {...props}>
-      {props.document.deletedAt ? "Удаленный документ" : "Удалить"}
+      {props.document.deletedAt ? "Архивный документ" : "Архивировать"}
     </DocumentDeleteFeatureBase>
   );
 });
 
 const DocumentDeleteIcon = React.memo(function DocumentDeleteIcon(props: DocumentDeleteFeatureProps) {
   return (
-    <Tooltip title={props.document.deletedAt ? "Удаленный документ" : "Удалить"}>
+    <Tooltip title={props.document.deletedAt ? "Архивный документ" : "Архивировать"}>
       <DocumentDeleteFeatureBase icon={<DeleteFilled style={{ fontSize: 18 }} />} size="small" type="link" {...props} />
     </Tooltip>
   );

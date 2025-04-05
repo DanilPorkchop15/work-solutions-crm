@@ -33,12 +33,6 @@ export abstract class AppRoutes {
   public static getUpdateProjectUrl = (withPrefix = false, id = ":id") =>
     `${AppRoutes._calculatePrefix(AppRoutes.getProjectsUrl(true), withPrefix)}${id}/update`;
 
-  public static getTasksUrl = (withPrefix = false) =>
-    `${AppRoutes._calculatePrefix(AppRoutes.getRootUrl(), withPrefix)}tasks`;
-
-  public static getTaskUrl = (withPrefix = false, id = ":id") =>
-    `${AppRoutes._calculatePrefix(AppRoutes.getRootUrl(), withPrefix)}tasks/${id}`;
-
   public static getDocumentsUrl = (withPrefix = false) =>
     `${AppRoutes._calculatePrefix(AppRoutes.getRootUrl(), withPrefix)}documents`;
 
@@ -62,6 +56,9 @@ export abstract class AppRoutes {
 
   public static getUpdateCustomerUrl = (withPrefix = false, id = ":id") =>
     `${AppRoutes._calculatePrefix(AppRoutes.getCustomersUrl(true), withPrefix)}${id}/update`;
+
+  public static getCreateProjectForCustomerUrl = (withPrefix = false, id = ":id") =>
+    `${AppRoutes._calculatePrefix(AppRoutes.getCustomerUrl(true, id), withPrefix)}create-project`;
 
   private static readonly _calculatePrefix = (prefix: string, withPrefix: boolean) =>
     !withPrefix ? "" : prefix !== "/" ? `${prefix}/` : prefix;

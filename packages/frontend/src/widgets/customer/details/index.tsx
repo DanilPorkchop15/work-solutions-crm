@@ -1,6 +1,7 @@
 import React from "react";
 import { useAsyncFn } from "react-use";
 import { Customer, CustomerDetailsService, useCustomerDetails } from "@frontend/entities/customer";
+import { ProjectCreateFeature } from "@frontend/features/project/create";
 import { Back } from "@frontend/shared/ui/back";
 import { useHeader } from "@frontend/widgets/header";
 import { PageSpin } from "@worksolutions/antd-react-components";
@@ -33,7 +34,10 @@ export const CustomerDetailsWidget = observer(function CustomerDetailsWidget() {
         <Typography.Title level={2}>Редактирование клиента</Typography.Title>
       )}
       {customerDetails.deletedAt === null ? (
-        <CustomerDeleteFeature.Button customer={customerDetails} onSuccess={onSuccess} size="small" />
+        <Flex gap={12}>
+          <CustomerDeleteFeature.Button customer={customerDetails} onSuccess={onSuccess} size="small" />
+          <ProjectCreateFeature.ForCustomerButton customer={customerDetails} size="small" type="primary" />
+        </Flex>
       ) : (
         <CustomerRestoreFeature.Button customer={customerDetails} onSuccess={onSuccess} size="small" />
       )}

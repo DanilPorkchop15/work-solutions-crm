@@ -46,9 +46,7 @@ const columns: TableProps<DocumentPreview>["columns"] = [
     title: "Архивирован",
     dataIndex: "deletedAt",
     key: "deletedAt",
-    render: (date: string | null) => (
-      <Typography.Text type={date ? "danger" : undefined}>{date ? "Да" : "Нет"}</Typography.Text>
-    )
+    render: (date: string | null) => <Typography.Text>{date ? "Да" : "Нет"}</Typography.Text>
   }
 ];
 

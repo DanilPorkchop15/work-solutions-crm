@@ -91,7 +91,12 @@ export const darkTheme: ThemeConfig = {
       colorTextPlaceholder: "#8A8A8A",
       hoverBorderColor: "#4eace8",
       activeBorderColor: "#4eace8",
-      colorText: "#E0E0E0"
+      colorText: "#E0E0E0",
+      activeBg: "#252525",
+      colorBgContainerDisabled: "#1E1E1E",
+      colorTextDisabled: "#444444",
+      colorBgTextActive: "#252525",
+      addonBg: "#252525"
     },
     Button: {
       defaultHoverColor: "#E0E0E0",
@@ -159,7 +164,10 @@ export const darkTheme: ThemeConfig = {
       optionSelectedBg: "#252525",
       optionSelectedColor: "#4eace8",
       colorBgContainer: "#252525",
-      colorBgElevated: "#1E1E1E"
+      colorBgElevated: "#1E1E1E",
+      colorBgContainerDisabled: "#1E1E1E",
+      colorTextPlaceholder: "#8A8A8A",
+      colorBorder: "#444444"
     },
     Modal: {
       borderRadiusLG: 6,

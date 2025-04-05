@@ -1,4 +1,5 @@
 import React from "react";
+import { Outlet } from "react-router-dom";
 import { useTitle } from "react-use";
 import { CustomerDetailsProvider, CustomersTableModuleProvider } from "@frontend/entities/customer/model";
 
@@ -14,6 +15,7 @@ export function CustomerDetailsPage() {
       <CustomersTableModuleProvider>
         <CustomerDetailsProvider>
           <CustomerDetailsWidget />
+          <Outlet />
         </CustomerDetailsProvider>
       </CustomersTableModuleProvider>
     </Layout.Content>

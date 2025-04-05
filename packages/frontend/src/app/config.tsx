@@ -71,14 +71,6 @@ export const browserRouter = createBrowserRouter([
         lazy: async () => import("@frontend/pages/project/details")
       },
       {
-        path: AppRoutes.getTasksUrl(),
-        element: <PageSpin />
-      },
-      {
-        path: AppRoutes.getTaskUrl(),
-        element: <PageSpin />
-      },
-      {
         path: AppRoutes.getDocumentsUrl(),
         lazy: async () => import("@frontend/pages/document/root"),
         children: [
@@ -112,7 +104,13 @@ export const browserRouter = createBrowserRouter([
       },
       {
         path: AppRoutes.getCustomerUrl(),
-        lazy: async () => import("@frontend/pages/customer/details")
+        lazy: async () => import("@frontend/pages/customer/details"),
+        children: [
+          {
+            path: AppRoutes.getCreateProjectForCustomerUrl(),
+            lazy: async () => import("@frontend/pages/customer/create-project")
+          }
+        ]
       }
     ]
   },

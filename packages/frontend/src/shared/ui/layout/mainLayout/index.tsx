@@ -17,6 +17,9 @@ const theme: ThemeConfig = {
     },
     Input: {
       colorTextPlaceholder: "#CCCCCC"
+    },
+    Select: {
+      colorBorder: "#d9d9d9"
     }
   },
   token: {
