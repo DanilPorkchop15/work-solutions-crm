@@ -19,9 +19,7 @@ const UserWidget = observer(function UserWidget() {
     () => [
       {
         label: (
-          <Typography.Text
-            onClick={() => navigate(AppRoutes.getProfileUrl(false, viewer.state.id), { relative: "path" })}
-          >
+          <Typography.Text onClick={() => navigate(AppRoutes.getProfileUrl(true), { relative: "path" })}>
             Профиль
           </Typography.Text>
         ),

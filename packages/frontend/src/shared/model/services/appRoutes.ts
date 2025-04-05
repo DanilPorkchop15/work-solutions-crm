@@ -1,8 +1,8 @@
 export abstract class AppRoutes {
   public static getRootUrl = () => "/";
 
-  public static getProfileUrl = (withPrefix = false, id = ":id") =>
-    `${AppRoutes._calculatePrefix(AppRoutes.getAuthUrl(), withPrefix)}profile/${id}`;
+  public static getProfileUrl = (withPrefix = false) =>
+    `${AppRoutes._calculatePrefix(AppRoutes.getRootUrl(), withPrefix)}profile`;
 
   public static getUsersUrl = (withPrefix = false) =>
     `${AppRoutes._calculatePrefix(AppRoutes.getRootUrl(), withPrefix)}users`;

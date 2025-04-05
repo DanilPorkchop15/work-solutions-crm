@@ -3,9 +3,9 @@ import { PageSpin } from "@worksolutions/antd-react-components";
 
 import { ViewerProvider } from "../entities/viewer/config";
 import { AppRoutes } from "../shared/model/services/appRoutes";
-import { Layout } from "../shared/ui/layout/index";
-import { Header, HeaderProvider } from "../widgets/header/index";
-import { Sidebar } from "../widgets/sidebar/index";
+import { Layout } from "../shared/ui/layout";
+import { Header, HeaderProvider } from "../widgets/header";
+import { Sidebar } from "../widgets/sidebar";
 
 export const browserRouter = createBrowserRouter([
   {
