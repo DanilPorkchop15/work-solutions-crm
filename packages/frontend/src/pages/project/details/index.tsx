@@ -1,6 +1,7 @@
 import React from "react";
 import { useTitle } from "react-use";
 import { ProjectDetailsProvider, ProjectsTableModuleProvider } from "@frontend/entities/project/model";
+import { Flex, Typography } from "antd";
 
 import { AppTitles } from "../../../shared/model/services/appTitles";
 import { Layout } from "../../../shared/ui/layout";
@@ -13,7 +14,10 @@ export function ProjectDetailsPage() {
     <Layout.Content>
       <ProjectsTableModuleProvider>
         <ProjectDetailsProvider>
-          <ProjectDetailsWidget />
+          <Flex vertical gap={24}>
+            <Typography.Title level={3}>Информация о проекте</Typography.Title>
+            <ProjectDetailsWidget />
+          </Flex>
         </ProjectDetailsProvider>
       </ProjectsTableModuleProvider>
     </Layout.Content>

@@ -20,16 +20,18 @@ export type BulkCreateUserRequest = Request<{ body: UserCreateRequestDTO[] }>;
 export type BulkDeleteUserRequest = Request<{ body: UserBulkDeleteRequestDTO }>;
 export type BulkRestoreUserRequest = Request<{ body: UserBulkRestoreRequestDTO }>;
 export type ChangeUserRoleRequest = Request<{ body: UserChangeRoleRequestDTO }>;
+export type UploadUserAvatarRequest = Request<{ body: FormData }>;
 
 export interface UsersTransport {
   getUser: Endpoint<FindOneUserRequest, User>;
   getUsers: Endpoint<void, TableDto<User>>;
   createUser: Endpoint<CreateUserRequest, User>;
   updateUser: Endpoint<UpdateUserRequest, User>;
-  deleteUser: Endpoint<DeleteUserRequest, void>;
-  restoreUser: Endpoint<RestoreUserRequest, void>;
+  deleteUser: Endpoint<DeleteUserRequest>;
+  restoreUser: Endpoint<RestoreUserRequest>;
   bulkCreateUser: Endpoint<BulkCreateUserRequest, TableDto<User>>;
-  bulkDeleteUser: Endpoint<BulkDeleteUserRequest, void>;
-  bulkRestoreUser: Endpoint<BulkRestoreUserRequest, void>;
-  changeUserRole: Endpoint<ChangeUserRoleRequest, void>;
+  bulkDeleteUser: Endpoint<BulkDeleteUserRequest>;
+  bulkRestoreUser: Endpoint<BulkRestoreUserRequest>;
+  changeUserRole: Endpoint<ChangeUserRoleRequest>;
+  uploadAvatar: Endpoint<UploadUserAvatarRequest, string>;
 }

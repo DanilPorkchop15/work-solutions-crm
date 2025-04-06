@@ -1,4 +1,4 @@
-import { inject, injectable } from "tsyringe";
+import { inject, singleton } from "tsyringe";
 
 import { FilterParams } from "../../../../shared/model/additionalRequestParams/filterParams";
 import { PaginationParams } from "../../../../shared/model/additionalRequestParams/paginationParams";
@@ -9,7 +9,7 @@ import { TableModule } from "../../../../shared/model/tableModule";
 import { ProjectsApi } from "../../api/gateway";
 import type { ProjectPreview } from "../../interfaces";
 
-@injectable()
+@singleton()
 export class ProjectsTableModule extends TableModule<ProjectPreview, never, never> {
   public readonly filter: FilterParams<never> = new FilterParams<never>(undefined as never);
 

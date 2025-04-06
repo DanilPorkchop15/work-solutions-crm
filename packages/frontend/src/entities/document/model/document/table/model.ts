@@ -1,13 +1,13 @@
 import { inject, injectable } from "tsyringe";
 
-import { FilterParams } from "../../../../shared/model/additionalRequestParams/filterParams";
-import { PaginationParams } from "../../../../shared/model/additionalRequestParams/paginationParams";
-import { PathParams } from "../../../../shared/model/additionalRequestParams/pathParams";
-import { SortingParams } from "../../../../shared/model/additionalRequestParams/sortingParams";
-import { TableDto } from "../../../../shared/model/interfaces/table";
-import { TableModule } from "../../../../shared/model/tableModule";
-import { DocumentsApi } from "../../api/gateway";
-import { DocumentPreview } from "../../interfaces";
+import { FilterParams } from "../../../../../shared/model/additionalRequestParams/filterParams";
+import { PaginationParams } from "../../../../../shared/model/additionalRequestParams/paginationParams";
+import { PathParams } from "../../../../../shared/model/additionalRequestParams/pathParams";
+import { SortingParams } from "../../../../../shared/model/additionalRequestParams/sortingParams";
+import { TableDto } from "../../../../../shared/model/interfaces/table";
+import { TableModule } from "../../../../../shared/model/tableModule";
+import { DocumentsApi } from "../../../api/document/gateway";
+import { DocumentPreview } from "../../../interfaces";
 
 @injectable()
 export class DocumentsTableModule extends TableModule<DocumentPreview, never, never> {

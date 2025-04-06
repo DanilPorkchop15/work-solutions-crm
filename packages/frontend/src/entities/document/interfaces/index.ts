@@ -1,2 +1,2 @@
-export * from "./domain";
-export * from "./transport";
+export * from "./document";
+export * from "./version";

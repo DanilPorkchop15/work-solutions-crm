@@ -1,7 +1,7 @@
 import { isNil } from "ramda";
 
-import { useInjectService } from "../../../../shared/lib/useInjectService";
-import type { Document } from "../../interfaces";
+import { useInjectService } from "../../../../../shared/lib/useInjectService";
+import type { Document } from "../../../interfaces";
 
 import { DocumentDetailsService } from "./service";
 

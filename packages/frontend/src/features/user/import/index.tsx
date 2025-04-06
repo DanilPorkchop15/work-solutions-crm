@@ -14,6 +14,8 @@ import { Button, ButtonProps, Flex, Input, Modal, Select, Table, Tooltip, Typogr
 import { observer } from "mobx-react-lite";
 import * as XLSX from "xlsx";
 
+import { generatePassword } from "./lib";
+
 import { useInjectService } from "../../../shared/lib/useInjectService";
 import { AppRoutes } from "../../../shared/model/services/appRoutes";
 import { UserService } from "../services/UserService";
@@ -68,8 +70,9 @@ export const UserImportModal = observer(function UserImportModal() {
           const rowData = {
             fullName: row[columnMap.fullName],
             email: row[columnMap.email],
+            password: columnMap.password ? row[columnMap.password] : generatePassword(),
             position: columnMap.position ? row[columnMap.position] : undefined,
-            role: columnMap.role ? row[columnMap.role] : undefined,
+            role: columnMap.role ? row[columnMap.role] : Role.USER,
             _raw: row
           };
 
@@ -140,6 +143,7 @@ export const UserImportModal = observer(function UserImportModal() {
     const newRow = {
       fullName: "",
       email: "",
+      password: generatePassword(),
       position: "",
       role: Role.USER,
       _isNew: true
@@ -244,6 +248,22 @@ export const UserImportModal = observer(function UserImportModal() {
       )
     },
     {
+      title: "Пароль",
+      dataIndex: "password",
+      key: "password",
+      width: 150,
+      render: (value: any, record: any, index: number) => (
+        <Input.Password
+          value={value || generatePassword()}
+          onChange={e => {
+            const newValue = e.target.value;
+            setFileData(fileData.map((item, i) => (i === index ? { ...item, password: newValue } : item)));
+          }}
+          placeholder="Оставьте пустым для автогенерации"
+        />
+      )
+    },
+    {
       title: "Должность",
       dataIndex: "position",
       key: "position",
@@ -342,7 +362,7 @@ export const UserImportModal = observer(function UserImportModal() {
                 <Text strong>Требования к файлу:</Text>
                 <Text>- Форматы: CSV, Excel (XLS/XLSX)</Text>
                 <Text>- Обязательные столбцы: ФИО, Email</Text>
-                <Text>- Опциональные столбцы: Должность, Роль</Text>
+                <Text>- Опциональные столбцы: Пароль, Должность, Роль</Text>
                 <Text>- Допустимые роли: {Object.values(Role).join(", ")}</Text>
               </Flex>
             }

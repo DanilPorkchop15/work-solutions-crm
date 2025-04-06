@@ -1,5 +1,6 @@
 import { tableDecoder } from "@frontend/shared/api";
 import { USERS_ROUTES } from "@work-solutions-crm/libs/shared/user/user.api";
+import { string } from "jsonous";
 import { singleton } from "tsyringe";
 
 import { METHODS, RequestManager } from "../../../../shared/lib/requestManager/requestManager";
@@ -14,6 +15,7 @@ import type {
   FindOneUserRequest,
   RestoreUserRequest,
   UpdateUserRequest,
+  UploadUserAvatarRequest,
   User,
   UsersTransport
 } from "../interfaces";
@@ -92,6 +94,14 @@ export class UsersApi extends RequestManager implements UsersTransport {
       method: METHODS.PATCH,
       url: USERS_ROUTES.update(request.urlParams.id),
       serverDataDecoder: userDecoder
+    })(request);
+  }
+
+  public async uploadAvatar(request: UploadUserAvatarRequest): Promise<string> {
+    return this.createRequest({
+      method: METHODS.POST,
+      url: USERS_ROUTES.uploadAvatar(),
+      serverDataDecoder: string
     })(request);
   }
 }

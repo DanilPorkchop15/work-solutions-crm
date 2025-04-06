@@ -5,7 +5,7 @@ import {
   DocumentUpdateRequestDTO
 } from "@work-solutions-crm/libs/shared/document/document.api";
 
-import { Endpoint, Request, TableDto } from "../../../shared/model/interfaces";
+import { Endpoint, Request, TableDto } from "../../../../shared/model/interfaces";
 
 import type { Document, DocumentPreview } from "./domain";
 

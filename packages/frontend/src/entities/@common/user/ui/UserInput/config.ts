@@ -11,8 +11,8 @@ export const validationRules: ValidationRules<UserCreateRequestDTO> = {
     },
     { required: true, message: "Пожалуйста, введите ваш e-mail" }
   ],
-  password: [{ required: true, message: "Пожалуйста, введите ваш пароль", min: 8 }],
+  password: [{ required: true, message: "Пожалуйста, введите ваш пароль (не менее 8 символов)", min: 8 }],
   role: [{ required: true, message: "Пожалуйста, выберите роль" }],
   position: [{ required: false, message: "Пожалуйста, введите вашу должность" }],
-  avatar_url: [{ required: false, message: "Пожалуйста, выберите аватар", type: "url" }]
+  avatar_url: [{ required: false, message: "Пожалуйста, выберите аватар (url)", type: "url" }]
 };

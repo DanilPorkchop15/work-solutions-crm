@@ -2,7 +2,7 @@ import React from "react";
 import { Role } from "@work-solutions-crm/libs/shared/user/user.dto";
 import { Form, Input } from "antd";
 
-import { UserView } from "../../../@common/user/ui";
+import { UserView } from "../../../../@common/user/ui";
 
 import { validationRules } from "./config";
 
@@ -13,18 +13,6 @@ interface DocumentUrlInputProps {
   error?: Error;
   disabled?: boolean;
 }
-
-export const DocumentUrlInput = ({ initialValue, error, disabled }: DocumentUrlInputProps) => (
-  <Form.Item
-    initialValue={initialValue}
-    label="URL документа"
-    name="document_url"
-    rules={validationRules.document_url}
-    validateStatus={error ? "error" : undefined}
-  >
-    <Input maxLength={200} placeholder="URL документа" disabled={disabled} />
-  </Form.Item>
-);
 
 interface DocumentNameInputProps {
   initialValue?: string;
@@ -81,7 +69,6 @@ export const DocumentRolesInput = ({ initialValue, error, disabled }: DocumentRo
 );
 
 export const DocumentInput = {
-  Url: DocumentUrlInput,
   Name: DocumentNameInput,
   Description: DocumentDescriptionInput,
   Roles: DocumentRolesInput

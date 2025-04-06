@@ -35,6 +35,7 @@ export interface UserApi {
   bulkDelete: (dto: UserBulkDeleteRequestDTO, ...omitted: never) => Promise<void>;
   bulkRestore: (dto: UserBulkRestoreRequestDTO, ...omitted: never) => Promise<void>;
   changeRole: (dto: UserChangeRoleRequestDTO, ...omitted: never) => Promise<void>;
+  uploadAvatar: (...omitted: never) => Promise<string>;
 }
 
 export const USERS_ROUTES: APIRoutes<UserApi> = {
@@ -47,5 +48,6 @@ export const USERS_ROUTES: APIRoutes<UserApi> = {
   bulkCreate: () => "/users/bulk-create",
   bulkDelete: () => "/user/bulk-delete",
   bulkRestore: () => "/user/bulk-restore",
-  changeRole: () => "/user/role"
+  changeRole: () => "/user/role",
+  uploadAvatar: () => `/users/avatar`
 };

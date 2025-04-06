@@ -4,7 +4,7 @@ import { useTitle } from "react-use";
 import { DocumentPreview } from "@frontend/entities/document";
 import { Flex, Typography } from "antd";
 
-import { DocumentsTableModuleProvider } from "../../../entities/document/model/table";
+import { DocumentsTableModuleProvider } from "../../../entities/document/model/document/table";
 import { DocumentBulkDeleteFeature } from "../../../features/document/bulk-delete";
 import { DocumentBulkRestoreFeature } from "../../../features/document/bulk-restore";
 import { DocumentCreateFeature } from "../../../features/document/create";

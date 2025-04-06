@@ -1,2 +1,2 @@
-export * from "./table";
-export * from "./details";
+export * from "./document";
+export * from "./version";

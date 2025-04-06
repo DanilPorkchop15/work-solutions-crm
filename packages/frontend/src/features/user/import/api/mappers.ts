@@ -1,3 +1,4 @@
+import { generatePassword } from "@frontend/features/user/import/lib";
 import { UserCreateRequestDTO } from "@work-solutions-crm/libs/shared/user/user.api";
 import { Role } from "@work-solutions-crm/libs/shared/user/user.dto";
 
@@ -29,14 +30,4 @@ export const mapImportedDataToBulkCreateDto = (data: unknown[]): UserCreateReque
       throw new Error(`Row ${index + 1}: Invalid data`);
     }
   });
-};
-
-const generatePassword = () => {
-  // Генерация сложного пароля
-  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()";
-  let password = "";
-  for (let i = 0; i < 12; i++) {
-    password += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return password;
 };

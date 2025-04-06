@@ -1,6 +1,7 @@
 import React from "react";
 import { useTitle } from "react-use";
 import { UserDetailsProvider, UsersTableModuleProvider } from "@frontend/entities/@common/user/model";
+import { Flex, Typography } from "antd";
 
 import { AppTitles } from "../../../shared/model/services/appTitles";
 import { Layout } from "../../../shared/ui/layout/index";
@@ -13,7 +14,10 @@ export function UserDetailsPage() {
     <Layout.Content>
       <UsersTableModuleProvider>
         <UserDetailsProvider>
-          <UserDetailsWidget />
+          <Flex vertical gap={24}>
+            <Typography.Title level={3}>Информация о пользователе</Typography.Title>
+            <UserDetailsWidget />
+          </Flex>
         </UserDetailsProvider>
       </UsersTableModuleProvider>
     </Layout.Content>

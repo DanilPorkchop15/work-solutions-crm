@@ -1,5 +1,5 @@
 import React from "react";
-import { DocumentDetailsProvider } from "@frontend/entities/document/model";
+import { DocumentDetailsProvider } from "@frontend/entities/document/model/document";
 
 import { DocumentUpdateFeature } from "../../../features/document/update";
 

@@ -1,7 +1,10 @@
 import React from "react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { useAsyncFn } from "react-use";
+import { UserInput, useUsersTableModule } from "@frontend/entities/@common/user";
 import { AntdServices } from "@frontend/shared/model/services";
+import { CreationModal } from "@frontend/shared/ui/creationModal";
+import { FormErrorMessage } from "@frontend/shared/ui/forms";
 import { UserCreateRequestDTO } from "@work-solutions-crm/libs/shared/user/user.api";
 import { Button, Form } from "antd";
 import { observer } from "mobx-react-lite";
@@ -12,11 +15,6 @@ import { AppRoutes } from "../../../../shared/model/services/appRoutes";
 import { UserService } from "../../services/UserService";
 import { mapUserCreateFormValuesToCreateUserDto } from "../api";
 import { UserCreateFormValues } from "../interfaces";
-
-import { UserInput } from "../../../../entities/@common/user";
-import { CreationModal } from "@frontend/shared/ui/creationModal";
-import { FormErrorMessage } from "@frontend/shared/ui/forms";
-import { useUsersTableModule } from "@frontend/entities/@common/user";
 
 const SUCCESS_MESSAGE = "Пользователь успешно создан";
 

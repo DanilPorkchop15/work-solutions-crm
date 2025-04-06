@@ -1,5 +1,5 @@
 import React from "react";
-import { useDeepCompareEffect, useShallowCompareEffect } from "react-use";
+import { useShallowCompareEffect } from "react-use";
 import { isNil } from "ramda";
 
 interface HeaderContext {

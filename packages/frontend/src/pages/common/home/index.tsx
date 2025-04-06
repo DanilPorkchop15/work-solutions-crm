@@ -138,7 +138,7 @@ export function HomePage() {
             onChange={setActiveTab}
             tabBarExtraContent={
               <Space>
-                <Button type="text" onClick={handleExportToPDF} loading={pdfLoading}>
+                <Button type="link" onClick={handleExportToPDF} loading={pdfLoading}>
                   Экспорт таблицы в PDF
                 </Button>
               </Space>

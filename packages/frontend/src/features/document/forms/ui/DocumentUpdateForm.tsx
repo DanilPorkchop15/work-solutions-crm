@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useAsyncFn } from "react-use";
 import { useDocumentsTableModule } from "@frontend/entities/document";
 import { mapDocumentUpdateFormValuesToUpdateDto } from "@frontend/features/document/forms/api";
@@ -9,7 +9,7 @@ import { Button, Form } from "antd";
 import { observer } from "mobx-react-lite";
 import { identity, pipe } from "ramda";
 
-import { DocumentInput } from "../../../../entities/document/ui/DocumentInput";
+import { DocumentInput } from "../../../../entities/document/ui/document/DocumentInput";
 import { useInjectService } from "../../../../shared/lib/useInjectService";
 import { DocumentUpdateService } from "../../services";
 import { DocumentUpdateFormValues } from "../interfaces";

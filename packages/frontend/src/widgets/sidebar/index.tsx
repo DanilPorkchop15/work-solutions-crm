@@ -1,13 +1,6 @@
 import React, { memo } from "react";
 import { Link, useLocation } from "react-router-dom";
-import {
-  AppstoreOutlined,
-  BookOutlined,
-  HomeOutlined,
-  SolutionOutlined,
-  TeamOutlined,
-  UserAddOutlined
-} from "@ant-design/icons";
+import { AppstoreOutlined, BookOutlined, HomeOutlined, TeamOutlined, UserAddOutlined } from "@ant-design/icons";
 import { string1 } from "@worksolutions/utils";
 import { Layout, Menu, type MenuProps, Row } from "antd";
 import { memoizeWith } from "ramda";

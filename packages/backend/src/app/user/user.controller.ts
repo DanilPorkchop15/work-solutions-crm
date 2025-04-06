@@ -1,4 +1,17 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, UseGuards } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  NotFoundException,
+  Param,
+  Patch,
+  Post,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors
+} from "@nestjs/common";
+import { FileInterceptor } from "@nestjs/platform-express";
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { Action, Subject } from "@work-solutions-crm/libs/shared/auth/auth.dto";
 import { UserApi, USERS_ROUTES } from "@work-solutions-crm/libs/shared/user/user.api";
@@ -145,5 +158,19 @@ export class UserController implements UserApi {
   async changeRole(@Body() dto: UserChangeRoleValidationDTO): Promise<void> {
     await this.usersService.changeRole(dto.user_id, dto.role);
     await this.loggerService.logByType(LogType.USER, "role changed", "user", { user_id: dto.user_id });
+  }
+
+  @Post(USERS_ROUTES.uploadAvatar())
+  @UseInterceptors(FileInterceptor("avatar"))
+  @UseGuards(AuthGuard, CaslGuard)
+  @CheckPolicies(ability => ability.can(Action.UPDATE, Subject.USERS))
+  @ApiOperation({ summary: "Upload user avatar" })
+  @ApiResponse({ status: 200 })
+  async uploadAvatar(@UploadedFile() file: Express.Multer.File, @CurrentUser() user: User): Promise<string> {
+    const url: string = this.usersService.uploadAvatar(file);
+    await this.loggerService.logByType(LogType.USER, "avatar uploaded", "user", {
+      user_id: user.user_id
+    });
+    return url;
   }
 }

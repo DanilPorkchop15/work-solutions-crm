@@ -1,2 +1,2 @@
-export * from "./gateway";
-export * from "./decoders";
+export * from "./document";
+export * from "./version";

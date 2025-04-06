@@ -39,7 +39,7 @@ const UserWidget = observer(function UserWidget() {
 
   return (
     <Dropdown menu={{ items: userWidgetItems }} trigger={["click"]}>
-      <UserView.Avatar className="cursor-pointer ml-2" user={viewer.state} />
+      <UserView.Avatar className="cursor-pointer ml-2" user={viewer.state} showOnlineStatus />
     </Dropdown>
   );
 });

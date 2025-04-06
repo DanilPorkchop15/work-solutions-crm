@@ -32,14 +32,6 @@ export class DocumentCreateValidationDTO implements DocumentCreateRequestDTO {
   readonly description?: string;
 
   @ApiProperty({
-    description: "The URL of document",
-    example: "https://example.com/document.pdf",
-    required: true
-  })
-  @IsUrl()
-  readonly document_url: string;
-
-  @ApiProperty({
     description: "The roles of document",
     example: ["user", "admin"],
     required: true
@@ -69,15 +61,6 @@ export class DocumentUpdateValidationDTO implements DocumentUpdateRequestDTO {
   @IsString()
   @Length(1, 255)
   readonly description?: string;
-
-  @ApiPropertyOptional({
-    description: "The URL of document",
-    example: "https://example.com/document.pdf",
-    required: false
-  })
-  @IsOptional()
-  @IsUrl()
-  readonly document_url?: string;
 }
 
 export class DocumentResponseDTO implements DocumentDTO {

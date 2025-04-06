@@ -28,7 +28,7 @@ export const LogoutFeature: React.FC<LogoutFeatureProps> = React.memo(function L
     <>
       <ConfirmationDialog cancelText="Отменить" okText="Выйти" subtitle="Вы уверены, что хотите выйти?" title="Выйти" />
       {isButton ? (
-        <Button danger type="primary" onClick={withConfirmation(logout)}>
+        <Button danger size="small" type="primary" onClick={withConfirmation(logout)}>
           Выйти из системы
         </Button>
       ) : (

@@ -14,7 +14,7 @@ export const ProfileWidget = React.memo(function Profile() {
       <Typography.Title level={2}>Редактирование профиля</Typography.Title>
       <LogoutFeature isButton />
     </Flex>,
-    [viewer]
+    []
   );
   return <ViewerUpdateFeature />;
 });

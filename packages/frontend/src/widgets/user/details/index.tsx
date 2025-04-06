@@ -56,7 +56,7 @@ export const UserDetailsWidget = observer(function UserDetailsWidget() {
 
   return (
     <Flex vertical justify="space-between" gap={48} className="w-[50%]">
-      <UserView.Avatar user={userDetails} size={250} shape="square" />
+      <UserView.Avatar user={userDetails} size={250} shape="square" previewable />
       <UserUpdateFeature.Form />
     </Flex>
   );

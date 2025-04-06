@@ -1,5 +1,5 @@
 import { Document, DocumentsApi } from "@frontend/entities/document";
-import { DocumentDetailsService } from "@frontend/entities/document/model";
+import { DocumentDetailsService } from "@frontend/entities/document/model/document";
 import { DocumentUpdateRequestDTO } from "@work-solutions-crm/libs/shared/document/document.api";
 import { inject, singleton } from "tsyringe";
 

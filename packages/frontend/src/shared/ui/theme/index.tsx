@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { BulbFilled, BulbOutlined } from "@ant-design/icons";
-import { Button, Tooltip, Typography } from "antd";
+import { Button, Typography } from "antd";
 
 type ThemeType = "light" | "dark";
 

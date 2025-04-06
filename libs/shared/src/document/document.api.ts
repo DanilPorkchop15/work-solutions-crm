@@ -6,7 +6,6 @@ import { DocumentDTO, DocumentPreviewDTO } from "./document.dto";
 export interface DocumentCreateRequestDTO {
   name: string;
   description?: string;
-  document_url: string;
   roles: Role[];
 }
 

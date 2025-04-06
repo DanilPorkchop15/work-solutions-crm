@@ -1,23 +1,22 @@
 import React from "react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { useAsyncFn } from "react-use";
+import { useDocumentsTableModule } from "@frontend/entities/document";
+import { useViewer, ViewerModel } from "@frontend/entities/viewer";
+import { mapDocumentCreateFormValuesToCreateDto } from "@frontend/features/document/forms/api";
+import { DocumentService } from "@frontend/features/document/services";
 import { AntdServices } from "@frontend/shared/model/services";
+import { CreationModal } from "@frontend/shared/ui/creationModal";
+import { FormErrorMessage } from "@frontend/shared/ui/forms";
 import { DocumentCreateRequestDTO } from "@work-solutions-crm/libs/shared/document/document.api";
 import { Button, Form } from "antd";
 import { observer } from "mobx-react-lite";
 import { pipe } from "ramda";
 
+import { DocumentInput } from "../../../../entities/document/ui/document/DocumentInput";
 import { useInjectService } from "../../../../shared/lib/useInjectService";
 import { AppRoutes } from "../../../../shared/model/services/appRoutes";
 import { DocumentCreateFormValues } from "../interfaces";
-
-import { DocumentInput } from "../../../../entities/document/ui/DocumentInput";
-import { CreationModal } from "@frontend/shared/ui/creationModal";
-import { FormErrorMessage } from "@frontend/shared/ui/forms";
-import { useDocumentsTableModule } from "@frontend/entities/document";
-import { DocumentService } from "@frontend/features/document/services";
-import { useViewer, ViewerModel } from "@frontend/entities/viewer";
-import { mapDocumentCreateFormValuesToCreateDto } from "@frontend/features/document/forms/api";
 
 const SUCCESS_MESSAGE = "Документ успешно создан";
 
@@ -57,7 +56,6 @@ export const DocumentCreateModal = observer(function CreateDocumentModal() {
       >
         <DocumentInput.Name error={error} />
         <DocumentInput.Description error={error} />
-        <DocumentInput.Url error={error} />
         <DocumentInput.Roles error={error} />
         <FormErrorMessage error={error} />
         <Form.Item style={{ textAlign: "right" }}>

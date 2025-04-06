@@ -1,5 +1,4 @@
 import { createBrowserRouter, Outlet } from "react-router-dom";
-import { PageSpin } from "@worksolutions/antd-react-components";
 
 import { ViewerProvider } from "../entities/viewer/config";
 import { AppRoutes } from "../shared/model/services/appRoutes";

@@ -1,6 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
+import { UploadOutlined, UserOutlined } from "@ant-design/icons";
+import { UsersApi } from "@frontend/entities/@common/user";
+import { BASE_API_HOST } from "@frontend/shared/config/const";
+import { useInjectService } from "@frontend/shared/lib/useInjectService";
+import { AntdServices } from "@frontend/shared/model/services";
 import { Role } from "@work-solutions-crm/libs/shared/user/user.dto";
-import { Form, Input, Select } from "antd";
+import { Avatar, Button, Flex, Form, Input, Select, Spin, Upload, UploadProps } from "antd";
+import { RcFile } from "antd/es/upload";
 
 import { validationRules } from "./config";
 
@@ -14,7 +20,7 @@ const UserFullNameInput = ({ initialValue, error, disabled }: UserTitleProps) =>
   <Form.Item
     initialValue={initialValue}
     label="Имя"
-    name="fullName"
+    name="full_name"
     rules={validationRules.full_name}
     validateStatus={error ? "error" : undefined}
   >
@@ -82,17 +88,89 @@ interface UserAvatarUrlProps {
   disabled?: boolean;
 }
 
-const UserAvatarUrlInput = ({ initialValue, error, disabled }: UserAvatarUrlProps) => (
-  <Form.Item
-    initialValue={initialValue}
-    label="Ссылка на аватар"
-    name="avatarUrl"
-    rules={validationRules.avatar_url}
-    validateStatus={error ? "error" : undefined}
-  >
-    <Input placeholder="Ссылка на аватар" disabled={disabled} className={disabled ? "bg-black" : ""} />
-  </Form.Item>
-);
+const UserAvatarUrlInput = ({ initialValue, error, disabled }: UserAvatarUrlProps) => {
+  const usersApi: UsersApi = useInjectService(UsersApi);
+  const form = Form.useFormInstance();
+  const antdServices: AntdServices = useInjectService(AntdServices);
+
+  const [loading, setLoading] = useState(false);
+  const [currentAvatar, setCurrentAvatar] = useState<string | undefined>(initialValue);
+
+  const handleUpload = async (file: RcFile) => {
+    try {
+      setLoading(true);
+
+      const formData = new FormData();
+      formData.append("avatar", file);
+
+      const response = await usersApi.uploadAvatar({ body: formData });
+      const fullUrl = `${BASE_API_HOST}/${response}`;
+
+      form.setFieldsValue({ avatar_url: fullUrl });
+      setCurrentAvatar(fullUrl);
+
+      void antdServices.message.success("Аватар успешно загружен");
+    } catch (err) {
+      void antdServices.message.error("Не удалось загрузить аватар");
+      console.error("Upload error:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const customRequest: UploadProps["customRequest"] = async ({ file, onSuccess, onError }) => {
+    try {
+      await handleUpload(file as RcFile);
+      onSuccess?.("Upload successful");
+    } catch (err) {
+      onError?.(err as Error);
+    }
+  };
+
+  return (
+    <Form.Item
+      initialValue={initialValue}
+      label="Аватарка"
+      name="avatar_url"
+      rules={validationRules.avatar_url}
+      validateStatus={error ? "error" : undefined}
+      getValueFromEvent={e => currentAvatar}
+    >
+      <Flex gap={8} align="center">
+        <Upload
+          name="avatar"
+          showUploadList={false}
+          disabled={disabled ?? loading}
+          beforeUpload={file => {
+            const isImage = file.type.startsWith("image/");
+            if (!isImage) {
+              antdServices.message.error("Можно загружать только изображения!");
+              return Upload.LIST_IGNORE;
+            }
+
+            const isLt5M = file.size / 1024 / 1024 < 5;
+            if (!isLt5M) {
+              antdServices.message.error("Изображение должно быть меньше 5MB!");
+              return Upload.LIST_IGNORE;
+            }
+
+            return true;
+          }}
+          customRequest={customRequest}
+          accept="image/*"
+        >
+          <Button icon={<UploadOutlined />} disabled={disabled || loading}>
+            {loading ? <Spin size="small" /> : "Загрузить"}
+          </Button>
+        </Upload>
+
+        <Input placeholder="Ссылка на аватарку" readOnly style={{ flex: 1 }} value={currentAvatar} />
+
+        <Avatar size="large" src={currentAvatar} icon={<UserOutlined />} />
+      </Flex>
+    </Form.Item>
+  );
+};
 
 interface UserRolesProps {
   initialValue?: Role;

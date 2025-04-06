@@ -1,6 +1,8 @@
 import React from "react";
 import { useTitle } from "react-use";
-import { DocumentDetailsProvider, DocumentsTableModuleProvider } from "@frontend/entities/document/model";
+import { DocumentVersionTableModuleProvider } from "@frontend/entities/document";
+import { DocumentDetailsProvider, DocumentsTableModuleProvider } from "@frontend/entities/document/model/document";
+import { Divider, Flex, Typography } from "antd";
 
 import { AppTitles } from "../../../shared/model/services";
 import { Layout } from "../../../shared/ui/layout";
@@ -13,7 +15,17 @@ export function DocumentDetailsPage() {
     <Layout.Content>
       <DocumentsTableModuleProvider>
         <DocumentDetailsProvider>
-          <DocumentDetailsWidget />
+          <DocumentVersionTableModuleProvider>
+            <Flex vertical gap={24}>
+              <Typography.Title level={3}>Информация о документе</Typography.Title>
+              <DocumentDetailsWidget.Form />
+            </Flex>
+            <Divider />
+            <Flex vertical gap={24}>
+              <Typography.Title level={3}>Версии документа</Typography.Title>
+              <DocumentDetailsWidget.VersionsTable />
+            </Flex>
+          </DocumentVersionTableModuleProvider>
         </DocumentDetailsProvider>
       </DocumentsTableModuleProvider>
     </Layout.Content>

@@ -1,4 +1,7 @@
-import { BadRequestException, Global, Injectable, NotFoundException } from "@nestjs/common";
+import { unlink } from "fs/promises";
+import { join } from "path";
+
+import { BadRequestException, Global, Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import {
   UserBulkDeleteRequestDTO,
@@ -11,6 +14,7 @@ import * as bcrypt from "bcryptjs";
 import { DeepPartial, In, Repository } from "typeorm";
 
 import { User } from "../../models/entities/user.entity";
+import { ConfigService } from "../config/config.service";
 
 import {
   mapCreateRequestDTOToUser,
@@ -22,9 +26,12 @@ import {
 @Global()
 @Injectable()
 export class UserService {
+  private readonly logger = new Logger(UserService.name);
+
   constructor(
     @InjectRepository(User)
-    private readonly userRepository: Repository<User>
+    private readonly userRepository: Repository<User>,
+    private readonly configService: ConfigService
   ) {}
 
   async findAll(): Promise<UserDTO[]> {
@@ -126,5 +133,9 @@ export class UserService {
 
   async bulkRestore(dto: UserBulkRestoreRequestDTO): Promise<void> {
     await this.userRepository.restore(dto.user_ids);
+  }
+
+  uploadAvatar(file: Express.Multer.File): string {
+    return file.path;
   }
 }

@@ -3,8 +3,8 @@ import { tableDecoder } from "@frontend/shared/api";
 import { DOCUMENTS_ROUTES } from "@work-solutions-crm/libs/shared/document/document.api";
 import { singleton } from "tsyringe";
 
-import { METHODS, RequestManager } from "../../../shared/lib/requestManager";
-import { TableDto } from "../../../shared/model/interfaces/table";
+import { METHODS, RequestManager } from "../../../../shared/lib/requestManager";
+import { TableDto } from "../../../../shared/model/interfaces/table";
 import type {
   BulkDeleteDocumentRequest,
   BulkRestoreDocumentRequest,
@@ -16,7 +16,7 @@ import type {
   FindOneDocumentRequest,
   RestoreDocumentRequest,
   UpdateDocumentRequest
-} from "../interfaces";
+} from "../../interfaces";
 
 import { documentDecoder, documentPreviewDecoder } from "./decoders";
 

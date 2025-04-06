@@ -1,11 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { CustomerPreview } from "@frontend/entities/customer";
+import { UserPreview } from "@frontend/entities/@common/user";
 import { AppRoutes } from "@frontend/shared/model/services";
 import { Table, type TableProps, Typography } from "antd";
 
-import { formatToLocalDate } from "../../../shared/lib/isoDateUtils";
-import { DocumentPreview } from "../interfaces";
+import { formatToLocalDate } from "../../../../shared/lib/isoDateUtils";
+import { DocumentPreview } from "../../interfaces";
 
 const columns: TableProps<DocumentPreview>["columns"] = [
   {
@@ -18,7 +18,7 @@ const columns: TableProps<DocumentPreview>["columns"] = [
     title: "Создатель",
     dataIndex: "userCreated",
     key: "userCreated",
-    render: (user: CustomerPreview["userCreated"]) => (
+    render: (user: UserPreview) => (
       <Typography.Link>
         <Link to={AppRoutes.getUserUrl(true, user.id)}>
           {user.fullName}

@@ -6,8 +6,8 @@ import { useAsync } from "react-use";
 import { PageSpin } from "@worksolutions/antd-react-components";
 import { isNil } from "ramda";
 
-import { useInjectService } from "../../../../shared/lib/useInjectService";
-import { AppRoutes } from "../../../../shared/model/services/appRoutes";
+import { useInjectService } from "../../../../../shared/lib/useInjectService";
+import { AppRoutes } from "../../../../../shared/model/services/appRoutes";
 
 import { DocumentDetailsService } from "./service";
 

@@ -3,7 +3,7 @@ import { antdServices } from "@frontend/shared/model/services";
 import { ThemeProvider, useTheme } from "@frontend/shared/ui/theme";
 import { darkTheme } from "@frontend/shared/ui/theme/config";
 import { BreakpointProvider, theme } from "@worksolutions/antd-react-components";
-import { App as AntdApp, ConfigProvider, theme as antdTheme } from "antd";
+import { App as AntdApp, ConfigProvider } from "antd";
 
 import type { AppProvider } from "../types";
 

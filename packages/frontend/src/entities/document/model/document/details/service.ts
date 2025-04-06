@@ -1,8 +1,8 @@
 import { makeAutoObservable } from "mobx";
 import { inject, singleton } from "tsyringe";
 
-import { DocumentsApi } from "../../api";
-import type { Document, FindOneDocumentRequest } from "../../interfaces";
+import { DocumentsApi } from "../../../api";
+import type { Document, FindOneDocumentRequest } from "../../../interfaces";
 
 @singleton()
 export class DocumentDetailsService {

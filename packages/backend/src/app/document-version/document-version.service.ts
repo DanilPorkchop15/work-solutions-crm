@@ -2,6 +2,7 @@ import { User } from "@backend/models/entities/user.entity";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { DocumentVersionDTO } from "@work-solutions-crm/libs/shared/document-version/document-version.dto";
+import { toNumber } from "lodash";
 import { Repository } from "typeorm";
 
 import { DocumentVersion } from "../../models/entities/document-version.entity";
@@ -37,8 +38,8 @@ export class DocumentVersionService {
       document: {
         document_id: documentId
       },
-      document_url: file.filename,
-      version: lastVersion ? lastVersion.version + 1 : 1,
+      document_url: file.path,
+      version: lastVersion ? toNumber(lastVersion.version) + 1 : 1,
       user_created: user
     });
   }
