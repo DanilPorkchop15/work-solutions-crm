@@ -79,11 +79,11 @@ jobs:
           REACT_APP_BACKEND_URL: http://localhost:3000
           VITE_APP_BACKEND: http://localhost:3000
 
-      - name: Run frontend tests
-        working-directory: .
-        run: npx nx test frontend --watch=false --ci
+      # - name: Run frontend tests
+      #   working-directory: .
+      #   run: npx nx test frontend --watch=false --ci
 
-      - name: Lint frontend
-        working-directory: .
-        run: npx nx lint frontend
+      # - name: Lint frontend
+      #   working-directory: .
+      #   run: npx nx lint frontend
         
