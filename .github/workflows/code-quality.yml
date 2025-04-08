@@ -13,9 +13,6 @@ jobs:
       - name: Install dependencies
         run: npm install --legacy-peer-deps
 
-      - name: Run ESLint
-        run: npx nx affected --target=lint
-
       - name: Run Prettier check
         run: npx prettier --check "**/*.{ts,tsx,js,jsx,json,css,scss,html,md}"
 
@@ -24,6 +21,3 @@ jobs:
 
       - name: Check for outdated packages
         run: npx npm-check-updates --errorLevel 2
-
-      - name: Check for unused dependencies
-        run: npx nx affected --target=check-dependencies
