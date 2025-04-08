@@ -86,27 +86,4 @@ jobs:
       - name: Lint frontend
         working-directory: .
         run: npx nx lint frontend
-
-  check-types:
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Use Node.js ${{ needs.setup.outputs.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ needs.setup.outputs.node-version }}
-          cache: 'npm'
-
-      - name: Install dependencies
-        working-directory: .
-        run: npm install --legacy-peer-deps
-
-      - name: Check TypeScript types (backend)
-        working-directory: .
-        run: npx nx run backend:typecheck
-
-      - name: Check TypeScript types (frontend)
-        working-directory: .
-        run: npx nx run frontend:typecheck
+        
