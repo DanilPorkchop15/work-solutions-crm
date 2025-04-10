@@ -1,6 +1,6 @@
 export interface UpdateViewerFormValues {
-  fullName: string;
+  full_name: string;
   email: string;
   position?: string;
-  avatarUrl?: string;
+  avatar_url?: string;
 }
