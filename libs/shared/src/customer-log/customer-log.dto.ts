@@ -8,4 +8,5 @@ export interface CustomerLogDTO {
   user: UserPreviewDTO;
   customer: CustomerPreviewDTO;
   created_at: string;
+  deleted_at?: string;
 }

@@ -1,19 +1,3 @@
-import { AuthGuard } from "@backend/app/auth/auth.guard";
-import {
-  DocumentBulkDeleteValidationDTO,
-  DocumentBulkRestoreValidationDTO,
-  DocumentCreateValidationDTO,
-  DocumentPreviewResponseDTO,
-  DocumentResponseDTO,
-  DocumentUpdateValidationDTO
-} from "@backend/app/document/document.dto";
-import { DocumentPermissionGuard } from "@backend/app/document-permission/document-permission.guard";
-import { LogType } from "@backend/app/logger/logger.types";
-import { CaslGuard } from "@backend/app/permission/casl.guard";
-import { CheckPolicies } from "@backend/decorators/check-policies.decorator";
-import { CurrentUser } from "@backend/decorators/current-user.decorator";
-import { Logger } from "@backend/decorators/logger.decorator";
-import { User } from "@backend/models/entities/user.entity";
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from "@nestjs/common";
 import {
   ApiBearerAuth,
@@ -29,8 +13,24 @@ import { Action, Subject } from "@work-solutions-crm/libs/shared/auth/auth.dto";
 import { DocumentApi, DOCUMENTS_ROUTES } from "@work-solutions-crm/libs/shared/document/document.api";
 import { DocumentDTO, DocumentPreviewDTO } from "@work-solutions-crm/libs/shared/document/document.dto";
 
+import { CheckPolicies } from "../../decorators/check-policies.decorator";
+import { CurrentUser } from "../../decorators/current-user.decorator";
+import { Logger } from "../../decorators/logger.decorator";
+import { User } from "../../models/entities/user.entity";
+import { AuthGuard } from "../auth/auth.guard";
+import { DocumentPermissionGuard } from "../document-permission/document-permission.guard";
 import { LoggerService } from "../logger/logger.service";
+import { LogType } from "../logger/logger.types";
+import { CaslGuard } from "../permission/casl.guard";
 
+import {
+  DocumentBulkDeleteValidationDTO,
+  DocumentBulkRestoreValidationDTO,
+  DocumentCreateValidationDTO,
+  DocumentPreviewResponseDTO,
+  DocumentResponseDTO,
+  DocumentUpdateValidationDTO
+} from "./document.dto";
 import { DocumentService } from "./document.service";
 
 @ApiTags("Documents")
@@ -42,14 +42,14 @@ export class DocumentController implements DocumentApi {
     private readonly loggerService: LoggerService
   ) {}
 
-  @UseGuards(AuthGuard, CaslGuard, DocumentPermissionGuard)
+  @UseGuards(AuthGuard, CaslGuard)
   @CheckPolicies(ability => ability.can(Action.READ, Subject.DOCUMENTS))
   @Get(DOCUMENTS_ROUTES.findAll())
   @ApiOperation({ summary: "Get all documents" })
   @ApiResponse({ status: 200, type: [DocumentPreviewResponseDTO] })
   @Logger("findAll", "Documents")
-  async findAll(): Promise<DocumentPreviewDTO[]> {
-    return this.documentsService.findAll();
+  async findAll(@CurrentUser() user: User): Promise<DocumentPreviewDTO[]> {
+    return this.documentsService.findAll(user);
   }
 
   @Get(DOCUMENTS_ROUTES.findOne(":documentId"))
@@ -69,7 +69,7 @@ export class DocumentController implements DocumentApi {
   @ApiOperation({ summary: "Create document" })
   @ApiCreatedResponse({ type: DocumentResponseDTO })
   async create(@Body() dto: DocumentCreateValidationDTO, @CurrentUser() user: User): Promise<DocumentDTO> {
-    const documentDto: DocumentDTO = await this.documentsService.create(dto);
+    const documentDto: DocumentDTO = await this.documentsService.create(dto, user);
     await this.loggerService.logByType(LogType.DOCUMENT, "created", "document", {
       document_id: documentDto.id,
       user_id: user.user_id

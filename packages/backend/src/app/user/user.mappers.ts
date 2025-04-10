@@ -3,6 +3,7 @@ import { UserDTO, UserPreviewDTO } from "@work-solutions-crm/libs/shared/user/us
 import * as bcrypt from "bcryptjs";
 import { DeepPartial } from "typeorm";
 
+import { typeormDateToIsoString, typeormNullableDateToIsoString } from "../../common/typeorm-date-to-iso-string";
 import { User } from "../../models/entities/user.entity";
 
 export function mapUserToPreviewDTO(user: User): UserPreviewDTO {
@@ -11,7 +12,8 @@ export function mapUserToPreviewDTO(user: User): UserPreviewDTO {
     avatar_url: user.avatar_url,
     email: user.email,
     full_name: user.full_name,
-    position: user.position
+    position: user.position,
+    deleted_at: typeormNullableDateToIsoString(user.deleted_at)
   };
 }
 
@@ -23,26 +25,27 @@ export function mapUserToDTO(user: User): UserDTO {
     full_name: user.full_name,
     position: user.position,
     role: user.role,
-    created_at: user.created_at.toISOString(),
-    updated_at: user.updated_at.toISOString()
+    created_at: typeormDateToIsoString(user.created_at),
+    updated_at: typeormDateToIsoString(user.updated_at),
+    deleted_at: typeormNullableDateToIsoString(user.deleted_at)
   };
 }
 
 export function mapUpdateRequestDTOToUser(dto: UserUpdateRequestDTO): DeepPartial<User> {
   return {
-    avatar_url: dto.avatarUrl,
+    avatar_url: dto.avatar_url,
     email: dto.email,
-    full_name: dto.fullName,
+    full_name: dto.full_name,
     position: dto.position
   };
 }
 
 export async function mapCreateRequestDTOToUser(dto: UserCreateRequestDTO): Promise<DeepPartial<User>> {
   return {
-    avatar_url: dto.avatarUrl,
+    avatar_url: dto.avatar_url,
     email: dto.email,
     password: await bcrypt.hash(dto.password, 10),
-    full_name: dto.fullName,
+    full_name: dto.full_name,
     position: dto.position,
     role: dto.role
   };

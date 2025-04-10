@@ -1,0 +1,89 @@
+name: Build and Test
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      node-version: ${{ steps.set-node-version.outputs.version }}
+    steps:
+      - name: Set Node.js version
+        id: set-node-version
+        run: echo "version=20.11.0" >> $GITHUB_OUTPUT
+
+  backend:
+    needs: setup
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:12-alpine
+        env:
+          POSTGRES_DB: test_db
+          POSTGRES_USER: test_user
+          POSTGRES_PASSWORD: test_password
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ needs.setup.outputs.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ needs.setup.outputs.node-version }}
+          cache: 'npm'
+
+      - name: Install backend dependencies
+        working-directory: .
+        run: npm install --legacy-peer-deps
+
+      - name: Build backend
+        working-directory: .
+        run: npx nx build backend
+        env:
+          NODE_ENV: production
+          DATABASE_URL: postgres://test_user:test_password@localhost:5432/test_db
+
+      - name: Run backend tests
+        working-directory: .
+        run: npx nx test backend --watch=false --ci
+        env:
+          NODE_ENV: test
+          DATABASE_URL: postgres://test_user:test_password@localhost:5432/test_db
+
+  frontend:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ needs.setup.outputs.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ needs.setup.outputs.node-version }}
+          cache: 'npm'
+
+      - name: Install frontend dependencies
+        working-directory: .
+        run: npm install --legacy-peer-deps
+
+      - name: Build frontend
+        working-directory: .
+        run: npx nx build frontend --configuration=production
+        env:
+          REACT_APP_BACKEND_URL: http://localhost:3000
+          VITE_APP_BACKEND: http://localhost:3000
+
+      # - name: Run frontend tests
+      #   working-directory: .
+      #   run: npx nx test frontend --watch=false --ci
+
+      # - name: Lint frontend
+      #   working-directory: .
+      #   run: npx nx lint frontend
+        

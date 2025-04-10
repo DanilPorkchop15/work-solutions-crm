@@ -1,3 +1,4 @@
+import { typeormDateToIsoString, typeormNullableDateToIsoString } from "@backend/common/typeorm-date-to-iso-string";
 import { TaskDTO, TaskPreviewDTO } from "@work-solutions-crm/libs/shared/task/task.dto";
 
 import { Task } from "../../models/entities/task.entity";
@@ -10,15 +11,16 @@ export function mapTaskToDTO(task: Task): TaskDTO {
     name: task.name,
     description: task.description,
     status: task.status,
-    start_date: task.start_date?.toISOString(),
-    end_date: task.end_date?.toISOString(),
+    start_date: typeormNullableDateToIsoString(task.start_date),
+    end_date: typeormNullableDateToIsoString(task.end_date),
     time_spent: task.time_spent,
     estimated_time: task.estimated_time,
     user_created: mapUserToPreviewDTO(task.user_created),
     project: mapProjectToPreviewDTO(task.project),
     users_accountable: task.users_accountable.map(mapUserToPreviewDTO),
-    created_at: task.created_at.toISOString(),
-    updated_at: task.updated_at.toISOString()
+    created_at: typeormDateToIsoString(task.created_at),
+    updated_at: typeormDateToIsoString(task.updated_at),
+    deleted_at: typeormNullableDateToIsoString(task.deleted_at)
   };
 }
 
@@ -29,6 +31,7 @@ export function mapTaskToPreviewDTO(task: Task): TaskPreviewDTO {
     status: task.status,
     project: mapProjectToPreviewDTO(task.project),
     user_created: mapUserToPreviewDTO(task.user_created),
-    users_accountable: task.users_accountable.map(mapUserToPreviewDTO)
+    users_accountable: task.users_accountable.map(mapUserToPreviewDTO),
+    deleted_at: typeormNullableDateToIsoString(task.deleted_at)
   };
 }

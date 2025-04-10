@@ -1,3 +1,4 @@
+import { typeormDateToIsoString, typeormNullableDateToIsoString } from "@backend/common/typeorm-date-to-iso-string";
 import { DocumentLogDTO } from "@work-solutions-crm/libs/shared/document-log/document-log.dto";
 
 import { DocumentLog } from "../../models/entities/document-log.entity";
@@ -11,6 +12,7 @@ export function mapDocumentLogToDTO(documentLog: DocumentLog): DocumentLogDTO {
     comment: documentLog.comment ?? "",
     user: mapUserToPreviewDTO(documentLog.user),
     document: mapDocumentToPreviewDTO(documentLog.document),
-    created_at: documentLog.created_at.toISOString()
+    created_at: typeormDateToIsoString(documentLog.created_at),
+    deleted_at: typeormNullableDateToIsoString(documentLog.deleted_at)
   };
 }

@@ -22,6 +22,7 @@ export interface ProjectDTO {
   users_accountable: UserPreviewDTO[];
   created_at: string;
   updated_at: string;
+  deleted_at?: string;
 }
 
 export type ProjectPreviewDTO = Omit<ProjectDTO, "description" | "created_at" | "updated_at">;

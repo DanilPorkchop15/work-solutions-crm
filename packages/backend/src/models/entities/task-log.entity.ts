@@ -1,4 +1,12 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn
+} from "typeorm";
 
 import { Task } from "./task.entity";
 import { User } from "./user.entity";
@@ -24,4 +32,7 @@ export class TaskLog {
 
   @CreateDateColumn({ type: "timestamp" })
   created_at: Date;
+
+  @DeleteDateColumn({ type: "timestamp", nullable: true })
+  deleted_at: Date | null;
 }

@@ -49,8 +49,8 @@ export class Project {
   status: ProjectStatus;
 
   @ManyToOne(() => User, user => user.user_id, { onDelete: "CASCADE" })
-  @JoinColumn({ name: "user_id" })
-  user: User;
+  @JoinColumn({ name: "user_created_id" })
+  user_created: User;
 
   @ManyToOne(() => Customer, customer => customer.customer_id, { onDelete: "CASCADE" })
   @JoinColumn({ name: "customer_id" })
@@ -63,7 +63,11 @@ export class Project {
   project_logs: ProjectLog[];
 
   @ManyToMany(() => User, user => user.projects_accountable, { onDelete: "CASCADE" })
-  @JoinTable()
+  @JoinTable({
+    name: "projects_users_accountable",
+    joinColumn: { name: "project_id", referencedColumnName: "project_id" },
+    inverseJoinColumn: { name: "user_id", referencedColumnName: "user_id" }
+  })
   users_accountable: User[];
 
   @CreateDateColumn({ type: "timestamp" })

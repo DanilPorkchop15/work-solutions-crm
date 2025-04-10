@@ -1,4 +1,3 @@
-import { UserPreviewResponseDTO } from "@backend/app/user/user.dto";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import {
   DocumentBulkDeleteRequestDTO,
@@ -9,6 +8,8 @@ import {
 import { DocumentDTO, DocumentPreviewDTO } from "@work-solutions-crm/libs/shared/document/document.dto";
 import { Role, UserPreviewDTO } from "@work-solutions-crm/libs/shared/user/user.dto";
 import { IsArray, IsEnum, IsOptional, IsString, IsUrl, Length } from "class-validator";
+
+import { UserPreviewResponseDTO } from "../user/user.dto";
 
 export class DocumentCreateValidationDTO implements DocumentCreateRequestDTO {
   @ApiProperty({
@@ -29,14 +30,6 @@ export class DocumentCreateValidationDTO implements DocumentCreateRequestDTO {
   @IsString()
   @Length(1, 255)
   readonly description?: string;
-
-  @ApiProperty({
-    description: "The URL of document",
-    example: "https://example.com/document.pdf",
-    required: true
-  })
-  @IsUrl()
-  readonly document_url: string;
 
   @ApiProperty({
     description: "The roles of document",
@@ -68,15 +61,6 @@ export class DocumentUpdateValidationDTO implements DocumentUpdateRequestDTO {
   @IsString()
   @Length(1, 255)
   readonly description?: string;
-
-  @ApiPropertyOptional({
-    description: "The URL of document",
-    example: "https://example.com/document.pdf",
-    required: false
-  })
-  @IsOptional()
-  @IsUrl()
-  readonly document_url?: string;
 }
 
 export class DocumentResponseDTO implements DocumentDTO {
@@ -113,14 +97,29 @@ export class DocumentResponseDTO implements DocumentDTO {
     example: "2022-01-01T00:00:00.000Z",
     required: true
   })
-  readonly createdAt: string;
+  readonly created_at: string;
 
   @ApiProperty({
     description: "The date when the document was updated",
     example: "2022-01-01T00:00:00.000Z",
     required: true
   })
-  readonly updatedAt: string;
+  readonly updated_at: string;
+
+  @ApiPropertyOptional({
+    description: "The date when the document was deleted",
+    example: "2022-01-01T00:00:00.000Z",
+    required: false
+  })
+  readonly deleted_at?: string | undefined;
+
+  @ApiProperty({
+    description: "The roles of document",
+    example: ["user", "admin"],
+    required: true,
+    enum: Role
+  })
+  readonly roles: Role[];
 }
 
 export class DocumentPreviewResponseDTO implements DocumentPreviewDTO {
@@ -150,14 +149,20 @@ export class DocumentPreviewResponseDTO implements DocumentPreviewDTO {
     example: "2022-01-01T00:00:00.000Z",
     required: true
   })
-  readonly createdAt: string;
+  readonly created_at: string;
 
   @ApiProperty({
     description: "The date when the document was updated",
     example: "2022-01-01T00:00:00.000Z",
     required: true
   })
-  readonly updatedAt: string;
+  readonly updated_at: string;
+
+  @ApiPropertyOptional({
+    description: "The date when the document was deleted",
+    example: "2022-01-01T00:00:00.000Z"
+  })
+  readonly deleted_at?: string | undefined;
 }
 
 export class DocumentBulkDeleteValidationDTO implements DocumentBulkDeleteRequestDTO {

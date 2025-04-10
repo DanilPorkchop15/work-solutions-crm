@@ -1,4 +1,4 @@
-import { DocumentPermissionService } from "@backend/app/document-permission/document-permission.service";
+import { Role, User } from "@backend/models/entities/user.entity";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import {
@@ -10,6 +10,7 @@ import { DocumentDTO, DocumentPreviewDTO } from "@work-solutions-crm/libs/shared
 import { Repository } from "typeorm";
 
 import { Document } from "../../models/entities/document.entity";
+import { DocumentPermissionService } from "../document-permission/document-permission.service";
 
 import { mapDocumentToDTO, mapDocumentToPreviewDTO } from "./document.mappers";
 
@@ -21,18 +22,36 @@ export class DocumentService {
     private readonly documentPermissionService: DocumentPermissionService
   ) {}
 
-  async findAll(): Promise<DocumentPreviewDTO[]> {
+  async findAll(user: User): Promise<DocumentPreviewDTO[]> {
     const documents: Document[] = await this.documentRepository.find({
-      relations: ["user_created"],
-      order: { created_at: "ASC" }
+      relations: {
+        user_created: true,
+        document_permissions: true
+      },
+      order: { created_at: "ASC" },
+      withDeleted: true
     });
+
+    if (user.role !== Role.ADMIN && user.role !== Role.MODERATOR)
+      return documents
+        .filter(
+          document =>
+            document.document_permissions.some(documentPermission => documentPermission.role === user.role) ||
+            user.user_id === document.user_created.user_id
+        )
+        .map(mapDocumentToPreviewDTO);
+
     return documents.map(mapDocumentToPreviewDTO);
   }
 
   async findOne(documentId: string): Promise<DocumentDTO> {
     const document: Document | null = await this.documentRepository.findOne({
       where: { document_id: documentId },
-      relations: ["user_created"]
+      relations: {
+        user_created: true,
+        document_permissions: true
+      },
+      withDeleted: true
     });
     if (!document) {
       throw new Error("Document not found");
@@ -40,15 +59,14 @@ export class DocumentService {
     return mapDocumentToDTO(document);
   }
 
-  async create({ roles, ...dto }: DocumentCreateRequestDTO): Promise<DocumentDTO> {
-    const document: Document = this.documentRepository.create(dto);
-    await this.documentRepository.save(document);
+  async create({ roles, ...dto }: DocumentCreateRequestDTO, user: User): Promise<DocumentDTO> {
+    const document: Document = await this.documentRepository.save({
+      ...dto,
+      user_created: { user_id: user.user_id },
+      document_permissions: roles.map(role => ({ role }))
+    });
 
-    for (const role of roles) {
-      await this.documentPermissionService.create(document.document_id, role);
-    }
-
-    return mapDocumentToDTO(document);
+    return this.findOne(document.document_id);
   }
 
   async update(documentId: string, { roles, ...dto }: DocumentUpdateRequestDTO): Promise<DocumentDTO> {
@@ -61,14 +79,11 @@ export class DocumentService {
       }
     }
 
-    const updatedDocument: Document | null = await this.documentRepository.findOne({
-      where: { document_id: documentId },
-      relations: ["user_created"]
-    });
+    const updatedDocument: DocumentDTO = await this.findOne(documentId);
     if (!updatedDocument) {
       throw new Error("Document not found");
     }
-    return mapDocumentToDTO(updatedDocument);
+    return updatedDocument;
   }
 
   async delete(documentId: string): Promise<void> {
