@@ -64,7 +64,7 @@ export const DocumentRolesInput = ({ initialValue, error, disabled }: DocumentRo
     rules={validationRules.roles}
     validateStatus={error ? "error" : undefined}
   >
-    <UserView.RoleSelect mode="multiple" disabled={disabled} />
+    <UserView.RoleSelect mode="multiple" disabled={disabled} placeholder="Роли" />
   </Form.Item>
 );
 

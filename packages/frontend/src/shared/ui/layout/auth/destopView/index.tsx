@@ -20,10 +20,14 @@ export const DesktopView = React.memo(function DesktopView({ content }: AuthLayo
         <Col flex="344px">
           <AntdLayout.Sider
             className="h-full"
-            style={{ borderRight: `1px solid ${token.colorBorder}`, padding: token.paddingXL }}
+            style={{
+              borderRight: `1px solid ${token.colorBorderSecondary}`,
+              padding: token.paddingXL,
+              backgroundColor: token.colorBgContainer
+            }}
             width="100%"
           >
-            <AntdLayout className="h-full">
+            <AntdLayout className="h-full" style={{}}>
               <AntdLayout.Header className="p-0">
                 <Link to={AppRoutes.getRootUrl()}>
                   <img
