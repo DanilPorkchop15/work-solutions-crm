@@ -4,6 +4,9 @@ export abstract class AppRoutes {
   public static getProfileUrl = (withPrefix = false) =>
     `${AppRoutes._calculatePrefix(AppRoutes.getRootUrl(), withPrefix)}profile`;
 
+  public static getChangePasswordUrl = (withPrefix = false) =>
+    `${AppRoutes._calculatePrefix(AppRoutes.getProfileUrl(true), withPrefix)}change-password`;
+
   public static getUsersUrl = (withPrefix = false) =>
     `${AppRoutes._calculatePrefix(AppRoutes.getRootUrl(), withPrefix)}users`;
 

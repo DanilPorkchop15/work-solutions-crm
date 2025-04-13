@@ -27,7 +27,13 @@ export const browserRouter = createBrowserRouter([
       },
       {
         path: AppRoutes.getProfileUrl(),
-        lazy: async () => import("@frontend/pages/common/profile")
+        lazy: async () => import("@frontend/pages/common/profile/root"),
+        children: [
+          {
+            path: AppRoutes.getChangePasswordUrl(),
+            lazy: async () => import("@frontend/pages/common/profile/change-password")
+          }
+        ]
       },
       {
         path: AppRoutes.getUsersUrl(),

@@ -25,5 +25,5 @@ export class AppTitles {
 
   public static getCustomerTitle = () => "Заказчик";
 
-  public static getNotFoundTitle = () => "WS CRM: 404";
+  public static getNotFoundTitle = () => "Страница не найдена | 404";
 }

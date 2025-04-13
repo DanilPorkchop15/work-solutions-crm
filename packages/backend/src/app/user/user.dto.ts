@@ -198,13 +198,6 @@ export class UserPreviewResponseDTO implements UserPreviewDTO {
 
 export class UserChangePasswordValidationDTO implements AuthChangePasswordRequestDTO {
   @ApiProperty({
-    description: "The ID of the user",
-    example: "c7d2ee27-0a5d-4c5d-a3ca-66d9b2b6c5a1"
-  })
-  @IsString()
-  user_id: string;
-
-  @ApiProperty({
     description: "The old password of the user",
     example: "old_password"
   })

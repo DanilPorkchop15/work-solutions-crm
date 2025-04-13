@@ -46,7 +46,14 @@ export const MainLayout = React.memo(function MainLayout({ sidebar, header, cont
           {sidebar}
           <Col className="flex flex-col w-0 flex-1">
             {header}
-            <Layout className="w-full h-0 flex-1 overflow-auto" style={{ padding: token.paddingMD }}>
+            <Layout
+              className="w-full h-0 flex-1 overflow-auto"
+              style={{
+                padding: token.paddingMD,
+                scrollbarWidth: "thin",
+                ...(algorithm === "dark" ? { scrollbarColor: "#444444 #1E1E1E" } : {})
+              }}
+            >
               {content}
             </Layout>
           </Col>
