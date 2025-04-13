@@ -1,21 +1,21 @@
 import React from "react";
 import { useAsyncFn } from "react-use";
+import { useProjectsTableModule } from "@frontend/entities/project";
+import { AccessCheck, useViewer } from "@frontend/entities/viewer";
 import { AntdServices } from "@frontend/shared/model/services";
+import { FormErrorMessage } from "@frontend/shared/ui/forms";
+import { Action, Subject } from "@work-solutions-crm/libs/shared/auth/auth.dto";
 import { ProjectUpdateRequestDTO } from "@work-solutions-crm/libs/shared/project/project.api";
 import { Button, Form } from "antd";
+import dayjs from "dayjs";
 import { observer } from "mobx-react-lite";
+import { pipe } from "ramda";
 
+import { ProjectInput } from "../../../../entities/project/ui/ProjectInput";
 import { useInjectService } from "../../../../shared/lib/useInjectService";
 import { ProjectUpdateService } from "../../services";
-import { ProjectUpdateFormValues } from "../interfaces";
-import { ProjectInput } from "../../../../entities/project/ui/ProjectInput";
-import { pipe } from "ramda";
 import { mapProjectUpdateFormValuesToUpdateProjectDto } from "../api";
-import { FormErrorMessage } from "@frontend/shared/ui/forms";
-import { useProjectsTableModule } from "@frontend/entities/project";
-import { useViewer } from "@frontend/entities/viewer";
-
-import dayjs from "dayjs";
+import { ProjectUpdateFormValues } from "../interfaces";
 
 interface ProjectUpdateFormProps {
   additionalOnFinish?: () => void;
@@ -94,9 +94,11 @@ export const ProjectUpdateForm = observer(function ProjectUpdateForm({
       <FormErrorMessage error={error} />
       {!isDisabled && (
         <Form.Item style={{ textAlign: "right" }}>
-          <Button htmlType="submit" loading={loading} type="primary">
-            Сохранить
-          </Button>
+          <AccessCheck type="disable" action={Action.UPDATE} subject={Subject.PROJECTS}>
+            <Button htmlType="submit" loading={loading} type="primary">
+              Сохранить
+            </Button>
+          </AccessCheck>
         </Form.Item>
       )}
     </Form>

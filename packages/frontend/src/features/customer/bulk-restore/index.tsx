@@ -1,7 +1,9 @@
 import React from "react";
 import { RedoOutlined } from "@ant-design/icons";
 import { CustomerPreview } from "@frontend/entities/customer";
+import { AccessCheck } from "@frontend/entities/viewer";
 import { AntdServices } from "@frontend/shared/model/services";
+import { Action, Subject } from "@work-solutions-crm/libs/shared/auth/auth.dto";
 import { useConfirmationModal } from "@worksolutions/antd-react-components";
 import { Button, ButtonProps, Tooltip, Typography } from "antd";
 
@@ -44,14 +46,16 @@ const CustomerBulkRestoreFeatureBase = React.memo(function BulkRestoreCustomersF
         subtitle={<Typography.Text>Вы уверены, что хотите восстановить {customers.length} клиентов?</Typography.Text>}
         title="Восстановить клиентов"
       />
-      <Button
-        type="primary"
-        disabled={disabled ?? (customers.length === 0 || customers.some(c => c.deletedAt === null))}
-        onClick={withConfirmation(customerBulkRestoreFn)}
-        {...props}
-      >
-        {children}
-      </Button>
+      <AccessCheck type="disable" action={Action.UPDATE} subject={Subject.CUSTOMERS}>
+        <Button
+          type="primary"
+          disabled={disabled ?? (customers.length === 0 || customers.some(c => c.deletedAt === null))}
+          onClick={withConfirmation(customerBulkRestoreFn)}
+          {...props}
+        >
+          {children}
+        </Button>
+      </AccessCheck>
     </>
   );
 });

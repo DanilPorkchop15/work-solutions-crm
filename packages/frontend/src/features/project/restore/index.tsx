@@ -1,7 +1,9 @@
 import React from "react";
 import { RedoOutlined } from "@ant-design/icons";
 import { ProjectPreview } from "@frontend/entities/project";
+import { AccessCheck } from "@frontend/entities/viewer";
 import { AntdServices } from "@frontend/shared/model/services";
+import { Action, Subject } from "@work-solutions-crm/libs/shared/auth/auth.dto";
 import { useConfirmationModal } from "@worksolutions/antd-react-components";
 import { Button, ButtonProps, Tooltip, Typography } from "antd";
 
@@ -47,9 +49,11 @@ const ProjectRestoreFeatureBase = React.memo(function ProjectRestoreFeatureBase(
         }
         title="Восстановить проект"
       />
-      <Button type="primary" disabled={disabled} onClick={withConfirmation(restoreProject)} {...props}>
-        {children}
-      </Button>
+      <AccessCheck type="disable" action={Action.UPDATE} subject={Subject.PROJECTS}>
+        <Button type="primary" disabled={disabled} onClick={withConfirmation(restoreProject)} {...props}>
+          {children}
+        </Button>
+      </AccessCheck>
     </>
   );
 });

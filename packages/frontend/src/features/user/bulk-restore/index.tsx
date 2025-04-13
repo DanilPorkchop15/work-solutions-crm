@@ -1,7 +1,9 @@
 import React from "react";
 import { RedoOutlined } from "@ant-design/icons";
 import { User } from "@frontend/entities/@common/user";
+import { AccessCheck } from "@frontend/entities/viewer";
 import { AntdServices } from "@frontend/shared/model/services";
+import { Action, Subject } from "@work-solutions-crm/libs/shared/auth/auth.dto";
 import { useConfirmationModal } from "@worksolutions/antd-react-components";
 import { Button, ButtonProps, Tooltip, Typography } from "antd";
 
@@ -44,14 +46,16 @@ const UserBulkRestoreFeatureBase = React.memo(function BulkRestoreUsersFeature({
         subtitle={<Typography.Text>Вы уверены, что хотите восстановить {users.length} пользователей?</Typography.Text>}
         title="Восстановить пользователей"
       />
-      <Button
-        type="primary"
-        disabled={disabled ?? (users.length === 0 || users.some(u => u.deletedAt === null))}
-        onClick={withConfirmation(userBulkRestoreFn)}
-        {...props}
-      >
-        {children}
-      </Button>
+      <AccessCheck type="disable" action={Action.UPDATE} subject={Subject.USERS}>
+        <Button
+          type="primary"
+          disabled={disabled ?? (users.length === 0 || users.some(u => u.deletedAt === null))}
+          onClick={withConfirmation(userBulkRestoreFn)}
+          {...props}
+        >
+          {children}
+        </Button>
+      </AccessCheck>
     </>
   );
 });

@@ -1,6 +1,8 @@
 import React, { memo } from "react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { EditFilled } from "@ant-design/icons";
+import { AccessCheck } from "@frontend/entities/viewer";
+import { Action, Subject } from "@work-solutions-crm/libs/shared/auth/auth.dto";
 import { Button, Tooltip } from "antd";
 
 import { AppRoutes } from "../../../shared/model/services/appRoutes";
@@ -31,17 +33,19 @@ const DocumentUpdateIcon: React.FC<DocumentUpdateIconProps> = ({ documentId, dis
 
   return (
     <Tooltip title="Редактировать">
-      <Button
-        className="document-update-icon"
-        onClick={() => {
-          navigate(AppRoutes.getUpdateDocumentUrl(true, documentId));
-        }}
-        disabled={disabled}
-        icon={<EditFilled />}
-        shape="circle"
-        size="small"
-        type="link"
-      ></Button>
+      <AccessCheck type="disable" action={Action.UPDATE} subject={Subject.DOCUMENTS}>
+        <Button
+          className="document-update-icon"
+          onClick={() => {
+            navigate(AppRoutes.getUpdateDocumentUrl(true, documentId));
+          }}
+          disabled={disabled}
+          icon={<EditFilled />}
+          shape="circle"
+          size="small"
+          type="link"
+        ></Button>
+      </AccessCheck>
     </Tooltip>
   );
 };

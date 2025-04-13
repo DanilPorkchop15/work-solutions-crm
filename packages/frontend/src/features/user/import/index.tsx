@@ -22,6 +22,8 @@ import { UserService } from "../services/UserService";
 
 import { importedUserRowDecoder } from "./api/decoders";
 import { mapImportedDataToBulkCreateDto } from "./api/mappers";
+import { Action, Subject } from "@work-solutions-crm/libs/shared/auth/auth.dto";
+import { AccessCheck } from "@frontend/entities/viewer";
 
 const { Text } = Typography;
 
@@ -391,14 +393,16 @@ const UserImportButton = React.memo(function UserImportButton(props: ButtonProps
   const navigate = useNavigate();
 
   return (
-    <Button
-      size="large"
-      onClick={() => navigate(AppRoutes.getUserImportUrl(true))}
-      icon={<ImportOutlined />}
-      {...props}
-    >
-      Импорт пользователей
-    </Button>
+    <AccessCheck type="disable" action={Action.CREATE} subject={Subject.USERS}>
+      <Button
+        size="large"
+        onClick={() => navigate(AppRoutes.getUserImportUrl(true))}
+        icon={<ImportOutlined />}
+        {...props}
+      >
+        Импорт пользователей
+      </Button>
+    </AccessCheck>
   );
 });
 

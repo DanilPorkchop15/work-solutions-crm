@@ -1,7 +1,9 @@
 import React from "react";
 import { RedoOutlined } from "@ant-design/icons";
 import { DocumentPreview } from "@frontend/entities/document";
+import { AccessCheck } from "@frontend/entities/viewer";
 import { AntdServices } from "@frontend/shared/model/services";
+import { Action, Subject } from "@work-solutions-crm/libs/shared/auth/auth.dto";
 import { useConfirmationModal } from "@worksolutions/antd-react-components";
 import { Button, ButtonProps, Tooltip, Typography } from "antd";
 
@@ -49,9 +51,11 @@ const DocumentRestoreFeatureBase = React.memo(function RestoreDocumentFeature({
         }
         title="Восстановить документ"
       />
-      <Button disabled={disabled} onClick={withConfirmation(documentRestoreFn)} {...props}>
-        {children}
-      </Button>
+      <AccessCheck type="disable" action={Action.UPDATE} subject={Subject.DOCUMENTS}>
+        <Button disabled={disabled} onClick={withConfirmation(documentRestoreFn)} {...props}>
+          {children}
+        </Button>
+      </AccessCheck>
     </>
   );
 });

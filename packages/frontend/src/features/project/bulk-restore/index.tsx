@@ -1,7 +1,9 @@
 import React from "react";
 import { RedoOutlined } from "@ant-design/icons";
 import { ProjectPreview } from "@frontend/entities/project";
+import { AccessCheck } from "@frontend/entities/viewer";
 import { AntdServices } from "@frontend/shared/model/services";
+import { Action, Subject } from "@work-solutions-crm/libs/shared/auth/auth.dto";
 import { useConfirmationModal } from "@worksolutions/antd-react-components";
 import { Button, ButtonProps, Tooltip, Typography } from "antd";
 
@@ -42,14 +44,16 @@ const ProjectBulkRestoreFeatureBase = React.memo(function ProjectBulkRestoreFeat
         subtitle={<Typography.Text>Вы уверены, что хотите восстановить {projects.length} проектов?</Typography.Text>}
         title="Восстановить проекты"
       />
-      <Button
-        type="primary"
-        disabled={disabled ?? (projects.length === 0 || projects.some(p => p.deletedAt === null))}
-        onClick={withConfirmation(bulkRestoreProjects)}
-        {...props}
-      >
-        {children}
-      </Button>
+      <AccessCheck type="disable" action={Action.UPDATE} subject={Subject.PROJECTS}>
+        <Button
+          type="primary"
+          disabled={disabled ?? (projects.length === 0 || projects.some(p => p.deletedAt === null))}
+          onClick={withConfirmation(bulkRestoreProjects)}
+          {...props}
+        >
+          {children}
+        </Button>
+      </AccessCheck>
     </>
   );
 });

@@ -1,7 +1,9 @@
 import React, { memo } from "react";
 import { useNavigate } from "react-router-dom";
 import { EditFilled } from "@ant-design/icons";
+import { AccessCheck } from "@frontend/entities/viewer";
 import { ProjectUpdateForm } from "@frontend/features/project/forms";
+import { Action, Subject } from "@work-solutions-crm/libs/shared/auth/auth.dto";
 import { Button, Tooltip } from "antd";
 
 import { AppRoutes } from "../../../shared/model/services/appRoutes";
@@ -28,15 +30,17 @@ const ProjectUpdateIcon: React.FC<ProjectUpdateIconProps> = ({ projectId, disabl
 
   return (
     <Tooltip title="Редактировать">
-      <Button
-        className="project-update-icon"
-        onClick={() => navigate(AppRoutes.getUpdateProjectUrl(true, projectId))}
-        disabled={disabled}
-        icon={<EditFilled />}
-        shape="circle"
-        size="small"
-        type="link"
-      />
+      <AccessCheck type="disable" action={Action.UPDATE} subject={Subject.PROJECTS}>
+        <Button
+          className="project-update-icon"
+          onClick={() => navigate(AppRoutes.getUpdateProjectUrl(true, projectId))}
+          disabled={disabled}
+          icon={<EditFilled />}
+          shape="circle"
+          size="small"
+          type="link"
+        />
+      </AccessCheck>
     </Tooltip>
   );
 };

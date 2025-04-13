@@ -1,19 +1,20 @@
 import React from "react";
 import { useAsyncFn } from "react-use";
+import { useUsersTableModule } from "@frontend/entities/@common/user";
+import { AccessCheck } from "@frontend/entities/viewer";
+import { mapUserUpdateFormValuesToUpdateUserDto } from "@frontend/features/user/forms/api";
 import { AntdServices } from "@frontend/shared/model/services";
+import { FormErrorMessage } from "@frontend/shared/ui/forms";
+import { Action, Subject } from "@work-solutions-crm/libs/shared/auth/auth.dto";
 import { UserUpdateRequestDTO } from "@work-solutions-crm/libs/shared/user/user.api";
 import { Button, Form } from "antd";
 import { observer } from "mobx-react-lite";
+import { pipe } from "ramda";
 
+import { UserInput } from "../../../../entities/@common/user/ui/UserInput";
 import { useInjectService } from "../../../../shared/lib/useInjectService";
 import { UserUpdateService } from "../../services/UserUpdateService";
 import { UserUpdateFormValues } from "../interfaces";
-
-import { UserInput } from "../../../../entities/@common/user/ui/UserInput";
-import { pipe } from "ramda";
-import { mapUserUpdateFormValuesToUpdateUserDto } from "@frontend/features/user/forms/api";
-import { FormErrorMessage } from "@frontend/shared/ui/forms";
-import { useUsersTableModule } from "@frontend/entities/@common/user";
 
 interface UserUpdateFormProps {
   additionalOnFinish?: () => void | Promise<void>;
@@ -70,9 +71,11 @@ export const UserUpdateForm = observer(function UserUpdateFeature({ additionalOn
       <FormErrorMessage error={error} />
       {!isDisabled && (
         <Form.Item style={{ textAlign: "right" }}>
-          <Button htmlType="submit" loading={loading} type="primary">
-            Сохранить
-          </Button>
+          <AccessCheck type="disable" action={Action.UPDATE} subject={Subject.USERS}>
+            <Button htmlType="submit" loading={loading} type="primary">
+              Сохранить
+            </Button>
+          </AccessCheck>
         </Form.Item>
       )}
     </Form>

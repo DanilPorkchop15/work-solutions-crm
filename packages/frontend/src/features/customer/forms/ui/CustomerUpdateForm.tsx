@@ -1,9 +1,11 @@
 import React from "react";
 import { useAsyncFn } from "react-use";
 import { useCustomersTableModule } from "@frontend/entities/customer";
+import { AccessCheck } from "@frontend/entities/viewer";
 import { mapCustomerUpdateFormValuesToUpdateCustomerDto } from "@frontend/features/customer/forms/api";
 import { AntdServices } from "@frontend/shared/model/services";
 import { FormErrorMessage } from "@frontend/shared/ui/forms";
+import { Action, Subject } from "@work-solutions-crm/libs/shared/auth/auth.dto";
 import { CustomerUpdateRequestDTO } from "@work-solutions-crm/libs/shared/customer/customer.api";
 import { Button, Form } from "antd";
 import { observer } from "mobx-react-lite";
@@ -82,9 +84,11 @@ export const CustomerUpdateForm = observer(function CustomerUpdateFeature({
       <FormErrorMessage error={error} />
       {!isDisabled && (
         <Form.Item style={{ textAlign: "right" }}>
-          <Button htmlType="submit" loading={loading} type="primary">
-            Сохранить
-          </Button>
+          <AccessCheck type="hide" action={Action.UPDATE} subject={Subject.CUSTOMERS}>
+            <Button htmlType="submit" loading={loading} type="primary">
+              Сохранить
+            </Button>
+          </AccessCheck>
         </Form.Item>
       )}
     </Form>

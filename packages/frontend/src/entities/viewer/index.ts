@@ -4,3 +4,4 @@ export * from "./api";
 export { ViewerService } from "./service";
 export { ViewerProvider } from "./config";
 export { useViewer } from "./hooks";
+export * from "./ui";

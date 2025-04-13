@@ -1,7 +1,9 @@
 import React from "react";
 import { DeleteFilled } from "@ant-design/icons";
 import { User } from "@frontend/entities/@common/user";
+import { AccessCheck } from "@frontend/entities/viewer";
 import { AntdServices } from "@frontend/shared/model/services";
+import { Action, Subject } from "@work-solutions-crm/libs/shared/auth/auth.dto";
 import { useConfirmationModal } from "@worksolutions/antd-react-components";
 import { Button, ButtonProps, Tooltip, Typography } from "antd";
 
@@ -44,14 +46,16 @@ const UserBulkDeleteFeatureBase = React.memo(function BulkDeleteUsersFeature({
         subtitle={<Typography.Text>Вы уверены, что хотите архивировать {users.length} пользователей?</Typography.Text>}
         title="Архивировать пользователей"
       />
-      <Button
-        danger
-        disabled={disabled ?? (users.length === 0 || users.some(u => u.deletedAt !== null))}
-        onClick={withConfirmation(userBulkDeleteFn)}
-        {...props}
-      >
-        {children}
-      </Button>
+      <AccessCheck type="disable" action={Action.DELETE} subject={Subject.USERS}>
+        <Button
+          danger
+          disabled={disabled ?? (users.length === 0 || users.some(u => u.deletedAt !== null))}
+          onClick={withConfirmation(userBulkDeleteFn)}
+          {...props}
+        >
+          {children}
+        </Button>
+      </AccessCheck>
     </>
   );
 });

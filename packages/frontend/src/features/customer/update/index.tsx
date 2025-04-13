@@ -1,7 +1,9 @@
 import React, { memo } from "react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { EditFilled } from "@ant-design/icons";
+import { AccessCheck } from "@frontend/entities/viewer";
 import { CustomerUpdateForm } from "@frontend/features/customer/forms";
+import { Action, Subject } from "@work-solutions-crm/libs/shared/auth/auth.dto";
 import { Button, Tooltip } from "antd";
 
 import { AppRoutes } from "../../../shared/model/services/appRoutes";
@@ -31,17 +33,19 @@ const CustomerUpdateIcon: React.FC<CustomerUpdateIconProps> = ({ customerId, dis
 
   return (
     <Tooltip title="Редактировать">
-      <Button
-        className="customer-update-icon"
-        onClick={() => {
-          navigate(AppRoutes.getUpdateCustomerUrl(true, customerId));
-        }}
-        disabled={disabled}
-        icon={<EditFilled />}
-        shape="circle"
-        size="small"
-        type="link"
-      ></Button>
+      <AccessCheck type="disable" action={Action.UPDATE} subject={Subject.CUSTOMERS}>
+        <Button
+          className="customer-update-icon"
+          onClick={() => {
+            navigate(AppRoutes.getUpdateCustomerUrl(true, customerId));
+          }}
+          disabled={disabled}
+          icon={<EditFilled />}
+          shape="circle"
+          size="small"
+          type="link"
+        ></Button>
+      </AccessCheck>
     </Tooltip>
   );
 };

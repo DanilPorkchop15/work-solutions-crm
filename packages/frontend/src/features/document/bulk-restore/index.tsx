@@ -1,7 +1,9 @@
 import React from "react";
 import { RedoOutlined } from "@ant-design/icons";
 import { DocumentPreview } from "@frontend/entities/document";
+import { AccessCheck } from "@frontend/entities/viewer";
 import { AntdServices } from "@frontend/shared/model/services";
+import { Action, Subject } from "@work-solutions-crm/libs/shared/auth/auth.dto";
 import { useConfirmationModal } from "@worksolutions/antd-react-components";
 import { Button, ButtonProps, Tooltip, Typography } from "antd";
 
@@ -44,14 +46,16 @@ const DocumentBulkRestoreFeatureBase = React.memo(function BulkRestoreDocumentsF
         subtitle={<Typography.Text>Вы уверены, что хотите восстановить {documents.length} документов?</Typography.Text>}
         title="Восстановить документы"
       />
-      <Button
-        type="primary"
-        disabled={disabled ?? (documents.length === 0 || documents.some(d => d.deletedAt === null))}
-        onClick={withConfirmation(documentBulkRestoreFn)}
-        {...props}
-      >
-        {children}
-      </Button>
+      <AccessCheck type="disable" action={Action.UPDATE} subject={Subject.DOCUMENTS}>
+        <Button
+          type="primary"
+          disabled={disabled ?? (documents.length === 0 || documents.some(d => d.deletedAt === null))}
+          onClick={withConfirmation(documentBulkRestoreFn)}
+          {...props}
+        >
+          {children}
+        </Button>
+      </AccessCheck>
     </>
   );
 });

@@ -2,8 +2,10 @@ import React from "react";
 import { useAsyncFn } from "react-use";
 import { User } from "@frontend/entities/@common/user";
 import { UserDetailsService, useUserDetails } from "@frontend/entities/@common/user/model";
+import { AccessCheck } from "@frontend/entities/viewer/ui";
 import { Back } from "@frontend/shared/ui/back";
 import { useHeader } from "@frontend/widgets/header";
+import { Role } from "@work-solutions-crm/libs/shared/user/user.dto";
 import { PageSpin } from "@worksolutions/antd-react-components";
 import { Flex, Typography } from "antd";
 import { observer } from "mobx-react-lite";
@@ -35,9 +37,13 @@ export const UserDetailsWidget = observer(function UserDetailsWidget() {
         <Typography.Title level={2}>Редактирование пользователя</Typography.Title>
       )}
       {userDetails.deletedAt === null ? (
-        <UserDeleteFeature.Button user={userDetails} onSuccess={onSuccess} size="small" />
+        <AccessCheck type="hide" roles={[Role.ADMIN]}>
+          <UserDeleteFeature.Button user={userDetails} onSuccess={onSuccess} size="small" />
+        </AccessCheck>
       ) : (
-        <UserRestoreFeature.Button user={userDetails} onSuccess={onSuccess} size="small" />
+        <AccessCheck type="hide" roles={[Role.ADMIN]}>
+          <UserRestoreFeature.Button user={userDetails} onSuccess={onSuccess} size="small" />
+        </AccessCheck>
       )}
     </Flex>,
     [userDetails.deletedAt]

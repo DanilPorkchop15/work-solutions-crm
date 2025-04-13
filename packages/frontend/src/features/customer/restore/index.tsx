@@ -1,7 +1,9 @@
 import React from "react";
 import { RedoOutlined } from "@ant-design/icons";
 import { CustomerPreview } from "@frontend/entities/customer";
+import { AccessCheck } from "@frontend/entities/viewer";
 import { AntdServices } from "@frontend/shared/model/services";
+import { Action, Subject } from "@work-solutions-crm/libs/shared/auth/auth.dto";
 import { useConfirmationModal } from "@worksolutions/antd-react-components";
 import { Button, ButtonProps, Tooltip, Typography } from "antd";
 
@@ -49,9 +51,11 @@ const CustomerRestoreFeatureBase = React.memo(function RestoreCustomerFeature({
         }
         title="Восстановить клиента"
       />
-      <Button disabled={disabled} onClick={withConfirmation(customerRestoreFn)} {...props}>
-        {children}
-      </Button>
+      <AccessCheck type="hide" action={Action.UPDATE} subject={Subject.CUSTOMERS}>
+        <Button disabled={disabled} onClick={withConfirmation(customerRestoreFn)} {...props}>
+          {children}
+        </Button>
+      </AccessCheck>
     </>
   );
 });

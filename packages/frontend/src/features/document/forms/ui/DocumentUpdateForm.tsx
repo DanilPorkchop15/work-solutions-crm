@@ -1,9 +1,11 @@
 import React from "react";
 import { useAsyncFn } from "react-use";
 import { useDocumentsTableModule } from "@frontend/entities/document";
+import { AccessCheck } from "@frontend/entities/viewer";
 import { mapDocumentUpdateFormValuesToUpdateDto } from "@frontend/features/document/forms/api";
 import { AntdServices } from "@frontend/shared/model/services";
 import { FormErrorMessage } from "@frontend/shared/ui/forms";
+import { Action, Subject } from "@work-solutions-crm/libs/shared/auth/auth.dto";
 import { DocumentUpdateRequestDTO } from "@work-solutions-crm/libs/shared/document/document.api";
 import { Button, Form } from "antd";
 import { observer } from "mobx-react-lite";
@@ -76,9 +78,11 @@ export const DocumentUpdateForm = observer(function DocumentUpdateFeature({
       <FormErrorMessage error={error} />
       {!isDisabled && (
         <Form.Item style={{ textAlign: "right" }}>
-          <Button htmlType="submit" loading={loading} type="primary">
-            Сохранить
-          </Button>
+          <AccessCheck type="disable" action={Action.UPDATE} subject={Subject.DOCUMENTS}>
+            <Button htmlType="submit" loading={loading} type="primary">
+              Сохранить
+            </Button>
+          </AccessCheck>
         </Form.Item>
       )}
     </Form>

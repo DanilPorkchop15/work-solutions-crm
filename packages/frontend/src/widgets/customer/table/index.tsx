@@ -2,6 +2,8 @@ import React from "react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { useAsyncFn } from "react-use";
 import { DeleteFilled } from "@ant-design/icons";
+import { AccessCheck } from "@frontend/entities/viewer";
+import { Role } from "@work-solutions-crm/libs/shared/user/user.dto";
 import { paginationLocale, tableLocale } from "@worksolutions/antd-react-components";
 import { Flex, Input, Row, Switch, type TableProps } from "antd";
 import { observer } from "mobx-react-lite";
@@ -76,12 +78,14 @@ export const CustomersTableWidget: React.FC<CustomersTableWidgetProps> = observe
       {showSearch && (
         <Flex gap={12} align="center">
           <Input value={searchValue} onChange={e => setSearchValue(e.target.value)} placeholder="Поиск по названию" />
-          <Switch
-            checked={showDeleted}
-            onChange={setShowDeleted}
-            unCheckedChildren={<DeleteFilled style={{ color: "salmon" }} />}
-            size="default"
-          />
+          <AccessCheck type="hide" roles={[Role.ADMIN, Role.MODERATOR]}>
+            <Switch
+              checked={showDeleted}
+              onChange={setShowDeleted}
+              unCheckedChildren={<DeleteFilled style={{ color: "salmon" }} />}
+              size="default"
+            />
+          </AccessCheck>
         </Flex>
       )}
       <CustomerView.Table

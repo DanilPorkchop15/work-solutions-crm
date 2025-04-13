@@ -1,7 +1,9 @@
 import React from "react";
 import { DeleteFilled } from "@ant-design/icons";
 import { ProjectPreview } from "@frontend/entities/project";
+import { AccessCheck } from "@frontend/entities/viewer";
 import { AntdServices } from "@frontend/shared/model/services";
+import { Action, Subject } from "@work-solutions-crm/libs/shared/auth/auth.dto";
 import { useConfirmationModal } from "@worksolutions/antd-react-components";
 import { Button, ButtonProps, Tooltip, Typography } from "antd";
 
@@ -47,9 +49,11 @@ const ProjectDeleteFeatureBase = React.memo(function ProjectDeleteFeatureBase({
         }
         title="Архивировать проект"
       />
-      <Button danger disabled={disabled} onClick={withConfirmation(deleteProject)} {...props}>
-        {children}
-      </Button>
+      <AccessCheck type="disable" action={Action.DELETE} subject={Subject.PROJECTS}>
+        <Button danger disabled={disabled} onClick={withConfirmation(deleteProject)} {...props}>
+          {children}
+        </Button>
+      </AccessCheck>
     </>
   );
 });
