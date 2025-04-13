@@ -4,7 +4,7 @@ FROM $NODE_VERSION AS base
 WORKDIR /app
 RUN touch ~/.npmrc
 COPY . .
-RUN npm ci --include=dev
+RUN npm ci --include=dev --legacy-peer-deps
 
 FROM base as build
 WORKDIR /app
