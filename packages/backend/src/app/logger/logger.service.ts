@@ -1,5 +1,6 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
+import { LogDTO } from "@work-solutions-crm/libs/shared/logger/logger.dto";
 import { Repository } from "typeorm";
 
 import { CustomerLog } from "../../models/entities/customer-log.entity";
@@ -8,6 +9,7 @@ import { ProjectLog } from "../../models/entities/project-log.entity";
 import { TaskLog } from "../../models/entities/task-log.entity";
 import { UserLog } from "../../models/entities/user-log.entity";
 
+import { mapLogEntityToLogDTO } from "./logger.mappers";
 import { LogData, LogOptions, LogType } from "./logger.types";
 
 type LogRepository = Repository<ProjectLog | DocumentLog | TaskLog | UserLog | CustomerLog>;
@@ -84,6 +86,21 @@ export class LoggerService {
 
     await logRepository.save(logData);
     this.logger.log(this.formatLogData(logData, type));
+  }
+
+  public async getLatest(): Promise<LogDTO[]> {
+    const [documentLogs, taskLogs, projectLogs, customerLogs] = await Promise.all([
+      this.documentLogRepository.find({ order: { created_at: "DESC" }, take: 25, relations: ["user"] }),
+      this.taskLogRepository.find({ order: { created_at: "DESC" }, take: 25, relations: ["user"] }),
+      this.projectLogRepository.find({ order: { created_at: "DESC" }, take: 25, relations: ["user"] }),
+      this.customerLogRepository.find({ order: { created_at: "DESC" }, take: 25, relations: ["user"] })
+    ]);
+    return [
+      ...documentLogs.map(mapLogEntityToLogDTO),
+      ...taskLogs.map(mapLogEntityToLogDTO),
+      ...projectLogs.map(mapLogEntityToLogDTO),
+      ...customerLogs.map(mapLogEntityToLogDTO)
+    ].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
   }
 
   log(action: string, comment: string): void {

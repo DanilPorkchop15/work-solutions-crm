@@ -4,24 +4,27 @@ import { useTitle } from "react-use";
 import { AppstoreOutlined, FileAddOutlined, ProjectFilled, UserAddOutlined } from "@ant-design/icons";
 import { CustomersTableModuleProvider } from "@frontend/entities/customer";
 import { DocumentsTableModuleProvider } from "@frontend/entities/document";
+import { LoggerTableModuleProvider } from "@frontend/entities/logger";
 import { ProjectsTableModuleProvider } from "@frontend/entities/project";
-import { StatsView } from "@frontend/entities/stats";
-import { useViewer, ViewerModel } from "@frontend/entities/viewer";
-import { CustomerCreateFeature } from "@frontend/features/customer/create";
-import { DocumentCreateFeature } from "@frontend/features/document/create";
-import { ProjectCreateFeature } from "@frontend/features/project/create";
-import { AppRoutes } from "@frontend/shared/model/services";
-import { CustomersTableWidget } from "@frontend/widgets/customer/table";
-import { DocumentsTableWidget } from "@frontend/widgets/document/table";
-import { useHeader } from "@frontend/widgets/header";
-import { ProjectsTableWidget } from "@frontend/widgets/project/table";
 import { Button, Card, Col, Flex, message, Row, Space, Tabs, Typography } from "antd";
 import cn from "classnames";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 
+import { StatsView } from "../../../entities/stats/ui/index";
+import { useViewer } from "../../../entities/viewer/hooks";
+import { ViewerModel } from "../../../entities/viewer/model";
+import { CustomerCreateFeature } from "../../../features/customer/create/index";
+import { DocumentCreateFeature } from "../../../features/document/create/index";
+import { ProjectCreateFeature } from "../../../features/project/create/index";
+import { AppRoutes } from "../../../shared/model/services/appRoutes";
 import { AppTitles } from "../../../shared/model/services/appTitles";
 import { Layout } from "../../../shared/ui/layout/index";
+import { CustomersTableWidget } from "../../../widgets/customer/table/index";
+import { DocumentsTableWidget } from "../../../widgets/document/table/index";
+import { useHeader } from "../../../widgets/header/config";
+import { LoggerTableWidget } from "../../../widgets/logger/table/index";
+import { ProjectsTableWidget } from "../../../widgets/project/table/index";
 
 import styles from "./index.module.scss";
 
@@ -149,13 +152,10 @@ export function HomePage() {
         styles={{ body: { padding: 0 } }}
       ></Card>
 
-      {/* Блок последних активностей */}
       <Card title="Последние действия" style={{ marginTop: 24 }}>
-        <Flex vertical gap={12}>
-          <Typography.Text>Сегодня 10:00 - Создан новый проект "Анализ рынка"</Typography.Text>
-          <Typography.Text>Вчера 15:30 - Обновлен договор с ООО "ТехноПарк"</Typography.Text>
-          <Typography.Text>Вчера 09:45 - Добавлен новый клиент: Иван Петров</Typography.Text>
-        </Flex>
+        <LoggerTableModuleProvider>
+          <LoggerTableWidget className={styles.tabsTable} rowSelection={undefined} />
+        </LoggerTableModuleProvider>
       </Card>
     </Layout.Content>
   );
