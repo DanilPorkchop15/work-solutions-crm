@@ -55,7 +55,7 @@ export class ProjectCommentController implements ProjectCommentApi {
     await this.loggerService.logByType(
       LogType.PROJECT,
       "прокомментировал",
-      `Пользователь ${user.user_id} добавил комментарий к проекту ${projectId}`,
+      `Пользователь (${user.user_id}) добавил комментарий к проекту (${projectId})`,
       { project_id: projectId, user_id: user.user_id }
     );
   }

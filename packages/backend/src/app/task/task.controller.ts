@@ -1,6 +1,18 @@
-import { AuthGuard } from "@backend/app/auth/auth.guard";
-import { LogType } from "@backend/app/logger/logger.types";
-import { CaslGuard } from "@backend/app/permission/casl.guard";
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from "@nestjs/common";
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { Action, Subject } from "@work-solutions-crm/libs/shared/auth/auth.dto";
+import { TaskApi, TASKS_ROUTES } from "@work-solutions-crm/libs/shared/task/task.api";
+import { TaskDTO, TaskPreviewDTO } from "@work-solutions-crm/libs/shared/task/task.dto";
+
+import { CheckPolicies } from "../../decorators/check-policies.decorator";
+import { CurrentUser } from "../../decorators/current-user.decorator";
+import { Logger } from "../../decorators/logger.decorator";
+import { User } from "../../models/entities/user.entity";
+import { AuthGuard } from "../auth/auth.guard";
+import { LoggerService } from "../logger/logger.service";
+import { LogType } from "../logger/logger.types";
+import { CaslGuard } from "../permission/casl.guard";
+
 import {
   TaskBulkDeleteValidationDTO,
   TaskBulkRestoreValidationDTO,
@@ -8,19 +20,7 @@ import {
   TaskPreviewResponseDTO,
   TaskResponseDTO,
   TaskUpdateValidationDTO
-} from "@backend/app/task/task.dto";
-import { CheckPolicies } from "@backend/decorators/check-policies.decorator";
-import { CurrentUser } from "@backend/decorators/current-user.decorator";
-import { Logger } from "@backend/decorators/logger.decorator";
-import { User } from "@backend/models/entities/user.entity";
-import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from "@nestjs/common";
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from "@nestjs/swagger";
-import { Action, Subject } from "@work-solutions-crm/libs/shared/auth/auth.dto";
-import { TaskApi, TASKS_ROUTES } from "@work-solutions-crm/libs/shared/task/task.api";
-import { TaskDTO, TaskPreviewDTO } from "@work-solutions-crm/libs/shared/task/task.dto";
-
-import { LoggerService } from "../logger/logger.service";
-
+} from "./task.dto";
 import { TaskService } from "./task.service";
 
 @ApiTags("Tasks")
@@ -60,7 +60,7 @@ export class TaskController implements TaskApi {
   @ApiResponse({ status: 201, type: TaskResponseDTO })
   async create(@Body() dto: TaskCreateValidationDTO, @CurrentUser() user: User): Promise<TaskDTO> {
     const taskDto: TaskDTO = await this.tasksService.create(dto);
-    await this.loggerService.logByType(LogType.TASK, "создано", "Задача была успешно создана", {
+    await this.loggerService.logByType(LogType.TASK, "создано", `Задача была создана (${taskDto.id})`, {
       task_id: taskDto.id,
       user_id: user.user_id
     });
@@ -79,7 +79,7 @@ export class TaskController implements TaskApi {
     @CurrentUser() user: User
   ): Promise<TaskDTO> {
     const taskDto: TaskDTO = await this.tasksService.update(taskId, dto);
-    await this.loggerService.logByType(LogType.TASK, "обновлено", "Задача была успешно обновлена", {
+    await this.loggerService.logByType(LogType.TASK, "обновлено", `Задача была успешно (${taskDto.id})`, {
       task_id: taskId,
       user_id: user.user_id
     });
@@ -94,7 +94,7 @@ export class TaskController implements TaskApi {
   @ApiResponse({ status: 204 })
   async delete(@Param("taskId") taskId: string, @CurrentUser() user: User): Promise<void> {
     await this.tasksService.delete(taskId);
-    await this.loggerService.logByType(LogType.TASK, "удалено", "Задача была успешно удалена", {
+    await this.loggerService.logByType(LogType.TASK, "удалено", `Задача была удалена (${taskId})`, {
       task_id: taskId,
       user_id: user.user_id
     });
@@ -108,7 +108,7 @@ export class TaskController implements TaskApi {
   @ApiResponse({ status: 204 })
   async restore(@Param("taskId") taskId: string, @CurrentUser() user: User): Promise<void> {
     await this.tasksService.restore(taskId);
-    await this.loggerService.logByType(LogType.TASK, "восстановлено", "Задача была успешно восстановлена", {
+    await this.loggerService.logByType(LogType.TASK, "восстановлено", `Задача была восстановлена (${taskId})`, {
       task_id: taskId,
       user_id: user.user_id
     });
@@ -122,7 +122,7 @@ export class TaskController implements TaskApi {
   async bulkDelete(@Body() dto: TaskBulkDeleteValidationDTO, @CurrentUser() user: User): Promise<void> {
     await this.tasksService.bulkDelete(dto);
     for (const taskId of dto.task_ids) {
-      await this.loggerService.logByType(LogType.TASK, "пакетное удаление", "Задачи были успешно удалены", {
+      await this.loggerService.logByType(LogType.TASK, "пакетное удаление", `Задачи были удалены (${taskId})`, {
         task_id: taskId,
         user_id: user.user_id
       });
@@ -137,10 +137,15 @@ export class TaskController implements TaskApi {
   async bulkRestore(@Body() dto: TaskBulkRestoreValidationDTO, @CurrentUser() user: User): Promise<void> {
     await this.tasksService.bulkRestore(dto);
     for (const taskId of dto.task_ids) {
-      await this.loggerService.logByType(LogType.TASK, "пакетное восстановление", "Задачи были успешно восстановлены", {
-        task_id: taskId,
-        user_id: user.user_id
-      });
+      await this.loggerService.logByType(
+        LogType.TASK,
+        "пакетное восстановление",
+        `Задачи были восстановлены (${taskId})`,
+        {
+          task_id: taskId,
+          user_id: user.user_id
+        }
+      );
     }
   }
 }

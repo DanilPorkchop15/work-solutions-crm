@@ -52,7 +52,7 @@ export class TaskCommentController implements TaskCommentApi {
     await this.loggerService.logByType(
       LogType.TASK,
       "прокомментировано",
-      `Пользователь ${user.user_id} оставил комментарий к задаче ${taskId}: "${text}"`,
+      `Пользователь (${user.user_id}) оставил комментарий к задаче (${taskId}): "${text}"`,
       {
         task_id: taskId,
         user_id: user.user_id

@@ -53,10 +53,15 @@ export class DocumentCommentController implements DocumentCommentApi {
     @CurrentUser() user: User
   ): Promise<void> {
     await this.documentCommentsService.create(documentId, user.user_id, text);
-    await this.loggerService.logByType(LogType.DOCUMENT, "прокомментировал", "Добавлен комментарий к документу", {
-      document_id: documentId,
-      user_id: user.user_id
-    });
+    await this.loggerService.logByType(
+      LogType.DOCUMENT,
+      "прокомментировал",
+      `Добавлен комментарий к документу (${documentId})`,
+      {
+        document_id: documentId,
+        user_id: user.user_id
+      }
+    );
   }
 
   @UseGuards(AuthGuard, CaslGuard)

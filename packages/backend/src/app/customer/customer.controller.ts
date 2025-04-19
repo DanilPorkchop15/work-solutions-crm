@@ -61,7 +61,7 @@ export class CustomerController implements CustomerApi {
   @ApiResponse({ status: 201, description: "Customer created successfully" })
   async create(@Body() dto: CustomerCreateValidationDTO, @CurrentUser() user: User): Promise<void> {
     const customer: Customer = await this.customersService.create(dto, user);
-    await this.loggerService.logByType(LogType.CUSTOMER, "created", "new customer", {
+    await this.loggerService.logByType(LogType.CUSTOMER, "создан", `Клиент был создан (${customer.customer_id})`, {
       customer_id: customer.customer_id,
       user_id: user.user_id
     });
@@ -76,10 +76,15 @@ export class CustomerController implements CustomerApi {
   async bulkRestore(@Body() dto: CustomerBulkRestoreValidationDTO, @CurrentUser() user: User): Promise<void> {
     await this.customersService.bulkRestore(dto);
     for (const id of dto.customer_ids) {
-      await this.loggerService.logByType(LogType.CUSTOMER, "bulk restored", "customers", {
-        customer_id: id,
-        user_id: user.user_id
-      });
+      await this.loggerService.logByType(
+        LogType.CUSTOMER,
+        "массово восстановлен",
+        `Клиент был восстановлен в ходе массового восстановления (${id})`,
+        {
+          customer_id: id,
+          user_id: user.user_id
+        }
+      );
     }
   }
 
@@ -95,7 +100,7 @@ export class CustomerController implements CustomerApi {
     @CurrentUser() user: User
   ): Promise<void> {
     await this.customersService.update(customerId, dto, user);
-    await this.loggerService.logByType(LogType.CUSTOMER, "updated", "customer", {
+    await this.loggerService.logByType(LogType.CUSTOMER, "обновлен", `Клиент был обновлен (${customerId})`, {
       customer_id: customerId,
       user_id: user.user_id
     });
@@ -110,10 +115,15 @@ export class CustomerController implements CustomerApi {
   async bulkDelete(@Body() dto: CustomerBulkDeleteValidationDTO, @CurrentUser() user: User): Promise<void> {
     await this.customersService.bulkDelete(dto);
     for (const id of dto.customer_ids) {
-      await this.loggerService.logByType(LogType.CUSTOMER, "bulk deleted", "customers", {
-        customer_id: id,
-        user_id: user.user_id
-      });
+      await this.loggerService.logByType(
+        LogType.CUSTOMER,
+        "массово удален",
+        `Клиент был удален в ходе массового удаления (${id})`,
+        {
+          customer_id: id,
+          user_id: user.user_id
+        }
+      );
     }
   }
 
@@ -125,7 +135,7 @@ export class CustomerController implements CustomerApi {
   @ApiResponse({ status: 404, description: "Customer not found" })
   async delete(@Param("customerId") customerId: string, @CurrentUser() user: User): Promise<void> {
     await this.customersService.delete(customerId);
-    await this.loggerService.logByType(LogType.CUSTOMER, "deleted", "customer", {
+    await this.loggerService.logByType(LogType.CUSTOMER, "удален", `Клиент был удален (${customerId})`, {
       customer_id: customerId,
       user_id: user.user_id
     });
@@ -139,7 +149,7 @@ export class CustomerController implements CustomerApi {
   @ApiResponse({ status: 404, description: "Customer not found" })
   async restore(@Param("customerId") customerId: string, @CurrentUser() user: User): Promise<void> {
     await this.customersService.restore(customerId);
-    await this.loggerService.logByType(LogType.CUSTOMER, "restored", "customer", {
+    await this.loggerService.logByType(LogType.CUSTOMER, "восстановлен", `Клиент был восстановлен (${customerId})`, {
       customer_id: customerId,
       user_id: user.user_id
     });
