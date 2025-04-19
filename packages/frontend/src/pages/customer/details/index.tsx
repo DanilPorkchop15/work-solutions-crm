@@ -1,9 +1,13 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import { useTitle } from "react-use";
-import { CustomerDetailsProvider, CustomersTableModuleProvider } from "@frontend/entities/customer/model";
+import {
+  CustomerDetailsProvider,
+  CustomerLogsTableModuleProvider,
+  CustomersTableModuleProvider
+} from "@frontend/entities/customer/model";
 import { ProjectsTableModuleProvider } from "@frontend/entities/project";
-import { Divider, Flex, Typography } from "antd";
+import { Flex, Splitter, Typography } from "antd";
 
 import { AppTitles } from "../../../shared/model/services";
 import { Layout } from "../../../shared/ui/layout";
@@ -17,16 +21,33 @@ export function CustomerDetailsPage() {
       <ProjectsTableModuleProvider>
         <CustomersTableModuleProvider>
           <CustomerDetailsProvider>
-            <Flex vertical gap={24}>
-              <Typography.Title level={3}>Информация о клиенте</Typography.Title>
-              <CustomerDetailsWidget.Form />
-            </Flex>
-            <Divider />
-            <Flex vertical gap={24}>
-              <Typography.Title level={3}>Проекты клиента</Typography.Title>
-              <CustomerDetailsWidget.ProjectsTable />
-            </Flex>
-            <Outlet />
+            <CustomerLogsTableModuleProvider>
+              <Splitter layout="vertical">
+                <Splitter.Panel resizable={true} defaultSize="60%">
+                  <Splitter>
+                    <Splitter.Panel resizable={false}>
+                      <Flex vertical gap={24} className="pr-8">
+                        <Typography.Title level={3}>Информация о клиенте</Typography.Title>
+                        <CustomerDetailsWidget.Form />
+                      </Flex>
+                    </Splitter.Panel>
+                    <Splitter.Panel resizable={false}>
+                      <Flex vertical gap={24} className="pl-8">
+                        <Typography.Title level={3}>История изменений</Typography.Title>
+                        <CustomerDetailsWidget.LogsTable />
+                      </Flex>
+                    </Splitter.Panel>
+                  </Splitter>
+                </Splitter.Panel>
+                <Splitter.Panel resizable={true} collapsible={{ start: true }}>
+                  <Flex vertical gap={24} className="pt-8">
+                    <Typography.Title level={3}>Проекты клиента</Typography.Title>
+                    <CustomerDetailsWidget.ProjectsTable />
+                  </Flex>
+                </Splitter.Panel>
+              </Splitter>
+              <Outlet />
+            </CustomerLogsTableModuleProvider>
           </CustomerDetailsProvider>
         </CustomersTableModuleProvider>
       </ProjectsTableModuleProvider>

@@ -17,7 +17,12 @@ export class ProjectLogService {
   async findAll(projectId: string): Promise<ProjectLogDTO[]> {
     const projectLogs: ProjectLog[] = await this.projectLogRepository.find({
       where: { project: { project_id: projectId } },
-      relations: ["user", "project"]
+      relations: {
+        user: true,
+        project: {
+          user_created: true
+        }
+      }
     });
     return projectLogs.map(mapProjectLogToDTO);
   }

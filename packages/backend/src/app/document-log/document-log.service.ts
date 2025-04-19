@@ -17,7 +17,12 @@ export class DocumentLogService {
   async findAll(documentId: string): Promise<DocumentLogDTO[]> {
     const documentLogs: DocumentLog[] = await this.documentLogRepository.find({
       where: { document: { document_id: documentId } },
-      relations: ["user", "document"],
+      relations: {
+        user: true,
+        document: {
+          user_created: true
+        }
+      },
       order: { created_at: "ASC" }
     });
     return documentLogs.map(mapDocumentLogToDTO);
