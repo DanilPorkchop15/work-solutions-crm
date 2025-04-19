@@ -4,7 +4,7 @@ import {
 } from "@work-solutions-crm/libs/shared/customer/customer.api";
 import { inject, singleton } from "tsyringe";
 
-import { CustomersApi } from "../../../entities/customer/api/gateway";
+import { CustomersApi } from "../../../entities/customer";
 
 @singleton()
 export class CustomerService {

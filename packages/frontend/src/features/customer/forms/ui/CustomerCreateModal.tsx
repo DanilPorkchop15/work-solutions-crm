@@ -1,7 +1,7 @@
 import React from "react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { useAsyncFn } from "react-use";
-import { useCustomersTableModule } from "@frontend/entities/customer";
+import { CustomerInput, useCustomersTableModule } from "@frontend/entities/customer";
 import { useViewer, ViewerModel } from "@frontend/entities/viewer";
 import { CustomerService } from "@frontend/features/customer/services";
 import { AntdServices } from "@frontend/shared/model/services";
@@ -12,7 +12,6 @@ import { Button, Form } from "antd";
 import { observer } from "mobx-react-lite";
 import { pipe } from "ramda";
 
-import { CustomerInput } from "../../../../entities/customer/ui/CustomerInput";
 import { useInjectService } from "../../../../shared/lib/useInjectService";
 import { AppRoutes } from "../../../../shared/model/services/appRoutes";
 import { mapCustomerCreateFormValuesToCreateCustomerDto } from "../api";

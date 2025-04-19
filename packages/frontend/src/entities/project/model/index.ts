@@ -1,2 +1,1 @@
-export * from "./table";
-export * from "./details";
+export * from "./project";

@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useAsyncFn } from "react-use";
-import { useProjectsTableModule } from "@frontend/entities/project";
+import { ProjectInput, useProjectsTableModule } from "@frontend/entities/project";
 import { useViewer } from "@frontend/entities/viewer";
 import { ProjectService } from "@frontend/features/project/services";
 import { AntdServices } from "@frontend/shared/model/services";
@@ -12,7 +12,6 @@ import { Button, Form } from "antd";
 import { observer } from "mobx-react-lite";
 import { pipe } from "ramda";
 
-import { ProjectInput } from "../../../../entities/project/ui/ProjectInput";
 import { useInjectService } from "../../../../shared/lib/useInjectService";
 import { AppRoutes } from "../../../../shared/model/services/appRoutes";
 import { mapProjectCreateFormValuesToCreateProjectDto } from "../api";

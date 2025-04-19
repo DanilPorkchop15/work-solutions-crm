@@ -1,10 +1,11 @@
-import React, { memo } from "react";
+import React, { memo, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { AppstoreOutlined, BookOutlined, HomeOutlined, TeamOutlined, UserAddOutlined } from "@ant-design/icons";
 import { useViewer, ViewerModel } from "@frontend/entities/viewer";
 import { Role } from "@work-solutions-crm/libs/shared/user/user.dto";
 import { string1 } from "@worksolutions/utils";
 import { Layout, Menu, type MenuProps, Row } from "antd";
+import { observer } from "mobx-react-lite";
 import { memoizeWith } from "ramda";
 
 import { AppRoutes } from "../../shared/model/services/appRoutes";
@@ -61,7 +62,7 @@ const menuItems: (isAdmin: boolean) => MenuProps["items"] = isAdmin => {
   ];
 
   if (isAdmin) {
-    items.concat([
+    items.push(
       {
         type: "divider"
       },
@@ -70,7 +71,7 @@ const menuItems: (isAdmin: boolean) => MenuProps["items"] = isAdmin => {
         label: "УПРЕВЛЕНИЕ ПОЛЬЗОВАТЕЛЯМИ",
         children: [menuItemRoutes[4]]
       }
-    ]);
+    );
   }
 
   return items;
@@ -93,7 +94,7 @@ const findActiveKey: (pathname: string) => string | undefined = memoizeWith(stri
   return matchKey;
 });
 
-export const Sidebar: React.FC = memo(function Sidebar() {
+export const Sidebar: React.FC = observer(function Sidebar() {
   const { pathname } = useLocation();
   const activeKey: string | undefined = findActiveKey(pathname);
   const selectedKeys: string[] = activeKey ? [activeKey] : [];

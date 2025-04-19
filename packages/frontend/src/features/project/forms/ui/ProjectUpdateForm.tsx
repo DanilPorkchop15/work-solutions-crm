@@ -1,6 +1,6 @@
 import React from "react";
 import { useAsyncFn } from "react-use";
-import { useProjectsTableModule } from "@frontend/entities/project";
+import { ProjectInput, useProjectsTableModule } from "@frontend/entities/project";
 import { AccessCheck, useViewer } from "@frontend/entities/viewer";
 import { AntdServices } from "@frontend/shared/model/services";
 import { FormErrorMessage } from "@frontend/shared/ui/forms";
@@ -11,7 +11,6 @@ import dayjs from "dayjs";
 import { observer } from "mobx-react-lite";
 import { pipe } from "ramda";
 
-import { ProjectInput } from "../../../../entities/project/ui/ProjectInput";
 import { useInjectService } from "../../../../shared/lib/useInjectService";
 import { ProjectUpdateService } from "../../services";
 import { mapProjectUpdateFormValuesToUpdateProjectDto } from "../api";

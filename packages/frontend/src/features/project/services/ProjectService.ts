@@ -1,7 +1,7 @@
 import { ProjectCreateRequestDTO, ProjectUpdateRequestDTO } from "@work-solutions-crm/libs/shared/project/project.api";
 import { inject, singleton } from "tsyringe";
 
-import { ProjectsApi } from "../../../entities/project/api/gateway";
+import { ProjectsApi } from "../../../entities/project";
 
 @singleton()
 export class ProjectService {
