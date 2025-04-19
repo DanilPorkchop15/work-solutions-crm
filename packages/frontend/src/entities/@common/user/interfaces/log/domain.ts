@@ -5,6 +5,7 @@ export interface UserLog {
   action: string;
   comment: string;
   user: UserPreview;
+  affectedUser: UserPreview;
   createdAt: string;
   deletedAt: string | null;
 }

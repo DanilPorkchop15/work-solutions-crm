@@ -1,17 +1,16 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import { useTitle } from "react-use";
-import { User } from "@frontend/entities/@common/user";
+import { User, UsersTableModuleProvider } from "@frontend/entities/@common/user";
 import { Flex, Typography } from "antd";
 
-import { UsersTableModuleProvider } from "../../../entities/@common/user/model/table/config";
-import { UserBulkDeleteFeature } from "../../../features/user/bulk-delete/index";
-import { UserBulkRestoreFeature } from "../../../features/user/bulk-restore/index";
-import { UserCreateFeature } from "../../../features/user/create/index";
-import { UserImportFeature } from "../../../features/user/import/index";
-import { AppTitles } from "../../../shared/model/services/appTitles";
-import { useHeader } from "../../../widgets/header/config";
-import { UsersTableWidget } from "../../../widgets/user/table/index";
+import { UserBulkDeleteFeature } from "../../../features/user/bulk-delete";
+import { UserBulkRestoreFeature } from "../../../features/user/bulk-restore";
+import { UserCreateFeature } from "../../../features/user/create";
+import { UserImportFeature } from "../../../features/user/import";
+import { AppTitles } from "../../../shared/model/services";
+import { useHeader } from "../../../widgets/header";
+import { UsersTableWidget } from "../../../widgets/user/table";
 
 function UsersRootPage() {
   useTitle(AppTitles.getUsersTitle());

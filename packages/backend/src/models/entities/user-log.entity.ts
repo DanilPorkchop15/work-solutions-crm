@@ -25,6 +25,10 @@ export class UserLog {
   @JoinColumn({ name: "user_id" })
   user: User;
 
+  @ManyToOne(() => User, user => user.user_id, { onDelete: "CASCADE" })
+  @JoinColumn({ name: "affected_user_id" })
+  affected_user: User;
+
   @CreateDateColumn({ type: "timestamp" })
   created_at: Date;
 

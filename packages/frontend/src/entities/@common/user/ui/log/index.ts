@@ -1,5 +1,5 @@
-import { UsersTableView } from "./tableView";
+import { UserLogTableView } from "./tableView";
 
 export const UserLogView = {
-  Table: UsersTableView
+  Table: UserLogTableView
 };

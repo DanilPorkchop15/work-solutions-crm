@@ -1,12 +1,14 @@
-import { LogData, LogOptions, LogType } from "@backend/app/logger/logger.types";
-import { CustomerLog } from "@backend/models/entities/customer-log.entity";
-import { DocumentLog } from "@backend/models/entities/document-log.entity";
-import { ProjectLog } from "@backend/models/entities/project-log.entity";
-import { TaskLog } from "@backend/models/entities/task-log.entity";
-import { UserLog } from "@backend/models/entities/user-log.entity";
 import { Injectable, Logger } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
+
+import { CustomerLog } from "../../models/entities/customer-log.entity";
+import { DocumentLog } from "../../models/entities/document-log.entity";
+import { ProjectLog } from "../../models/entities/project-log.entity";
+import { TaskLog } from "../../models/entities/task-log.entity";
+import { UserLog } from "../../models/entities/user-log.entity";
+
+import { LogData, LogOptions, LogType } from "./logger.types";
 
 type LogRepository = Repository<ProjectLog | DocumentLog | TaskLog | UserLog | CustomerLog>;
 
@@ -75,7 +77,8 @@ export class LoggerService {
         logData.customer = { customer_id: options.customer_id };
         break;
       case LogType.USER:
-        if (!options.user_id) throw new Error("User ID is required");
+        if (!options.affected_user_id) throw new Error("User ID is required");
+        logData.affected_user = { user_id: options.affected_user_id };
         break;
     }
 
@@ -88,13 +91,14 @@ export class LoggerService {
   }
 
   private formatLogData(logData: LogData, type?: LogType): string {
-    const { action, comment, user, document, task, project, customer } = logData;
+    const { action, comment, user, document, task, project, customer, affected_user } = logData;
 
     const sections: string[] = [
       type ? `[${type}]` : "",
       action,
       comment ? `- ${comment}` : "",
       user ? `User: ${user.user_id}` : "",
+      affected_user ? `Affected User: ${affected_user.user_id}` : "",
       document ? `Document: ${document.document_id}` : "",
       task ? `Task: ${task.task_id}` : "",
       project ? `Project: ${project.project_id}` : "",

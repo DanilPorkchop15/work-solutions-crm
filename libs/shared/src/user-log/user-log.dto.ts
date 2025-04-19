@@ -5,6 +5,7 @@ export interface UserLogDTO {
   action: string;
   comment: string;
   user: UserPreviewDTO;
+  affected_user: UserPreviewDTO;
   created_at: string;
   deleted_at?: string;
 }

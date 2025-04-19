@@ -1,6 +1,6 @@
 import React from "react";
 import { useAsyncFn } from "react-use";
-import { useUsersTableModule } from "@frontend/entities/@common/user";
+import { UserInput, useUsersTableModule } from "@frontend/entities/@common/user";
 import { AccessCheck } from "@frontend/entities/viewer";
 import { mapUserUpdateFormValuesToUpdateUserDto } from "@frontend/features/user/forms/api";
 import { AntdServices } from "@frontend/shared/model/services";
@@ -11,7 +11,6 @@ import { Button, Form } from "antd";
 import { observer } from "mobx-react-lite";
 import { pipe } from "ramda";
 
-import { UserInput } from "../../../../entities/@common/user/ui/UserInput";
 import { useInjectService } from "../../../../shared/lib/useInjectService";
 import { UserUpdateService } from "../../services/UserUpdateService";
 import { UserUpdateFormValues } from "../interfaces";

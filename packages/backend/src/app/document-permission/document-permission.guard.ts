@@ -20,6 +20,8 @@ export class DocumentPermissionGuard implements CanActivate {
     const request: AuthRequest = context.switchToHttp().getRequest();
     const user: User | undefined = request.user;
     const documentId: string = request.params.documentId;
+
+    console.info(1);
     if (!user?.role || !documentId) {
       return false;
     }
@@ -28,8 +30,10 @@ export class DocumentPermissionGuard implements CanActivate {
     const permissions: DocumentPermission[] = await this.documentPermissionService.findAll(documentId);
 
     return (
-      permissions.some(permission => permission.role === user.role || user.role === Role.ADMIN) ||
-      user.user_id === document.user_created.id
+      permissions.some(permission => permission.role === user.role) ||
+      user.user_id === document.user_created.id ||
+      user.role === Role.ADMIN ||
+      user.role === Role.MODERATOR
     );
   }
 }

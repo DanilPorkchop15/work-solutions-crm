@@ -2,21 +2,18 @@ import React from "react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { useAsyncFn } from "react-use";
 import { DeleteFilled } from "@ant-design/icons";
-import { User } from "@frontend/entities/@common/user";
+import { User, UsersTableModule, UserView, useUsersTableModule } from "@frontend/entities/@common/user";
 import { AccessCheck } from "@frontend/entities/viewer/ui";
 import { Role } from "@work-solutions-crm/libs/shared/user/user.dto";
 import { paginationLocale, tableLocale } from "@worksolutions/antd-react-components";
 import { Flex, Input, Row, Switch, type TableProps } from "antd";
 import { observer } from "mobx-react-lite";
 
-import { useUsersTableModule } from "../../../entities/@common/user/model/table/config";
-import { UsersTableModule } from "../../../entities/@common/user/model/table/model";
-import { UserView } from "../../../entities/@common/user/ui/index";
-import { UserDeleteFeature } from "../../../features/user/delete/index";
-import { UserRestoreFeature } from "../../../features/user/restore/index";
-import { UserUpdateFeature } from "../../../features/user/update/index";
+import { UserDeleteFeature } from "../../../features/user/delete";
+import { UserRestoreFeature } from "../../../features/user/restore";
+import { UserUpdateFeature } from "../../../features/user/update";
 import { convertDataToTableDataSource, useLocalTableOnChange } from "../../../shared/lib/tableUtils";
-import { AppRoutes } from "../../../shared/model/services/appRoutes";
+import { AppRoutes } from "../../../shared/model/services";
 
 interface UsersTableWidgetProps extends TableProps<User> {
   selectedRowColumnTitleOptions?: (users: User[], onSuccess?: () => Promise<void>) => React.ReactNode;

@@ -1,27 +1,25 @@
 import React from "react";
-import { isNil } from "ramda";
+import { useParams } from "react-router";
 import { container } from "tsyringe";
 
 import { UserLogsTableModule } from "./model";
 
-const Context: React.Context<UserLogsTableModule | null> = React.createContext<UserLogsTableModule | null>(null);
+const Context = React.createContext<UserLogsTableModule | null>(null);
 
-export const UserLogsTableModuleProvider = React.memo(function UserLogsTableModuleProvider({
+export const UserLogsTableModuleProvider = React.memo(function UserLogTableModuleProvider({
   children
 }: {
   children: React.ReactNode;
 }) {
-  const userLogsTableModule: UserLogsTableModule = React.useMemo(() => container.resolve(UserLogsTableModule), []);
-
-  return <Context.Provider value={userLogsTableModule}>{children}</Context.Provider>;
+  const module: UserLogsTableModule = React.useMemo(() => container.resolve(UserLogsTableModule), []);
+  return <Context.Provider value={module}>{children}</Context.Provider>;
 });
 
 export function useUserLogsTableModule(): UserLogsTableModule {
-  const userLogsTableModule: UserLogsTableModule | null = React.useContext(Context);
-
-  if (isNil(userLogsTableModule)) {
-    throw new Error("UserLogsTableModule not found");
-  }
-
-  return userLogsTableModule;
+  const module: UserLogsTableModule | null = React.useContext(Context);
+  const { id } = useParams();
+  if (!module) throw new Error("UserLogTableModule not found");
+  if (!id) throw new Error("UserId not found");
+  module.pathParams.set("userId", id);
+  return module;
 }

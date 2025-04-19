@@ -88,7 +88,12 @@ export class UserController implements UserApi {
   @ApiResponse({ status: 201, type: [UserResponseDTO] })
   async bulkCreate(@Body() dto: UserCreateValidationDTO[], @CurrentUser() user: User): Promise<UserDTO[]> {
     const createdUsers: UserDTO[] = await this.usersService.bulkCreate(dto);
-    await this.loggerService.logByType(LogType.USER, "bulk created", "new users", { user_id: user.user_id });
+    for (const createdUser of createdUsers) {
+      await this.loggerService.logByType(LogType.USER, "created", "new user", {
+        user_id: user.user_id,
+        affected_user_id: createdUser.id
+      });
+    }
     return createdUsers;
   }
 
@@ -103,7 +108,10 @@ export class UserController implements UserApi {
     @CurrentUser() user: User
   ): Promise<UserDTO> {
     const updatedUser: UserDTO = await this.usersService.update(userId, dto);
-    await this.loggerService.logByType(LogType.USER, "updated", "user", { user_id: user.user_id });
+    await this.loggerService.logByType(LogType.USER, "updated", "user", {
+      user_id: user.user_id,
+      affected_user_id: userId
+    });
     return updatedUser;
   }
 
@@ -114,7 +122,10 @@ export class UserController implements UserApi {
   @ApiResponse({ status: 204 })
   async delete(@Param("userId") userId: string, @CurrentUser() user: User): Promise<void> {
     await this.usersService.delete(userId);
-    await this.loggerService.logByType(LogType.USER, "deleted", "user", { user_id: user.user_id });
+    await this.loggerService.logByType(LogType.USER, "deleted", "user", {
+      user_id: user.user_id,
+      affected_user_id: userId
+    });
   }
 
   @UseGuards(AuthGuard, CaslGuard)
@@ -124,7 +135,10 @@ export class UserController implements UserApi {
   @ApiResponse({ status: 204 })
   async restore(@Param("userId") userId: string, @CurrentUser() user: User): Promise<void> {
     await this.usersService.restore(userId);
-    await this.loggerService.logByType(LogType.USER, "restored", "user", { user_id: user.user_id });
+    await this.loggerService.logByType(LogType.USER, "restored", "user", {
+      user_id: user.user_id,
+      affected_user_id: userId
+    });
   }
 
   @Delete(USERS_ROUTES.bulkDelete())
@@ -135,7 +149,12 @@ export class UserController implements UserApi {
   @CheckPolicies(ability => ability.can(Action.DELETE, Subject.USERS))
   async bulkDelete(@Body() dto: UserBulkDeleteValidationDTO, @CurrentUser() user: User): Promise<void> {
     await this.usersService.bulkDelete(dto);
-    await this.loggerService.logByType(LogType.USER, "bulk deleted", "users", { user_id: user.user_id });
+    for (const userId of dto.user_ids) {
+      await this.loggerService.logByType(LogType.USER, "deleted", "user", {
+        user_id: user.user_id,
+        affected_user_id: userId
+      });
+    }
   }
 
   @Patch(USERS_ROUTES.bulkRestore())
@@ -146,7 +165,12 @@ export class UserController implements UserApi {
   @CheckPolicies(ability => ability.can(Action.UPDATE, Subject.USERS))
   async bulkRestore(@Body() dto: UserBulkRestoreValidationDTO, @CurrentUser() user: User): Promise<void> {
     await this.usersService.bulkRestore(dto);
-    await this.loggerService.logByType(LogType.USER, "bulk restored", "users", { user_id: user.user_id });
+    for (const userId of dto.user_ids) {
+      await this.loggerService.logByType(LogType.USER, "restored", "user", {
+        user_id: user.user_id,
+        affected_user_id: userId
+      });
+    }
   }
 
   @Patch(USERS_ROUTES.changeRole())
@@ -157,7 +181,10 @@ export class UserController implements UserApi {
   @CheckPolicies(ability => ability.can(Action.UPDATE, Subject.USERS))
   async changeRole(@Body() dto: UserChangeRoleValidationDTO): Promise<void> {
     await this.usersService.changeRole(dto.user_id, dto.role);
-    await this.loggerService.logByType(LogType.USER, "role changed", "user", { user_id: dto.user_id });
+    await this.loggerService.logByType(LogType.USER, "role changed", "user", {
+      user_id: dto.user_id,
+      affected_user_id: dto.user_id
+    });
   }
 
   @Post(USERS_ROUTES.uploadAvatar())
@@ -169,7 +196,8 @@ export class UserController implements UserApi {
   async uploadAvatar(@UploadedFile() file: Express.Multer.File, @CurrentUser() user: User): Promise<string> {
     const url: string = this.usersService.uploadAvatar(file);
     await this.loggerService.logByType(LogType.USER, "avatar uploaded", "user", {
-      user_id: user.user_id
+      user_id: user.user_id,
+      affected_user_id: user.user_id
     });
     return url;
   }
