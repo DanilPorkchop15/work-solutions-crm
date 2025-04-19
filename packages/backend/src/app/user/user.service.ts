@@ -1,4 +1,7 @@
-import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import { unlink } from "fs/promises";
+import { join } from "path";
+
+import { BadRequestException, Global, Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import {
   UserBulkDeleteRequestDTO,
@@ -8,9 +11,10 @@ import {
 } from "@work-solutions-crm/libs/shared/user/user.api";
 import { Role, UserDTO, UserPreviewDTO } from "@work-solutions-crm/libs/shared/user/user.dto";
 import * as bcrypt from "bcryptjs";
-import { DeepPartial, Repository } from "typeorm";
+import { DeepPartial, In, Repository } from "typeorm";
 
 import { User } from "../../models/entities/user.entity";
+import { ConfigService } from "../config/config.service";
 
 import {
   mapCreateRequestDTOToUser,
@@ -19,16 +23,20 @@ import {
   mapUserToPreviewDTO
 } from "./user.mappers";
 
+@Global()
 @Injectable()
 export class UserService {
+  private readonly logger = new Logger(UserService.name);
+
   constructor(
     @InjectRepository(User)
-    private readonly userRepository: Repository<User>
+    private readonly userRepository: Repository<User>,
+    private readonly configService: ConfigService
   ) {}
 
-  async findAll(): Promise<UserPreviewDTO[]> {
-    const users: User[] = await this.userRepository.find();
-    return users.map(mapUserToPreviewDTO);
+  async findAll(): Promise<UserDTO[]> {
+    const users: User[] = await this.userRepository.find({ withDeleted: true });
+    return users.map(mapUserToDTO);
   }
 
   async findOneByEmail(email: string): Promise<User | null> {
@@ -40,7 +48,15 @@ export class UserService {
   }
 
   async findOneById(id: string): Promise<User | null> {
-    const user: User | null = await this.userRepository.findOne({ where: { user_id: id } });
+    const user: User | null = await this.userRepository.findOne({ where: { user_id: id }, withDeleted: true });
+    if (!user) {
+      return null;
+    }
+    return user;
+  }
+
+  async findOneByRefreshToken(refreshToken: string): Promise<User | null> {
+    const user: User | null = await this.userRepository.findOne({ where: { refresh_token: refreshToken } });
     if (!user) {
       return null;
     }
@@ -58,10 +74,16 @@ export class UserService {
     return mapUserToDTO(createdUser);
   }
 
-  async bulkCreate(dto: UserCreateRequestDTO[]): Promise<UserPreviewDTO[]> {
+  async bulkCreate(dto: UserCreateRequestDTO[]): Promise<UserDTO[]> {
     const users: DeepPartial<User[]> = await Promise.all(dto.map(mapCreateRequestDTOToUser));
+
+    const existingUsers: User[] = await this.userRepository.find({ where: { email: In(dto.map(u => u.email)) } });
+    if (existingUsers.length > 0) {
+      throw new BadRequestException("Some emails are not unique or already exists");
+    }
+
     const createdUsers: User[] = await this.userRepository.save(users);
-    return createdUsers.map(mapUserToPreviewDTO);
+    return createdUsers.map(mapUserToDTO);
   }
 
   async update(userId: string, dto: UserUpdateRequestDTO): Promise<UserDTO> {
@@ -82,9 +104,10 @@ export class UserService {
     await this.userRepository.restore(userId);
   }
 
-  async updateRefreshToken(userId: string, refreshToken: string): Promise<void> {
+  async updateRefreshToken(userId: string, refreshToken: string): Promise<string> {
     const hashedToken: string = await bcrypt.hash(refreshToken, 10);
-    await this.userRepository.update(userId, { refresh_token: hashedToken });
+    await this.userRepository.update(userId, { refresh_token: hashedToken, refreshed_at: new Date() });
+    return hashedToken;
   }
 
   async changePassword(userId: string, newPassword: string, oldPassword: string): Promise<void> {
@@ -110,5 +133,9 @@ export class UserService {
 
   async bulkRestore(dto: UserBulkRestoreRequestDTO): Promise<void> {
     await this.userRepository.restore(dto.user_ids);
+  }
+
+  uploadAvatar(file: Express.Multer.File): string {
+    return file.path;
   }
 }

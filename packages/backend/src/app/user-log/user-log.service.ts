@@ -16,8 +16,9 @@ export class UserLogService {
 
   async findAll(userId: string): Promise<UserLogDTO[]> {
     const userLogs: UserLog[] = await this.userLogRepository.find({
-      where: { user: { user_id: userId } },
-      relations: ["user"]
+      where: { affected_user: { user_id: userId } },
+      relations: ["user", "affected_user"],
+      order: { created_at: "ASC" }
     });
     return userLogs.map(mapUserLogToDTO);
   }

@@ -17,7 +17,12 @@ export class CustomerLogService {
   async findAll(customerId: string): Promise<CustomerLogDTO[]> {
     const logs: CustomerLog[] = await this.customerLogRepository.find({
       where: { customer: { customer_id: customerId } },
-      relations: ["user", "customer"]
+      relations: {
+        customer: {
+          user_created: true
+        },
+        user: true
+      }
     });
     return logs.map(mapCustomerLogToDTO);
   }

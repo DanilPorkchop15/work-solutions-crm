@@ -64,4 +64,11 @@ export class ProjectCommentResponseDTO implements ProjectCommentDTO {
     required: true
   })
   updated_at: string;
+
+  @ApiProperty({
+    description: "Comment deletion date",
+    example: "2022-01-01T00:00:00.000Z",
+    required: false
+  })
+  deleted_at?: string;
 }

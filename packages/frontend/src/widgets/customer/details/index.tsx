@@ -1,0 +1,1 @@
+export { CustomerDetailsWidget } from "./ui";

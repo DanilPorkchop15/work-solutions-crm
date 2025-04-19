@@ -278,6 +278,13 @@ export class TaskResponseDTO implements TaskDTO {
     example: "2022-01-01T12:00:00.000Z"
   })
   updated_at: string;
+
+  @ApiProperty({
+    description: "The date and time when the task was deleted",
+    example: "2022-01-01T12:00:00.000Z",
+    required: false
+  })
+  deleted_at?: string | undefined;
 }
 
 export class TaskPreviewResponseDTO implements TaskPreviewDTO {
@@ -345,6 +352,13 @@ export class TaskPreviewResponseDTO implements TaskPreviewDTO {
     type: () => ProjectPreviewResponseDTO
   })
   project: ProjectPreviewDTO;
+
+  @ApiProperty({
+    description: "The date and time when the task was deleted",
+    example: "2022-01-01T12:00:00.000Z",
+    required: false
+  })
+  deleted_at?: string;
 }
 
 export class TaskBulkDeleteValidationDTO implements TaskBulkDeleteRequestDTO {

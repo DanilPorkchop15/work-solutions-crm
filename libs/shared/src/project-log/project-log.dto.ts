@@ -8,4 +8,5 @@ export interface ProjectLogDTO {
   user: UserPreviewDTO;
   project: ProjectPreviewDTO;
   created_at: string;
+  deleted_at?: string;
 }

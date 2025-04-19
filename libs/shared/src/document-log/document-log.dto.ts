@@ -8,4 +8,5 @@ export interface DocumentLogDTO {
   user: UserPreviewDTO;
   document: DocumentPreviewDTO;
   created_at: string;
+  deleted_at?: string;
 }

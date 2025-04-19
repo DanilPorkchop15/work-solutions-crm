@@ -7,4 +7,5 @@ export interface DocumentVersionDTO {
   user_created: UserPreviewDTO;
   created_at: string;
   updated_at: string;
+  deleted_at?: string;
 }

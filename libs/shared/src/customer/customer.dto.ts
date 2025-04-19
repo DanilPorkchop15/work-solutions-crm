@@ -10,6 +10,7 @@ export interface CustomerDTO {
   user_created: UserPreviewDTO;
   created_at: string;
   updated_at: string;
+  deleted_at?: string;
 }
 
-export type CustomerPreviewDTO = Pick<CustomerDTO, "id" | "name" | "user_created" | "email">;
+export type CustomerPreviewDTO = Omit<CustomerDTO, "phone" | "inn" | "website">;

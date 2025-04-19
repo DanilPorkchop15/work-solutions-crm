@@ -10,8 +10,9 @@ import { ProjectDTO, ProjectPreviewDTO } from "@work-solutions-crm/libs/shared/p
 import { Repository } from "typeorm";
 
 import { Project } from "../../models/entities/project.entity";
+import { User } from "../../models/entities/user.entity";
 
-import { mapProjectToDTO, mapProjectToPreviewDTO } from "./project.mappers";
+import { mapCreateOrUpdateProjectDtoToProject, mapProjectToDTO, mapProjectToPreviewDTO } from "./project.mappers";
 
 @Injectable()
 export class ProjectService {
@@ -22,7 +23,8 @@ export class ProjectService {
 
   async findAll(): Promise<ProjectPreviewDTO[]> {
     const projects: Project[] = await this.projectRepository.find({
-      relations: ["user", "customer", "users_accountable"]
+      relations: ["user_created", "customer", "users_accountable", "customer.user_created"],
+      withDeleted: true
     });
     return projects.map(mapProjectToPreviewDTO);
   }
@@ -30,28 +32,55 @@ export class ProjectService {
   async findOne(projectId: string): Promise<ProjectDTO> {
     const project: Project = await this.projectRepository.findOneOrFail({
       where: { project_id: projectId },
-      relations: ["user", "customer", "users_accountable"]
+      relations: ["user_created", "customer", "users_accountable", "customer.user_created"],
+      withDeleted: true
     });
     return mapProjectToDTO(project);
   }
 
-  async create(dto: ProjectCreateRequestDTO): Promise<ProjectDTO> {
-    const project: Project = this.projectRepository.create({
-      ...dto,
-      users_accountable: dto.users_accountable.map(({ id }) => ({ user_id: id }))
+  async create(dto: ProjectCreateRequestDTO, user: User): Promise<ProjectDTO> {
+    const project: Project = await this.projectRepository.save({
+      ...mapCreateOrUpdateProjectDtoToProject(dto),
+      user_created: { user_id: user.user_id }
     });
-    const savedProject: Project = await this.projectRepository.save(project);
-    return this.findOne(savedProject.project_id);
+    return this.findOne(project.project_id);
   }
 
   async update(projectId: string, dto: ProjectUpdateRequestDTO): Promise<ProjectDTO> {
-    const project: Project = await this.projectRepository.findOneOrFail({ where: { project_id: projectId } });
-    Object.assign(project, {
-      ...dto,
-      users_accountable: dto.users_accountable?.map(({ id }) => ({ user_id: id })) ?? project.users_accountable
+    const project: Project = await this.projectRepository.findOneOrFail({
+      where: { project_id: projectId },
+      relations: ["users_accountable"]
     });
-    const updatedProject: Project = await this.projectRepository.save(project);
-    return this.findOne(updatedProject.project_id);
+
+    const oldUsers = project.users_accountable.map(user => user.user_id);
+
+    Object.assign(project, mapCreateOrUpdateProjectDtoToProject(dto));
+
+    if (dto.users_accountable) {
+      const newUsers = dto.users_accountable.map(u => u.id);
+
+      if (oldUsers.length !== 0) {
+        await this.projectRepository
+          .createQueryBuilder()
+          .delete()
+          .from("projects_users_accountable")
+          .where("project_id = :projectId AND user_id IN (:...userIds)", {
+            projectId,
+            userIds: oldUsers.length ? oldUsers : [null]
+          })
+          .execute();
+      }
+      await this.projectRepository
+        .createQueryBuilder()
+        .relation("users_accountable")
+        .of(project)
+        .add(newUsers.map(id => ({ user_id: id })));
+    }
+
+    const { users_accountable, ...rest } = project;
+
+    await this.projectRepository.save(rest);
+    return this.findOne(projectId);
   }
 
   async delete(projectId: string): Promise<void> {

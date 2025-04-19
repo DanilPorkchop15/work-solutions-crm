@@ -23,6 +23,7 @@ export interface TaskDTO {
   users_accountable: UserPreviewDTO[];
   created_at: string;
   updated_at: string;
+  deleted_at?: string;
 }
 
 export type TaskPreviewDTO = Omit<TaskDTO, "description" | "created_at" | "updated_at">;

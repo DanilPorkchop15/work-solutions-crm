@@ -53,7 +53,7 @@ export class User {
   @Column({ type: "varchar", length: 500, nullable: true })
   avatar_url?: string;
 
-  @Column({ type: "varchar", length: 500, nullable: true })
+  @Column({ type: "text", nullable: true })
   refresh_token?: string;
 
   @OneToMany(() => Document, document => document.user_created)
@@ -62,7 +62,7 @@ export class User {
   @OneToMany(() => DocumentVersion, documentVersion => documentVersion.user_created)
   document_versions: DocumentVersion[];
 
-  @OneToMany(() => Project, project => project.user)
+  @OneToMany(() => Project, project => project.user_created)
   projects_created: Project[];
 
   @OneToMany(() => Customer, customer => customer.user_created)
@@ -109,4 +109,7 @@ export class User {
 
   @DeleteDateColumn({ type: "timestamp", nullable: true })
   deleted_at: Date | null;
+
+  @Column({ type: "timestamp", nullable: true })
+  refreshed_at: Date | null;
 }

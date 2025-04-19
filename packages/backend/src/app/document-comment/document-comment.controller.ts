@@ -1,15 +1,3 @@
-import { AuthGuard } from "@backend/app/auth/auth.guard";
-import {
-  DocumentCommentCreateValidationDTO,
-  DocumentCommentResponseDTO,
-  DocumentCommentUpdateValidationDTO
-} from "@backend/app/document-comment/document-comment.dto";
-import { LoggerService } from "@backend/app/logger/logger.service";
-import { CaslGuard } from "@backend/app/permission/casl.guard";
-import { CheckPolicies } from "@backend/decorators/check-policies.decorator";
-import { CurrentUser } from "@backend/decorators/current-user.decorator";
-import { Logger } from "@backend/decorators/logger.decorator";
-import { User } from "@backend/models/entities/user.entity";
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { Action, Subject } from "@work-solutions-crm/libs/shared/auth/auth.dto";
@@ -19,8 +7,20 @@ import {
 } from "@work-solutions-crm/libs/shared/document-comment/document-comment.api";
 import { DocumentCommentDTO } from "@work-solutions-crm/libs/shared/document-comment/document-comment.dto";
 
+import { CheckPolicies } from "../../decorators/check-policies.decorator";
+import { CurrentUser } from "../../decorators/current-user.decorator";
+import { Logger } from "../../decorators/logger.decorator";
+import { User } from "../../models/entities/user.entity";
+import { AuthGuard } from "../auth/auth.guard";
+import { LoggerService } from "../logger/logger.service";
 import { LogType } from "../logger/logger.types";
+import { CaslGuard } from "../permission/casl.guard";
 
+import {
+  DocumentCommentCreateValidationDTO,
+  DocumentCommentResponseDTO,
+  DocumentCommentUpdateValidationDTO
+} from "./document-comment.dto";
 import { DocumentCommentService } from "./document-comment.service";
 
 @ApiTags("Document Comments")
@@ -53,10 +53,15 @@ export class DocumentCommentController implements DocumentCommentApi {
     @CurrentUser() user: User
   ): Promise<void> {
     await this.documentCommentsService.create(documentId, user.user_id, text);
-    await this.loggerService.logByType(LogType.DOCUMENT, "commented", "document", {
-      document_id: documentId,
-      user_id: user.user_id
-    });
+    await this.loggerService.logByType(
+      LogType.DOCUMENT,
+      "прокомментировал",
+      `Добавлен комментарий к документу (${documentId})`,
+      {
+        document_id: documentId,
+        user_id: user.user_id
+      }
+    );
   }
 
   @UseGuards(AuthGuard, CaslGuard)

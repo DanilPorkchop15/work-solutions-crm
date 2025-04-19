@@ -20,4 +20,11 @@ export class DocumentVersionResponseDTO implements DocumentVersionDTO {
 
   @ApiProperty({ description: "The date when this version was last updated", example: "2022-01-01T00:00:00.000Z" })
   updated_at: string;
+
+  @ApiProperty({
+    description: "The date when this version was deleted",
+    example: "2022-01-01T00:00:00.000Z",
+    required: false
+  })
+  deleted_at?: string;
 }

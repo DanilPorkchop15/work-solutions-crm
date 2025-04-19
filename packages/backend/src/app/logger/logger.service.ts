@@ -1,13 +1,16 @@
-import { LOGGER_SERVICE_NAME } from "@backend/app/logger/logger.constraints";
-import { LogData, LogOptions, LogType } from "@backend/app/logger/logger.types";
-import { CustomerLog } from "@backend/models/entities/customer-log.entity";
-import { DocumentLog } from "@backend/models/entities/document-log.entity";
-import { ProjectLog } from "@backend/models/entities/project-log.entity";
-import { TaskLog } from "@backend/models/entities/task-log.entity";
-import { UserLog } from "@backend/models/entities/user-log.entity";
 import { Injectable, Logger } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
+import { LogDTO } from "@work-solutions-crm/libs/shared/logger/logger.dto";
 import { Repository } from "typeorm";
+
+import { CustomerLog } from "../../models/entities/customer-log.entity";
+import { DocumentLog } from "../../models/entities/document-log.entity";
+import { ProjectLog } from "../../models/entities/project-log.entity";
+import { TaskLog } from "../../models/entities/task-log.entity";
+import { UserLog } from "../../models/entities/user-log.entity";
+
+import { mapLogEntityToLogDTO } from "./logger.mappers";
+import { LogData, LogOptions, LogType } from "./logger.types";
 
 type LogRepository = Repository<ProjectLog | DocumentLog | TaskLog | UserLog | CustomerLog>;
 
@@ -15,7 +18,7 @@ type LogRepository = Repository<ProjectLog | DocumentLog | TaskLog | UserLog | C
 export class LoggerService {
   private static instance: LoggerService;
 
-  private readonly logger: Logger = new Logger(LOGGER_SERVICE_NAME, {
+  private readonly logger: Logger = new Logger(LoggerService.name, {
     timestamp: true
   });
 
@@ -76,7 +79,8 @@ export class LoggerService {
         logData.customer = { customer_id: options.customer_id };
         break;
       case LogType.USER:
-        if (!options.user_id) throw new Error("User ID is required");
+        if (!options.affected_user_id) throw new Error("User ID is required");
+        logData.affected_user = { user_id: options.affected_user_id };
         break;
     }
 
@@ -84,18 +88,34 @@ export class LoggerService {
     this.logger.log(this.formatLogData(logData, type));
   }
 
+  public async getLatest(): Promise<LogDTO[]> {
+    const [documentLogs, taskLogs, projectLogs, customerLogs] = await Promise.all([
+      this.documentLogRepository.find({ order: { created_at: "DESC" }, take: 25, relations: ["user"] }),
+      this.taskLogRepository.find({ order: { created_at: "DESC" }, take: 25, relations: ["user"] }),
+      this.projectLogRepository.find({ order: { created_at: "DESC" }, take: 25, relations: ["user"] }),
+      this.customerLogRepository.find({ order: { created_at: "DESC" }, take: 25, relations: ["user"] })
+    ]);
+    return [
+      ...documentLogs.map(mapLogEntityToLogDTO),
+      ...taskLogs.map(mapLogEntityToLogDTO),
+      ...projectLogs.map(mapLogEntityToLogDTO),
+      ...customerLogs.map(mapLogEntityToLogDTO)
+    ].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+  }
+
   log(action: string, comment: string): void {
     return this.logger.log(this.formatLogData({ action, comment }));
   }
 
   private formatLogData(logData: LogData, type?: LogType): string {
-    const { action, comment, user, document, task, project, customer } = logData;
+    const { action, comment, user, document, task, project, customer, affected_user } = logData;
 
     const sections: string[] = [
       type ? `[${type}]` : "",
       action,
       comment ? `- ${comment}` : "",
       user ? `User: ${user.user_id}` : "",
+      affected_user ? `Affected User: ${affected_user.user_id}` : "",
       document ? `Document: ${document.document_id}` : "",
       task ? `Task: ${task.task_id}` : "",
       project ? `Project: ${project.project_id}` : "",
@@ -106,7 +126,7 @@ export class LoggerService {
     const logDetails: string = sections
       .slice(3)
       .filter(Boolean)
-      .map(section => `| ${section.padEnd(30, " ")}|`)
+      .map(section => `[${section.padEnd(30, " ")}]`)
       .join("\n");
 
     return `${logHeader}\n${logDetails}`;

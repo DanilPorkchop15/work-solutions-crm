@@ -1,3 +1,4 @@
+import { typeormDateToIsoString, typeormNullableDateToIsoString } from "@backend/common/typeorm-date-to-iso-string";
 import { TaskCommentDTO } from "@work-solutions-crm/libs/shared/task-comment/task-comment.dto";
 
 import { TaskComment } from "../../models/entities/task-comment.entity";
@@ -8,7 +9,8 @@ export function mapTaskCommentToDTO(taskComment: TaskComment): TaskCommentDTO {
     id: taskComment.task_comment_id,
     user: mapUserToPreviewDTO(taskComment.user),
     text: taskComment.text,
-    created_at: taskComment.created_at.toISOString(),
-    updated_at: taskComment.updated_at.toISOString()
+    created_at: typeormDateToIsoString(taskComment.created_at),
+    updated_at: typeormDateToIsoString(taskComment.updated_at),
+    deleted_at: typeormNullableDateToIsoString(taskComment.deleted_at)
   };
 }

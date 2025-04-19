@@ -12,7 +12,10 @@ export class DocumentPermissionService {
   ) {}
 
   async findAll(documentId: string): Promise<DocumentPermission[]> {
-    return this.documentPermissionRepository.find({ where: { document: { document_id: documentId } } });
+    return this.documentPermissionRepository.find({
+      where: { document: { document_id: documentId } },
+      relations: { document: { user_created: true } }
+    });
   }
 
   async create(documentId: string, role: Role): Promise<void> {

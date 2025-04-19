@@ -1,8 +1,8 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
+import { AuthChangePasswordRequestDTO } from "@work-solutions-crm/libs/shared/auth/auth.api";
 import {
   UserBulkDeleteRequestDTO,
   UserBulkRestoreRequestDTO,
-  UserChangePasswordRequestDTO,
   UserChangeRoleRequestDTO,
   UserCreateRequestDTO,
   UserUpdateRequestDTO
@@ -17,7 +17,7 @@ export class UserCreateValidationDTO implements UserCreateRequestDTO {
   })
   @IsOptional()
   @IsString()
-  avatarUrl?: string;
+  avatar_url?: string;
 
   @ApiProperty({
     description: "The email of the user",
@@ -33,7 +33,7 @@ export class UserCreateValidationDTO implements UserCreateRequestDTO {
   })
   @IsString()
   @Length(1, 255)
-  fullName: string;
+  full_name: string;
 
   @ApiProperty({
     description: "The password of the user",
@@ -150,6 +150,12 @@ export class UserResponseDTO implements UserDTO {
     example: "2022-01-01T12:00:00.000Z"
   })
   updated_at: string;
+
+  @ApiProperty({
+    description: "The date and time when the user was deleted",
+    example: "2022-01-01T12:00:00.000Z"
+  })
+  deleted_at?: string | undefined;
 }
 
 export class UserPreviewResponseDTO implements UserPreviewDTO {
@@ -182,16 +188,15 @@ export class UserPreviewResponseDTO implements UserPreviewDTO {
     example: "https://example.com/avatar.jpg"
   })
   avatar_url?: string | undefined;
+
+  @ApiPropertyOptional({
+    description: "The date and time when the user was deleted",
+    example: "2022-01-01T12:00:00.000Z"
+  })
+  deleted_at?: string | undefined;
 }
 
-export class UserChangePasswordValidationDTO implements UserChangePasswordRequestDTO {
-  @ApiProperty({
-    description: "The ID of the user",
-    example: "c7d2ee27-0a5d-4c5d-a3ca-66d9b2b6c5a1"
-  })
-  @IsString()
-  user_id: string;
-
+export class UserChangePasswordValidationDTO implements AuthChangePasswordRequestDTO {
   @ApiProperty({
     description: "The old password of the user",
     example: "old_password"

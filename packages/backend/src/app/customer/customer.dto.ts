@@ -1,4 +1,3 @@
-import { UserPreviewResponseDTO } from "@backend/app/user/user.dto";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import {
   CustomerBulkDeleteRequestDTO,
@@ -9,6 +8,8 @@ import {
 import { CustomerDTO, CustomerPreviewDTO } from "@work-solutions-crm/libs/shared/customer/customer.dto";
 import { UserPreviewDTO } from "@work-solutions-crm/libs/shared/user/user.dto";
 import { IsEmail, IsNotEmpty, IsOptional, IsString, Length } from "class-validator";
+
+import { UserPreviewResponseDTO } from "../user/user.dto";
 
 export class CustomerCreateValidationDTO implements CustomerCreateRequestDTO {
   @ApiProperty({
@@ -165,6 +166,12 @@ export class CustomerResponseDTO implements CustomerDTO {
     example: "2022-01-01T12:00:00.000Z"
   })
   updated_at: string;
+
+  @ApiProperty({
+    description: "The date and time when the customer was deleted",
+    example: "2022-01-01T12:00:00.000Z"
+  })
+  deleted_at?: string | undefined;
 }
 
 export class CustomerPreviewResponseDTO implements CustomerPreviewDTO {
@@ -191,6 +198,24 @@ export class CustomerPreviewResponseDTO implements CustomerPreviewDTO {
     type: () => UserPreviewResponseDTO
   })
   user_created: UserPreviewDTO;
+
+  @ApiPropertyOptional({
+    description: "The date and time when the customer was deleted",
+    example: "2022-01-01T12:00:00.000Z"
+  })
+  deleted_at?: string | undefined;
+
+  @ApiProperty({
+    description: "The date and time when the customer was created",
+    example: "2022-01-01T12:00:00.000Z"
+  })
+  created_at: string;
+
+  @ApiPropertyOptional({
+    description: "The date and time when the customer was updated",
+    example: "2022-01-01T12:00:00.000Z"
+  })
+  updated_at: string;
 }
 
 export class CustomerBulkDeleteValidationDTO implements CustomerBulkDeleteRequestDTO {
