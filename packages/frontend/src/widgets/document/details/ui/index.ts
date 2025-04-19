@@ -1,4 +1,4 @@
-import { DocumentDetailsForm } from "./from";
+import { DocumentDetailsForm } from "./form";
 import { DocumentLogsTable } from "./logsTable";
 import { DocumentVersionsTable } from "./versionsTable";
 

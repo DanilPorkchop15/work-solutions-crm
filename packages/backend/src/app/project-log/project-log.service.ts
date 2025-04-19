@@ -20,7 +20,11 @@ export class ProjectLogService {
       relations: {
         user: true,
         project: {
-          user_created: true
+          user_created: true,
+          users_accountable: true,
+          customer: {
+            user_created: true
+          }
         }
       }
     });
