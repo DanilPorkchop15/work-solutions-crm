@@ -1,15 +1,14 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import { useTitle } from "react-use";
-import { ProjectPreview } from "@frontend/entities/project";
+import { ProjectPreview, ProjectsTableModuleProvider } from "@frontend/entities/project";
 import { Flex, Typography } from "antd";
 
-import { ProjectsTableModuleProvider } from "../../../entities/project/model/table/config";
 import { ProjectBulkDeleteFeature } from "../../../features/project/bulk-delete";
 import { ProjectBulkRestoreFeature } from "../../../features/project/bulk-restore";
 import { ProjectCreateFeature } from "../../../features/project/create";
-import { AppTitles } from "../../../shared/model/services/appTitles";
-import { useHeader } from "../../../widgets/header/config";
+import { AppTitles } from "../../../shared/model/services";
+import { useHeader } from "../../../widgets/header";
 import { ProjectsTableWidget } from "../../../widgets/project/table";
 
 function ProjectsRootPage() {

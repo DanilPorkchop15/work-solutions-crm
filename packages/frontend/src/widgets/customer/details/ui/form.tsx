@@ -1,10 +1,6 @@
 import React from "react";
 import { useAsyncFn } from "react-use";
 import { Customer, CustomerDetailsService, useCustomerDetails } from "@frontend/entities/customer";
-import { ProjectCreateFeature } from "@frontend/features/project/create";
-import { AppRoutes } from "@frontend/shared/model/services";
-import { Back } from "@frontend/shared/ui/back";
-import { useHeader } from "@frontend/widgets/header";
 import { PageSpin } from "@worksolutions/antd-react-components";
 import { Flex, Typography } from "antd";
 import { observer } from "mobx-react-lite";
@@ -12,7 +8,11 @@ import { observer } from "mobx-react-lite";
 import { CustomerDeleteFeature } from "../../../../features/customer/delete/index";
 import { CustomerRestoreFeature } from "../../../../features/customer/restore/index";
 import { CustomerUpdateFeature } from "../../../../features/customer/update/index";
+import { ProjectCreateFeature } from "../../../../features/project/create/index";
 import { useInjectService } from "../../../../shared/lib/useInjectService";
+import { AppRoutes } from "../../../../shared/model/services/appRoutes";
+import { Back } from "../../../../shared/ui/back/index";
+import { useHeader } from "../../../header/config";
 
 export const CustomerDetailsForm = observer(function CustomerDetailsWidget() {
   const customerDetails: Customer = useCustomerDetails();
@@ -58,7 +58,7 @@ export const CustomerDetailsForm = observer(function CustomerDetailsWidget() {
   if (loading) return <PageSpin />;
 
   return (
-    <Flex vertical justify="space-between" gap={48} className="w-[50%]">
+    <Flex vertical justify="space-between" gap={48}>
       <CustomerUpdateFeature.Form />
     </Flex>
   );

@@ -6,9 +6,6 @@ import {
   DocumentVersionsTableModule,
   useDocumentDetails
 } from "@frontend/entities/document";
-import { DocumentVersionUploadFeature } from "@frontend/features/document-version/upload";
-import { Back } from "@frontend/shared/ui/back";
-import { useHeader } from "@frontend/widgets/header";
 import { PageSpin } from "@worksolutions/antd-react-components";
 import { Flex, Typography } from "antd";
 import { observer } from "mobx-react-lite";
@@ -16,7 +13,10 @@ import { observer } from "mobx-react-lite";
 import { DocumentDeleteFeature } from "../../../../features/document/delete";
 import { DocumentRestoreFeature } from "../../../../features/document/restore";
 import { DocumentUpdateFeature } from "../../../../features/document/update";
+import { DocumentVersionUploadFeature } from "../../../../features/document-version/upload/index";
 import { useInjectService } from "../../../../shared/lib/useInjectService";
+import { Back } from "../../../../shared/ui/back/index";
+import { useHeader } from "../../../header/config";
 
 export const DocumentDetailsForm = observer(function DocumentDetailsForm() {
   const documentDetails: Document = useDocumentDetails();
@@ -72,7 +72,7 @@ export const DocumentDetailsForm = observer(function DocumentDetailsForm() {
   if (loading) return <PageSpin />;
 
   return (
-    <Flex vertical justify="space-between" gap={48} className="w-[50%]">
+    <Flex vertical justify="space-between" gap={48}>
       <DocumentUpdateFeature.Form />
     </Flex>
   );
