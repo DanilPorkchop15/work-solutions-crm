@@ -1,3 +1,3 @@
-import { UserWithPermissions } from "../../@common/user/interfaces/domain";
+import { UserWithPermissions } from "../../@common/user";
 
 export type Viewer = UserWithPermissions;
