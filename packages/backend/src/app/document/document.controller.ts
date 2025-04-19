@@ -70,7 +70,7 @@ export class DocumentController implements DocumentApi {
   @ApiCreatedResponse({ type: DocumentResponseDTO })
   async create(@Body() dto: DocumentCreateValidationDTO, @CurrentUser() user: User): Promise<DocumentDTO> {
     const documentDto: DocumentDTO = await this.documentsService.create(dto, user);
-    await this.loggerService.logByType(LogType.DOCUMENT, "created", "document", {
+    await this.loggerService.logByType(LogType.DOCUMENT, "создан", "Создан новый документ", {
       document_id: documentDto.id,
       user_id: user.user_id
     });
@@ -89,7 +89,7 @@ export class DocumentController implements DocumentApi {
     @CurrentUser() user: User
   ): Promise<DocumentDTO> {
     const documentDto: DocumentDTO = await this.documentsService.update(documentId, dto);
-    await this.loggerService.logByType(LogType.DOCUMENT, "updated", "document", {
+    await this.loggerService.logByType(LogType.DOCUMENT, "обновлен", "Документ был обновлен", {
       document_id: documentId,
       user_id: user.user_id
     });
@@ -104,7 +104,7 @@ export class DocumentController implements DocumentApi {
   @ApiNotFoundResponse({ description: "Document not found" })
   async delete(@Param("documentId") documentId: string, @CurrentUser() user: User): Promise<void> {
     await this.documentsService.delete(documentId);
-    await this.loggerService.logByType(LogType.DOCUMENT, "deleted", "document", {
+    await this.loggerService.logByType(LogType.DOCUMENT, "удален", "Документ был удален", {
       document_id: documentId,
       user_id: user.user_id
     });
@@ -118,7 +118,7 @@ export class DocumentController implements DocumentApi {
   @ApiNotFoundResponse({ description: "Document not found" })
   async restore(@Param("documentId") documentId: string, @CurrentUser() user: User): Promise<void> {
     await this.documentsService.restore(documentId);
-    await this.loggerService.logByType(LogType.DOCUMENT, "restored", "document", {
+    await this.loggerService.logByType(LogType.DOCUMENT, "восстановлен", "Документ был восстановлен", {
       document_id: documentId,
       user_id: user.user_id
     });
@@ -133,7 +133,7 @@ export class DocumentController implements DocumentApi {
   async bulkDelete(@Body() documentIds: DocumentBulkDeleteValidationDTO, @CurrentUser() user: User): Promise<void> {
     await this.documentsService.bulkDelete(documentIds);
     for (const documentId of documentIds.document_ids) {
-      await this.loggerService.logByType(LogType.DOCUMENT, "bulk deleted", "documents", {
+      await this.loggerService.logByType(LogType.DOCUMENT, "массово удален", "Документ был удален в ходе массового удаления", {
         document_id: documentId,
         user_id: user.user_id
       });
@@ -149,7 +149,7 @@ export class DocumentController implements DocumentApi {
   async bulkRestore(@Body() documentIds: DocumentBulkRestoreValidationDTO, @CurrentUser() user: User): Promise<void> {
     await this.documentsService.bulkRestore(documentIds);
     for (const documentId of documentIds.document_ids) {
-      await this.loggerService.logByType(LogType.DOCUMENT, "bulk restored", "documents", {
+      await this.loggerService.logByType(LogType.DOCUMENT, "массово восстановлен", "Документ был восстановлен в ходе массового восстановления", {
         document_id: documentId,
         user_id: user.user_id
       });

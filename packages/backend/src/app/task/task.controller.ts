@@ -60,7 +60,7 @@ export class TaskController implements TaskApi {
   @ApiResponse({ status: 201, type: TaskResponseDTO })
   async create(@Body() dto: TaskCreateValidationDTO, @CurrentUser() user: User): Promise<TaskDTO> {
     const taskDto: TaskDTO = await this.tasksService.create(dto);
-    await this.loggerService.logByType(LogType.TASK, "created", "task", {
+    await this.loggerService.logByType(LogType.TASK, "создано", "Задача была успешно создана", {
       task_id: taskDto.id,
       user_id: user.user_id
     });
@@ -79,7 +79,7 @@ export class TaskController implements TaskApi {
     @CurrentUser() user: User
   ): Promise<TaskDTO> {
     const taskDto: TaskDTO = await this.tasksService.update(taskId, dto);
-    await this.loggerService.logByType(LogType.TASK, "updated", "task", {
+    await this.loggerService.logByType(LogType.TASK, "обновлено", "Задача была успешно обновлена", {
       task_id: taskId,
       user_id: user.user_id
     });
@@ -94,7 +94,7 @@ export class TaskController implements TaskApi {
   @ApiResponse({ status: 204 })
   async delete(@Param("taskId") taskId: string, @CurrentUser() user: User): Promise<void> {
     await this.tasksService.delete(taskId);
-    await this.loggerService.logByType(LogType.TASK, "deleted", "task", {
+    await this.loggerService.logByType(LogType.TASK, "удалено", "Задача была успешно удалена", {
       task_id: taskId,
       user_id: user.user_id
     });
@@ -108,7 +108,7 @@ export class TaskController implements TaskApi {
   @ApiResponse({ status: 204 })
   async restore(@Param("taskId") taskId: string, @CurrentUser() user: User): Promise<void> {
     await this.tasksService.restore(taskId);
-    await this.loggerService.logByType(LogType.TASK, "restored", "task", {
+    await this.loggerService.logByType(LogType.TASK, "восстановлено", "Задача была успешно восстановлена", {
       task_id: taskId,
       user_id: user.user_id
     });
@@ -122,7 +122,7 @@ export class TaskController implements TaskApi {
   async bulkDelete(@Body() dto: TaskBulkDeleteValidationDTO, @CurrentUser() user: User): Promise<void> {
     await this.tasksService.bulkDelete(dto);
     for (const taskId of dto.task_ids) {
-      await this.loggerService.logByType(LogType.TASK, "bulk deleted", "tasks", {
+      await this.loggerService.logByType(LogType.TASK, "пакетное удаление", "Задачи были успешно удалены", {
         task_id: taskId,
         user_id: user.user_id
       });
@@ -137,7 +137,7 @@ export class TaskController implements TaskApi {
   async bulkRestore(@Body() dto: TaskBulkRestoreValidationDTO, @CurrentUser() user: User): Promise<void> {
     await this.tasksService.bulkRestore(dto);
     for (const taskId of dto.task_ids) {
-      await this.loggerService.logByType(LogType.TASK, "bulk restored", "tasks", {
+      await this.loggerService.logByType(LogType.TASK, "пакетное восстановление", "Задачи были успешно восстановлены", {
         task_id: taskId,
         user_id: user.user_id
       });

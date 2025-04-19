@@ -59,7 +59,7 @@ export class ProjectController implements ProjectApi {
   @ApiResponse({ status: 201, type: ProjectResponseDTO })
   async create(@Body() dto: ProjectCreateValidationDTO, @CurrentUser() user: User): Promise<ProjectDTO> {
     const projectDto: ProjectDTO = await this.projectsService.create(dto, user);
-    await this.loggerService.logByType(LogType.PROJECT, "created", "project", {
+    await this.loggerService.logByType(LogType.PROJECT, "создан", "Создан новый проект", {
       project_id: projectDto.id,
       user_id: user.user_id
     });
@@ -75,7 +75,7 @@ export class ProjectController implements ProjectApi {
   async bulkDelete(@Body() dto: ProjectBulkDeleteValidationDTO, @CurrentUser() user: User): Promise<void> {
     await this.projectsService.bulkDelete(dto);
     for (const projectId of dto.project_ids) {
-      await this.loggerService.logByType(LogType.PROJECT, "bulk deleted", "projects", {
+      await this.loggerService.logByType(LogType.PROJECT, "массовое удаление", "Проект удален в рамках массового удаления", {
         project_id: projectId,
         user_id: user.user_id
       });
@@ -91,7 +91,7 @@ export class ProjectController implements ProjectApi {
   async bulkRestore(@Body() dto: ProjectBulkRestoreValidationDTO, @CurrentUser() user: User): Promise<void> {
     await this.projectsService.bulkRestore(dto);
     for (const projectId of dto.project_ids) {
-      await this.loggerService.logByType(LogType.PROJECT, "bulk restored", "projects", {
+      await this.loggerService.logByType(LogType.PROJECT, "массовое восстановление", "Проект восстановлен в рамках массового восстановления", {
         project_id: projectId,
         user_id: user.user_id
       });
@@ -105,7 +105,7 @@ export class ProjectController implements ProjectApi {
   @ApiResponse({ status: 204 })
   async delete(@Param("projectId") projectId: string, @CurrentUser() user: User): Promise<void> {
     await this.projectsService.delete(projectId);
-    await this.loggerService.logByType(LogType.PROJECT, "deleted", "project", {
+    await this.loggerService.logByType(LogType.PROJECT, "удален", "Проект был удален пользователем", {
       project_id: projectId,
       user_id: user.user_id
     });
@@ -118,7 +118,7 @@ export class ProjectController implements ProjectApi {
   @ApiResponse({ status: 204 })
   async restore(@Param("projectId") projectId: string, @CurrentUser() user: User): Promise<void> {
     await this.projectsService.restore(projectId);
-    await this.loggerService.logByType(LogType.PROJECT, "restored", "project", {
+    await this.loggerService.logByType(LogType.PROJECT, "восстановлен", "Проект был восстановлен из удаленных", {
       project_id: projectId,
       user_id: user.user_id
     });
@@ -135,7 +135,7 @@ export class ProjectController implements ProjectApi {
     @CurrentUser() user: User
   ): Promise<ProjectDTO> {
     const projectDto: ProjectDTO = await this.projectsService.update(projectId, dto);
-    await this.loggerService.logByType(LogType.PROJECT, "updated", "project", {
+    await this.loggerService.logByType(LogType.PROJECT, "обновлен", "Данные проекта были изменены", {
       project_id: projectId,
       user_id: user.user_id
     });

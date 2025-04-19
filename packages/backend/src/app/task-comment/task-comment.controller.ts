@@ -1,22 +1,23 @@
-import { AuthGuard } from "@backend/app/auth/auth.guard";
-import { LoggerService } from "@backend/app/logger/logger.service";
-import { LogType } from "@backend/app/logger/logger.types";
-import { CaslGuard } from "@backend/app/permission/casl.guard";
-import {
-  TaskCommentCreateValidationDTO,
-  TaskCommentResponseDTO,
-  TaskCommentUpdateValidationDTO
-} from "@backend/app/task-comment/task-comment.dto";
-import { CheckPolicies } from "@backend/decorators/check-policies.decorator";
-import { CurrentUser } from "@backend/decorators/current-user.decorator";
-import { Logger } from "@backend/decorators/logger.decorator";
-import { User } from "@backend/models/entities/user.entity";
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { Action, Subject } from "@work-solutions-crm/libs/shared/auth/auth.dto";
 import { TASK_COMMENTS_ROUTES, TaskCommentApi } from "@work-solutions-crm/libs/shared/task-comment/task-comment.api";
 import { TaskCommentDTO } from "@work-solutions-crm/libs/shared/task-comment/task-comment.dto";
 
+import { CheckPolicies } from "../../decorators/check-policies.decorator";
+import { CurrentUser } from "../../decorators/current-user.decorator";
+import { Logger } from "../../decorators/logger.decorator";
+import { User } from "../../models/entities/user.entity";
+import { AuthGuard } from "../auth/auth.guard";
+import { LoggerService } from "../logger/logger.service";
+import { LogType } from "../logger/logger.types";
+import { CaslGuard } from "../permission/casl.guard";
+
+import {
+  TaskCommentCreateValidationDTO,
+  TaskCommentResponseDTO,
+  TaskCommentUpdateValidationDTO
+} from "./task-comment.dto";
 import { TaskCommentService } from "./task-comment.service";
 
 @ApiTags("Task Comments")
@@ -48,10 +49,15 @@ export class TaskCommentController implements TaskCommentApi {
     @CurrentUser() user: User
   ): Promise<void> {
     await this.taskCommentsService.create(taskId, user.user_id, text);
-    await this.loggerService.logByType(LogType.TASK, "commented", "task", {
-      task_id: taskId,
-      user_id: user.user_id
-    });
+    await this.loggerService.logByType(
+      LogType.TASK,
+      "прокомментировано",
+      `Пользователь ${user.user_id} оставил комментарий к задаче ${taskId}: "${text}"`,
+      {
+        task_id: taskId,
+        user_id: user.user_id
+      }
+    );
   }
 
   @UseGuards(AuthGuard)

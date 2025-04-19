@@ -1,16 +1,3 @@
-import { AuthGuard } from "@backend/app/auth/auth.guard";
-import { LoggerService } from "@backend/app/logger/logger.service";
-import { LogType } from "@backend/app/logger/logger.types";
-import { CaslGuard } from "@backend/app/permission/casl.guard";
-import {
-  ProjectCommentCreateValidationDTO,
-  ProjectCommentResponseDTO,
-  ProjectCommentUpdateValidationDTO
-} from "@backend/app/project-comment/project-comment.dto";
-import { CheckPolicies } from "@backend/decorators/check-policies.decorator";
-import { CurrentUser } from "@backend/decorators/current-user.decorator";
-import { Logger } from "@backend/decorators/logger.decorator";
-import { User } from "@backend/models/entities/user.entity";
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from "@nestjs/common";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { Action, Subject } from "@work-solutions-crm/libs/shared/auth/auth.dto";
@@ -20,6 +7,20 @@ import {
 } from "@work-solutions-crm/libs/shared/project-comment/project-comment.api";
 import { ProjectCommentDTO } from "@work-solutions-crm/libs/shared/project-comment/project-comment.dto";
 
+import { CheckPolicies } from "../../decorators/check-policies.decorator";
+import { CurrentUser } from "../../decorators/current-user.decorator";
+import { Logger } from "../../decorators/logger.decorator";
+import { User } from "../../models/entities/user.entity";
+import { AuthGuard } from "../auth/auth.guard";
+import { LoggerService } from "../logger/logger.service";
+import { LogType } from "../logger/logger.types";
+import { CaslGuard } from "../permission/casl.guard";
+
+import {
+  ProjectCommentCreateValidationDTO,
+  ProjectCommentResponseDTO,
+  ProjectCommentUpdateValidationDTO
+} from "./project-comment.dto";
 import { ProjectCommentService } from "./project-comment.service";
 
 @ApiTags("Project Comments")
@@ -51,10 +52,12 @@ export class ProjectCommentController implements ProjectCommentApi {
     @CurrentUser() user: User
   ): Promise<void> {
     await this.projectCommentsService.create(projectId, user.user_id, text);
-    await this.loggerService.logByType(LogType.PROJECT, "commented", "project", {
-      project_id: projectId,
-      user_id: user.user_id
-    });
+    await this.loggerService.logByType(
+      LogType.PROJECT,
+      "прокомментировал",
+      `Пользователь ${user.user_id} добавил комментарий к проекту ${projectId}`,
+      { project_id: projectId, user_id: user.user_id }
+    );
   }
 
   @UseGuards(AuthGuard, CaslGuard)
