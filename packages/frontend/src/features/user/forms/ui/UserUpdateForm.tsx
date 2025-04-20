@@ -1,6 +1,6 @@
 import React from "react";
 import { useAsyncFn } from "react-use";
-import { UserInput, useUsersTableModule } from "@frontend/entities/@common/user";
+import { UserInput, useUserLogsTableModule, useUsersTableModule } from "@frontend/entities/@common/user";
 import { AccessCheck } from "@frontend/entities/viewer";
 import { mapUserUpdateFormValuesToUpdateUserDto } from "@frontend/features/user/forms/api";
 import { AntdServices } from "@frontend/shared/model/services";
@@ -29,12 +29,15 @@ export const UserUpdateForm = observer(function UserUpdateFeature({ additionalOn
 
   const updateUserService: UserUpdateService = useInjectService(UserUpdateService);
 
+  const userLogsTableModule = useUserLogsTableModule();
+
   const antdServices: AntdServices = useInjectService(AntdServices);
 
   const [{ error, loading }, onSubmit] = useAsyncFn(
     async (body: UserUpdateRequestDTO) => {
       await updateUserService.update(body);
       await usersTableModule.load();
+      await userLogsTableModule.load();
       antdServices.notification.success({ message: SUCCESS_MESSAGE });
       void additionalOnFinish?.();
     },

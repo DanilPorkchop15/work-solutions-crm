@@ -3,8 +3,11 @@ import { useAsyncFn } from "react-use";
 import {
   Document,
   DocumentDetailsService,
+  DocumentLogsTableModule,
   DocumentVersionsTableModule,
-  useDocumentDetails
+  useDocumentDetails,
+  useDocumentLogsTableModule,
+  useDocumentVersionTableModule
 } from "@frontend/entities/document";
 import { PageSpin } from "@worksolutions/antd-react-components";
 import { Flex, Typography } from "antd";
@@ -23,7 +26,9 @@ export const DocumentDetailsWidget = observer(function DocumentDetailsForm() {
 
   const documentDetailsService: DocumentDetailsService = useInjectService(DocumentDetailsService);
 
-  const documentVersionsTableModule: DocumentVersionsTableModule = useInjectService(DocumentVersionsTableModule);
+  const documentVersionsTableModule: DocumentVersionsTableModule = useDocumentVersionTableModule();
+
+  const documentLogsTableModule: DocumentLogsTableModule = useDocumentLogsTableModule();
 
   const onSuccess: () => Promise<void> = () =>
     documentDetailsService.loadDocumentDetails({
@@ -50,6 +55,7 @@ export const DocumentDetailsWidget = observer(function DocumentDetailsForm() {
             onSuccess={async () => {
               documentVersionsTableModule.pathParams.set("documentId", documentDetails.id);
               await documentVersionsTableModule.load();
+              await documentLogsTableModule.load();
             }}
           />
         </Flex>

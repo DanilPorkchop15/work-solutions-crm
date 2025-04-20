@@ -1,6 +1,11 @@
 import React from "react";
 import { useAsyncFn } from "react-use";
-import { ProjectInput, useProjectsTableModule } from "@frontend/entities/project";
+import {
+  ProjectInput,
+  ProjectLogsTableModule,
+  useProjectLogsTableModule,
+  useProjectsTableModule
+} from "@frontend/entities/project";
 import { AccessCheck, useViewer } from "@frontend/entities/viewer";
 import { AntdServices } from "@frontend/shared/model/services";
 import { FormErrorMessage } from "@frontend/shared/ui/forms";
@@ -33,10 +38,13 @@ export const ProjectUpdateForm = observer(function ProjectUpdateForm({
   const updateProjectService = useInjectService(ProjectUpdateService);
   const antdServices = useInjectService(AntdServices);
 
+  const projectLogsTableModule: ProjectLogsTableModule = useProjectLogsTableModule();
+
   const [{ error, loading }, onSubmit] = useAsyncFn(
     async (body: ProjectUpdateRequestDTO) => {
       await updateProjectService.update(body);
       await projectsTableModule.load();
+      await projectLogsTableModule.load();
       antdServices.notification.success({ message: SUCCESS_MESSAGE });
       additionalOnFinish?.();
     },

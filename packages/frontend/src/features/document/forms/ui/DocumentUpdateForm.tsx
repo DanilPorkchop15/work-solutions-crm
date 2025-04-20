@@ -1,6 +1,10 @@
 import React from "react";
 import { useAsyncFn } from "react-use";
-import { useDocumentsTableModule } from "@frontend/entities/document";
+import {
+  DocumentLogsTableModule,
+  useDocumentLogsTableModule,
+  useDocumentsTableModule
+} from "@frontend/entities/document";
 import { AccessCheck } from "@frontend/entities/viewer";
 import { mapDocumentUpdateFormValuesToUpdateDto } from "@frontend/features/document/forms/api";
 import { AntdServices } from "@frontend/shared/model/services";
@@ -29,6 +33,8 @@ export const DocumentUpdateForm = observer(function DocumentUpdateFeature({
 
   const documentsTableModule = useDocumentsTableModule();
 
+  const documentLogsTableModule: DocumentLogsTableModule = useDocumentLogsTableModule();
+
   const updateDocumentService: DocumentUpdateService = useInjectService(DocumentUpdateService);
 
   const antdServices: AntdServices = useInjectService(AntdServices);
@@ -37,6 +43,7 @@ export const DocumentUpdateForm = observer(function DocumentUpdateFeature({
     async (body: DocumentUpdateRequestDTO) => {
       await updateDocumentService.update(body);
       await documentsTableModule.load();
+      await documentLogsTableModule.load();
       antdServices.notification.success({ message: SUCCESS_MESSAGE });
       additionalOnFinish?.();
     },
