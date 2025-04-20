@@ -1,6 +1,6 @@
 import React from "react";
 import { useAsyncFn } from "react-use";
-import { CustomerInput, useCustomersTableModule } from "@frontend/entities/customer";
+import { CustomerInput, useCustomerLogsTableModule, useCustomersTableModule } from "@frontend/entities/customer";
 import { AccessCheck } from "@frontend/entities/viewer";
 import { mapCustomerUpdateFormValuesToUpdateCustomerDto } from "@frontend/features/customer/forms/api";
 import { AntdServices } from "@frontend/shared/model/services";
@@ -28,6 +28,8 @@ export const CustomerUpdateForm = observer(function CustomerUpdateFeature({
 
   const customersTableModule = useCustomersTableModule();
 
+  const customerLogsTableModule = useCustomerLogsTableModule();
+
   const updateCustomerService: CustomerUpdateService = useInjectService(CustomerUpdateService);
 
   const antdServices: AntdServices = useInjectService(AntdServices);
@@ -36,6 +38,7 @@ export const CustomerUpdateForm = observer(function CustomerUpdateFeature({
     async (body: CustomerUpdateRequestDTO) => {
       await updateCustomerService.update(body);
       await customersTableModule.load();
+      await customerLogsTableModule.load();
       antdServices.notification.success({ message: SUCCESS_MESSAGE });
       additionalOnFinish?.();
     },
