@@ -1,23 +1,29 @@
 import {
-  ProjectCommentCreateRequestDTO,
-  ProjectCommentUpdateRequestDTO
-} from "@work-solutions-crm/libs/shared/project-comment/project-comment.api";
+  DocumentCommentCreateRequestDTO,
+  DocumentCommentUpdateRequestDTO
+} from "@work-solutions-crm/libs/shared/document-comment/document-comment.api";
 
 import { TableDto } from "../../../../shared/model/interfaces/table";
 import { Endpoint, Request } from "../../../../shared/model/interfaces/transport";
 
 import type { DocumentComment } from "./domain";
 
-export type FindAllProjectCommentsRequest = Request<{ urlParams: { projectId: string } }>;
-export type CreateProjectCommentRequest = Request<{ urlParams: { id: string }; body: ProjectCommentCreateRequestDTO }>;
-export type UpdateProjectCommentRequest = Request<{ urlParams: { id: string }; body: ProjectCommentUpdateRequestDTO }>;
-export type DeleteProjectCommentRequest = Request<{ urlParams: { id: string } }>;
-export type RestoreProjectCommentRequest = Request<{ urlParams: { id: string } }>;
+export type FindAllDocumentCommentsRequest = Request<{ urlParams: { documentId: string } }>;
+export type CreateDocumentCommentRequest = Request<{
+  urlParams: { id: string };
+  body: DocumentCommentCreateRequestDTO;
+}>;
+export type UpdateDocumentCommentRequest = Request<{
+  urlParams: { id: string };
+  body: DocumentCommentUpdateRequestDTO;
+}>;
+export type DeleteDocumentCommentRequest = Request<{ urlParams: { id: string } }>;
+export type RestoreDocumentCommentRequest = Request<{ urlParams: { id: string } }>;
 
-export interface ProjectCommentsTransport {
-  getProjectComments: Endpoint<FindAllProjectCommentsRequest, TableDto<DocumentComment>>;
-  createProjectComment: Endpoint<CreateProjectCommentRequest>;
-  updateProjectComment: Endpoint<UpdateProjectCommentRequest>;
-  deleteProjectComment: Endpoint<DeleteProjectCommentRequest>;
-  restoreProjectComment: Endpoint<RestoreProjectCommentRequest>;
+export interface DocumentCommentsTransport {
+  getDocumentComments: Endpoint<FindAllDocumentCommentsRequest, TableDto<DocumentComment>>;
+  createDocumentComment: Endpoint<CreateDocumentCommentRequest>;
+  updateDocumentComment: Endpoint<UpdateDocumentCommentRequest>;
+  deleteDocumentComment: Endpoint<DeleteDocumentCommentRequest>;
+  restoreDocumentComment: Endpoint<RestoreDocumentCommentRequest>;
 }

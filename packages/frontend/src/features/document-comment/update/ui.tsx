@@ -1,36 +1,42 @@
 import React from "react";
-import { SaveOutlined } from "@ant-design/icons";
-import { Button, Form, Input } from "antd";
-import { observer } from "mobx-react-lite";
+import { EditFilled, EditOutlined } from "@ant-design/icons";
+import { Button, type ButtonProps, Form, Input, Modal } from "antd";
 
+import { DocumentComment } from "../../../entities/document/interfaces";
 import { useInjectService } from "../../../shared/lib/useInjectService";
 import { DocumentCommentService } from "../model";
 
 interface UpdateDocumentCommentProps {
-  commentId: string;
-  initialText: string;
+  comment: DocumentComment;
   onSuccess?: () => void;
-  onCancel?: () => void;
+  buttonProps?: ButtonProps;
 }
 
-export const UpdateDocumentComment = observer(function UpdateDocumentComment({
-  commentId,
-  initialText,
-  onSuccess,
-  onCancel
-}: UpdateDocumentCommentProps) {
+export function UpdateDocumentComment({ comment, onSuccess, buttonProps }: UpdateDocumentCommentProps) {
+  const [isModalVisible, setIsModalVisible] = React.useState(false);
   const [form] = Form.useForm();
   const [loading, setLoading] = React.useState(false);
   const documentCommentService = useInjectService(DocumentCommentService);
 
   React.useEffect(() => {
-    form.setFieldsValue({ text: initialText });
-  }, [form, initialText]);
+    if (isModalVisible) {
+      form.setFieldsValue({ text: comment.text });
+    }
+  }, [form, comment.text, isModalVisible]);
 
-  const handleFinish = async (values: { text: string }) => {
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleSubmit = async (values: { text: string }) => {
     try {
       setLoading(true);
-      await documentCommentService.updateComment(commentId, values.text);
+      await documentCommentService.updateComment(comment.id, values.text);
+      setIsModalVisible(false);
       onSuccess?.();
     } finally {
       setLoading(false);
@@ -38,18 +44,23 @@ export const UpdateDocumentComment = observer(function UpdateDocumentComment({
   };
 
   return (
-    <Form form={form} onFinish={handleFinish} layout="vertical" initialValues={{ text: initialText }}>
-      <Form.Item name="text" rules={[{ required: true, message: "Введите текст комментария" }]} className="mb-2">
-        <Input.TextArea rows={3} />
-      </Form.Item>
-      <Form.Item style={{ marginBottom: 0, textAlign: "right" }}>
-        <Button onClick={onCancel} style={{ marginRight: 8 }}>
-          Отмена
-        </Button>
-        <Button type="primary" icon={<SaveOutlined />} htmlType="submit" loading={loading}>
-          Сохранить
-        </Button>
-      </Form.Item>
-    </Form>
+    <>
+      <Button icon={<EditFilled />} size="small" type="link" onClick={showModal} {...buttonProps} />
+      <Modal title="Редактировать комментарий" open={isModalVisible} onCancel={handleCancel} footer={null}>
+        <Form form={form} layout="vertical" onFinish={handleSubmit}>
+          <Form.Item name="text" rules={[{ required: true, message: "Введите текст комментария" }]}>
+            <Input.TextArea rows={4} />
+          </Form.Item>
+          <Form.Item style={{ marginBottom: 0, textAlign: "right" }}>
+            <Button onClick={handleCancel} style={{ marginRight: 8 }}>
+              Отмена
+            </Button>
+            <Button type="primary" htmlType="submit" loading={loading}>
+              Сохранить
+            </Button>
+          </Form.Item>
+        </Form>
+      </Modal>
+    </>
   );
-}); 
+}

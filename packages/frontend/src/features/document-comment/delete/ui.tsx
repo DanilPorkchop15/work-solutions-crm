@@ -1,7 +1,6 @@
 import React from "react";
-import { DeleteOutlined } from "@ant-design/icons";
-import { Button, Popconfirm } from "antd";
-import { observer } from "mobx-react-lite";
+import { DeleteFilled } from "@ant-design/icons";
+import { Button, type ButtonProps, Popconfirm } from "antd";
 
 import { useInjectService } from "../../../shared/lib/useInjectService";
 import { DocumentCommentService } from "../model";
@@ -9,12 +8,10 @@ import { DocumentCommentService } from "../model";
 interface DeleteDocumentCommentProps {
   commentId: string;
   onSuccess?: () => void;
+  buttonProps?: ButtonProps;
 }
 
-export const DeleteDocumentComment = observer(function DeleteDocumentComment({
-  commentId,
-  onSuccess
-}: DeleteDocumentCommentProps) {
+export function DeleteDocumentComment({ commentId, onSuccess, buttonProps }: DeleteDocumentCommentProps) {
   const [loading, setLoading] = React.useState(false);
   const documentCommentService = useInjectService(DocumentCommentService);
 
@@ -30,13 +27,15 @@ export const DeleteDocumentComment = observer(function DeleteDocumentComment({
 
   return (
     <Popconfirm
-      title="Удаление комментария"
-      description="Вы действительно хотите удалить этот комментарий?"
+      title="Удалить комментарий?"
+      description="Вы уверены, что хотите удалить этот комментарий?"
       onConfirm={handleDelete}
       okText="Да"
-      cancelText="Нет"
+      cancelText="Отмена"
+      placement="topRight"
+      icon={<DeleteFilled />}
     >
-      <Button type="text" danger icon={<DeleteOutlined />} loading={loading} />
+      <Button danger icon={<DeleteFilled />} type="link" size="small" loading={loading} {...buttonProps} />
     </Popconfirm>
   );
-}); 
+}

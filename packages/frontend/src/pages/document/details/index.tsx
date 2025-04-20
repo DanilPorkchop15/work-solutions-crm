@@ -1,9 +1,9 @@
 import React from "react";
 import { useTitle } from "react-use";
-import { 
+import {
   DocumentCommentsTableModuleProvider,
-  DocumentLogsTableModuleProvider, 
-  DocumentVersionTableModuleProvider 
+  DocumentLogsTableModuleProvider,
+  DocumentVersionTableModuleProvider
 } from "@frontend/entities/document";
 import { DocumentDetailsProvider, DocumentsTableModuleProvider } from "@frontend/entities/document/model/document";
 import { Flex, Splitter, Tabs, Typography } from "antd";
@@ -25,38 +25,42 @@ export function DocumentDetailsPage() {
           <DocumentVersionTableModuleProvider>
             <DocumentLogsTableModuleProvider>
               <DocumentCommentsTableModuleProvider>
-                <Splitter>
-                  <Splitter.Panel resizable={false} defaultSize="40%">
-                    <Flex vertical gap={24} className="pr-8">
-                      <Typography.Title level={3}>Информация о документе</Typography.Title>
-                      <DocumentDetailsWidget />
-                    </Flex>
+                <Splitter layout="vertical">
+                  <Splitter.Panel collapsible={{ end: true }}>
+                    <Splitter>
+                      <Splitter.Panel resizable={false}>
+                        <Flex vertical gap={24} className="pr-8">
+                          <Typography.Title level={3}>Информация о документе</Typography.Title>
+                          <DocumentDetailsWidget />
+                        </Flex>
+                      </Splitter.Panel>
+                      <Splitter.Panel resizable={false}>
+                        <Flex vertical gap={24} className="pl-8">
+                          <Tabs
+                            items={[
+                              {
+                                label: "Комментарии",
+                                key: "comments",
+                                children: <DocumentCommentsWidget />
+                              },
+                              {
+                                label: "История изменений",
+                                key: "logs",
+                                children: <DocumentLogsWidget />
+                              }
+                            ]}
+                          />
+                        </Flex>
+                      </Splitter.Panel>
+                    </Splitter>
                   </Splitter.Panel>
-                  <Splitter.Panel resizable={false}>
-                    <Flex vertical gap={24} className="pl-8">
-                      <Tabs
-                        items={[
-                          {
-                            label: "Комментарии",
-                            key: "comments",
-                            children: <DocumentCommentsWidget />
-                          },
-                          {
-                            label: "История изменений",
-                            key: "logs",
-                            children: <DocumentLogsWidget />
-                          }
-                        ]}
-                      />
+                  <Splitter.Panel resizable={true} collapsible={{ start: true }}>
+                    <Flex vertical gap={24} className="mt-8">
+                      <Typography.Title level={3}>Версии документа</Typography.Title>
+                      <DocumentVersionsWidget />
                     </Flex>
                   </Splitter.Panel>
                 </Splitter>
-                <Splitter.Panel resizable={false} defaultSize="100%">
-                  <Flex vertical gap={24} className="mt-8">
-                    <Typography.Title level={3}>Версии документа</Typography.Title>
-                    <DocumentVersionsWidget />
-                  </Flex>
-                </Splitter.Panel>
               </DocumentCommentsTableModuleProvider>
             </DocumentLogsTableModuleProvider>
           </DocumentVersionTableModuleProvider>

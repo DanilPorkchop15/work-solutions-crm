@@ -1,7 +1,6 @@
 import React from "react";
 import { UndoOutlined } from "@ant-design/icons";
-import { Button, Popconfirm } from "antd";
-import { observer } from "mobx-react-lite";
+import { Button, type ButtonProps, Popconfirm } from "antd";
 
 import { useInjectService } from "../../../shared/lib/useInjectService";
 import { DocumentCommentService } from "../model";
@@ -9,12 +8,10 @@ import { DocumentCommentService } from "../model";
 interface RestoreDocumentCommentProps {
   commentId: string;
   onSuccess?: () => void;
+  buttonProps?: ButtonProps;
 }
 
-export const RestoreDocumentComment = observer(function RestoreDocumentComment({
-  commentId,
-  onSuccess
-}: RestoreDocumentCommentProps) {
+export function RestoreDocumentComment({ commentId, onSuccess, buttonProps }: RestoreDocumentCommentProps) {
   const [loading, setLoading] = React.useState(false);
   const documentCommentService = useInjectService(DocumentCommentService);
 
@@ -30,13 +27,14 @@ export const RestoreDocumentComment = observer(function RestoreDocumentComment({
 
   return (
     <Popconfirm
-      title="Восстановление комментария"
-      description="Вы действительно хотите восстановить этот комментарий?"
+      title="Восстановить комментарий?"
+      description="Вы уверены, что хотите восстановить этот комментарий?"
       onConfirm={handleRestore}
       okText="Да"
-      cancelText="Нет"
+      cancelText="Отмена"
+      placement="topRight"
     >
-      <Button type="text" icon={<UndoOutlined />} loading={loading} />
+      <Button icon={<UndoOutlined />} size="small" loading={loading} {...buttonProps} />
     </Popconfirm>
   );
-}); 
+}

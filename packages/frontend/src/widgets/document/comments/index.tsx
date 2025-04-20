@@ -1,5 +1,5 @@
 import React from "react";
-import { useAsyncFn } from "react-use";
+import { useAsyncFn, useEffectOnce } from "react-use";
 import { Flex, Spin } from "antd";
 import { observer } from "mobx-react-lite";
 
@@ -32,6 +32,10 @@ export const DocumentCommentsWidget = observer(function DocumentCommentsTableCon
 
   const { data, pageSize, currentPage, onChange } = useLocalTableOnChange(rows, 1, 10);
 
+  useEffectOnce(() => {
+    void loadFn();
+  });
+
   const renderCommentActions = React.useCallback(
     (comment: DocumentComment) => {
       if (comment.deletedAt) {
@@ -39,12 +43,7 @@ export const DocumentCommentsWidget = observer(function DocumentCommentsTableCon
       }
 
       return [
-        <UpdateDocumentComment 
-          key="edit" 
-          commentId={comment.id} 
-          initialText={comment.text} 
-          onSuccess={handleSuccess} 
-        />,
+        <UpdateDocumentComment key="edit" comment={comment} onSuccess={handleSuccess} />,
         <DeleteDocumentComment key="delete" commentId={comment.id} onSuccess={handleSuccess} />
       ];
     },
@@ -69,6 +68,16 @@ export const DocumentCommentsWidget = observer(function DocumentCommentsTableCon
               background: record.deletedAt ? "#f5f5f5" : "inherit"
             }
           })}
+          pagination={{
+            showSizeChanger: false,
+            size: "small",
+            position: ["bottomLeft"],
+            showQuickJumper: true,
+            responsive: true,
+            showLessItems: true,
+            current: currentPage,
+            pageSize: pageSize
+          }}
           columns={[
             {
               title: "Действия",
@@ -86,4 +95,4 @@ export const DocumentCommentsWidget = observer(function DocumentCommentsTableCon
       )}
     </Flex>
   );
-}); 
+});

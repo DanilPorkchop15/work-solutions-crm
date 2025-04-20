@@ -21,7 +21,7 @@ export const LoggerTableWidget: React.FC<LoggerTableProps> = observer(function L
   const { rows } = loggerTableModule;
   const [{ loading }, loadFn] = useAsyncFn(async () => loggerTableModule.load(), []);
 
-  const { data, pageSize, currentPage, onChange } = useLocalTableOnChange(rows, 1, 20);
+  const { data, pageSize, currentPage, onChange } = useLocalTableOnChange(rows, 1, 10);
 
   React.useEffect(() => {
     void loadFn();
@@ -40,8 +40,9 @@ export const LoggerTableWidget: React.FC<LoggerTableProps> = observer(function L
         locale: paginationLocale,
         position: ["bottomLeft"],
         showQuickJumper: true,
+        showSizeChanger: false,
         responsive: true,
-        showLessItems: true,
+        size: "default",
         total: data.length,
         current: currentPage,
         pageSize: pageSize

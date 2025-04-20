@@ -9,7 +9,7 @@ import { Sidebar } from "../widgets/sidebar";
 export const browserRouter = createBrowserRouter([
   {
     path: "*",
-    element: "Not Found"
+    lazy: async () => import("@frontend/pages/common/not-found")
   },
   {
     path: "/",

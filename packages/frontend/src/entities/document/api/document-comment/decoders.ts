@@ -1,10 +1,10 @@
+import { DocumentComment } from "@frontend/entities/document";
 import { fieldOrFallback } from "@frontend/shared/api";
 import Decoder, { field, string, succeed } from "jsonous";
 
 import { userPreviewDecoder } from "../../../@common/user";
-import { ProjectComment } from "../../interfaces/project-comment/domain";
 
-export const projectCommentDecoder: Decoder<ProjectComment> = succeed({})
+export const documentCommentDecoder: Decoder<DocumentComment> = succeed({})
   .assign("id", field("id", string))
   .assign("user", field("user", userPreviewDecoder))
   .assign("text", field("text", string))

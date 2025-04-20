@@ -32,7 +32,7 @@ export const CreateProjectComment = observer(function CreateProjectComment({
 
   return (
     <Form form={form} onFinish={handleFinish} layout="vertical">
-      <Form.Item name="text" rules={[{ required: true, message: "Введите текст комментария" }]} className="mb-2">
+      <Form.Item name="text" rules={[{ required: true, message: "Введите текст комментария" }]} className="mb-4">
         <Input.TextArea rows={3} placeholder="Введите комментарий..." />
       </Form.Item>
       <Form.Item style={{ marginBottom: 0, textAlign: "right" }}>
