@@ -6,11 +6,11 @@ import { PathParams } from "../../../../../shared/model/additionalRequestParams/
 import { SortingParams } from "../../../../../shared/model/additionalRequestParams/sortingParams";
 import { TableDto } from "../../../../../shared/model/interfaces/table";
 import { TableModule } from "../../../../../shared/model/tableModule";
-import { ProjectLogsApi } from "../../../api";
-import type { ProjectLog } from "../../../interfaces";
+import { ProjectCommentsApi } from "../../../api";
+import type { ProjectComment } from "../../../interfaces";
 
 @singleton()
-export class ProjectLogsTableModule extends TableModule<ProjectLog, never, never, { projectId: string }> {
+export class ProjectCommentsTableModule extends TableModule<ProjectComment, never, never, { projectId: string }> {
   public readonly filter: FilterParams<never> = new FilterParams<never>(undefined as never);
 
   public readonly sorting: SortingParams<never> = new SortingParams<never>();
@@ -20,14 +20,14 @@ export class ProjectLogsTableModule extends TableModule<ProjectLog, never, never
   public pathParams: PathParams<{ projectId: string }>;
 
   constructor(
-    @inject(ProjectLogsApi) private readonly _api: ProjectLogsApi,
+    @inject(ProjectCommentsApi) private readonly _api: ProjectCommentsApi,
     projectId: string
   ) {
     super();
     this.pathParams = new PathParams<{ projectId: string }>({ projectId: projectId });
   }
 
-  protected async _getData(): Promise<TableDto<ProjectLog>> {
-    return this._api.getProjectLogs({ urlParams: { projectId: this.pathParams.state.projectId } });
+  protected async _getData(): Promise<TableDto<ProjectComment>> {
+    return this._api.getProjectComments({ urlParams: { projectId: this.pathParams.state.projectId } });
   }
 }

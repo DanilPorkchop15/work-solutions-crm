@@ -10,6 +10,7 @@ import { Flex, Splitter, Typography } from "antd";
 import { AppTitles } from "../../../shared/model/services/appTitles";
 import { Layout } from "../../../shared/ui/layout/index";
 import { UserDetailsWidget } from "../../../widgets/user/details/index";
+import { UserLogsWidget } from "../../../widgets/user/logs/index";
 
 export function UserDetailsPage() {
   useTitle(AppTitles.getUserTitle());
@@ -23,13 +24,13 @@ export function UserDetailsPage() {
               <Splitter.Panel resizable={false}>
                 <Flex vertical gap={24} className="pr-8">
                   <Typography.Title level={3}>Информация о пользователе</Typography.Title>
-                  <UserDetailsWidget.Form />
+                  <UserDetailsWidget />
                 </Flex>
               </Splitter.Panel>
               <Splitter.Panel resizable={false}>
                 <Flex vertical gap={24} className="pl-8">
                   <Typography.Title level={3}>История изменений</Typography.Title>
-                  <UserDetailsWidget.LogsTable />
+                  <UserLogsWidget />
                 </Flex>
               </Splitter.Panel>
             </Splitter>

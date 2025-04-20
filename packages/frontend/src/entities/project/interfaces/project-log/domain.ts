@@ -9,4 +9,4 @@ export interface ProjectLog extends UniqueEntity {
   project: ProjectPreview;
   createdAt: string;
   deletedAt: string | null;
-} 
+}

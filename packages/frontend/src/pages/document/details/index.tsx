@@ -7,6 +7,8 @@ import { Flex, Splitter, Typography } from "antd";
 import { AppTitles } from "../../../shared/model/services";
 import { Layout } from "../../../shared/ui/layout";
 import { DocumentDetailsWidget } from "../../../widgets/document/details";
+import { DocumentLogsWidget } from "../../../widgets/document/logs/index";
+import { DocumentVersionsWidget } from "../../../widgets/document/versions/index";
 
 export function DocumentDetailsPage() {
   useTitle(AppTitles.getDocumentTitle());
@@ -23,13 +25,13 @@ export function DocumentDetailsPage() {
                     <Splitter.Panel resizable={false} defaultSize="40%">
                       <Flex vertical gap={24} className="pr-8">
                         <Typography.Title level={3}>Информация о документе</Typography.Title>
-                        <DocumentDetailsWidget.Form />
+                        <DocumentDetailsWidget />
                       </Flex>
                     </Splitter.Panel>
                     <Splitter.Panel resizable={false}>
                       <Flex vertical gap={24} className="pl-8">
                         <Typography.Title level={3}>История изменений</Typography.Title>
-                        <DocumentDetailsWidget.LogsTable />
+                        <DocumentLogsWidget />
                       </Flex>
                     </Splitter.Panel>
                   </Splitter>
@@ -37,7 +39,7 @@ export function DocumentDetailsPage() {
                 <Splitter.Panel resizable={true} collapsible={{ start: true }}>
                   <Flex vertical gap={24} className="pt-8">
                     <Typography.Title level={3}>Версии документа</Typography.Title>
-                    <DocumentDetailsWidget.VersionsTable />
+                    <DocumentVersionsWidget />
                   </Flex>
                 </Splitter.Panel>
               </Splitter>

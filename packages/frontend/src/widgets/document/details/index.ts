@@ -1,1 +1,0 @@
-export { DocumentDetailsWidget } from "./ui";
