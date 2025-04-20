@@ -1,13 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { CustomerPreview } from "@frontend/entities/customer";
-import { translateStatus } from "@frontend/entities/project/lib";
-import { AppRoutes } from "@frontend/shared/model/services";
+import { UserView } from "@frontend/entities/@common/user";
 import { ProjectStatus } from "@work-solutions-crm/libs/shared/project/project.dto";
-import { Table, type TableProps, Typography } from "antd";
+import { Flex, Table, type TableProps, Typography } from "antd";
 
 import { formatToLocalDate } from "../../../../shared/lib/isoDateUtils";
+import { AppRoutes } from "../../../../shared/model/services/appRoutes";
 import { ProjectPreview } from "../../interfaces";
+import { translateStatus } from "../../lib";
 
 const columns: TableProps<ProjectPreview>["columns"] = [
   {
@@ -58,13 +58,15 @@ const columns: TableProps<ProjectPreview>["columns"] = [
     title: "Создатель",
     dataIndex: "userCreated",
     key: "userCreated",
-    render: (user: CustomerPreview["userCreated"]) => (
-      <Typography.Link>
-        <Link to={AppRoutes.getUserUrl(true, user.id)}>
-          {user.fullName}
-          {user.position && ` (${user.position})`}
-        </Link>
-      </Typography.Link>
+    render: (user: ProjectPreview["userCreated"]) => (
+      <Link to={AppRoutes.getUserUrl(true, user.id)}>
+        <Flex gap={12} align="center">
+          <UserView.Preview user={user} />
+          <div>
+            {user.fullName} - <Typography.Link disabled={user.deletedAt !== null}>{user.email}</Typography.Link>
+          </div>
+        </Flex>
+      </Link>
     )
   },
   {

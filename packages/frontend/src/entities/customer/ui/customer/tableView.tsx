@@ -1,9 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { AppRoutes } from "@frontend/shared/model/services";
-import { Table, type TableProps, Typography } from "antd";
+import { UserView } from "@frontend/entities/@common/user";
+import { Flex, Table, type TableProps, Typography } from "antd";
 
 import { formatToLocalDate } from "../../../../shared/lib/isoDateUtils";
+import { AppRoutes } from "../../../../shared/model/services/appRoutes";
 import { CustomerPreview } from "../../interfaces";
 
 const columns: TableProps<CustomerPreview>["columns"] = [
@@ -23,12 +24,14 @@ const columns: TableProps<CustomerPreview>["columns"] = [
     dataIndex: "userCreated",
     key: "userCreated",
     render: (user: CustomerPreview["userCreated"]) => (
-      <Typography.Link>
-        <Link to={AppRoutes.getUserUrl(true, user.id)}>
-          {user.fullName}
-          {user.position && ` (${user.position})`}
-        </Link>
-      </Typography.Link>
+      <Link to={AppRoutes.getUserUrl(true, user.id)}>
+        <Flex gap={12} align="center">
+          <UserView.Preview user={user} />
+          <div>
+            {user.fullName} - <Typography.Link disabled={user.deletedAt !== null}>{user.email}</Typography.Link>
+          </div>
+        </Flex>
+      </Link>
     )
   },
   {

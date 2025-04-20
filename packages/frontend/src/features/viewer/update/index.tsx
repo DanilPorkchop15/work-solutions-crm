@@ -47,7 +47,7 @@ export const ViewerUpdateFeature = observer(function UserUpdateFeature({
 
   return (
     <Flex vertical justify="space-between" gap={48} className="w-[50%]">
-      <UserView.Avatar user={avatarUser} size={250} shape="square" />
+      <UserView.Avatar user={avatarUser} size={250} shape="square" previewable />
       <Form
         autoComplete="off"
         disabled={isDisabled}

@@ -12,6 +12,8 @@ import { Flex, Splitter, Typography } from "antd";
 import { AppTitles } from "../../../shared/model/services";
 import { Layout } from "../../../shared/ui/layout";
 import { CustomerDetailsWidget } from "../../../widgets/customer/details";
+import { CustomerLogsWidget } from "../../../widgets/customer/logs/index";
+import { CustomerProjectsTableWidget } from "../../../widgets/customer/projects-table/index";
 
 export function CustomerDetailsPage() {
   useTitle(AppTitles.getCustomerTitle());
@@ -28,13 +30,13 @@ export function CustomerDetailsPage() {
                     <Splitter.Panel resizable={false}>
                       <Flex vertical gap={24} className="pr-8">
                         <Typography.Title level={3}>Информация о клиенте</Typography.Title>
-                        <CustomerDetailsWidget.Form />
+                        <CustomerDetailsWidget />
                       </Flex>
                     </Splitter.Panel>
                     <Splitter.Panel resizable={false}>
                       <Flex vertical gap={24} className="pl-8">
                         <Typography.Title level={3}>История изменений</Typography.Title>
-                        <CustomerDetailsWidget.LogsTable />
+                        <CustomerLogsWidget />
                       </Flex>
                     </Splitter.Panel>
                   </Splitter>
@@ -42,7 +44,7 @@ export function CustomerDetailsPage() {
                 <Splitter.Panel resizable={true} collapsible={{ start: true }}>
                   <Flex vertical gap={24} className="pt-8">
                     <Typography.Title level={3}>Проекты клиента</Typography.Title>
-                    <CustomerDetailsWidget.ProjectsTable />
+                    <CustomerProjectsTableWidget />
                   </Flex>
                 </Splitter.Panel>
               </Splitter>
