@@ -40,7 +40,7 @@ export function ProjectDetailsPage() {
                           children: <ProjectCommentsWidget />
                         },
                         {
-                          label: "Логи",
+                          label: "История изменений",
                           key: "logs",
                           children: <ProjectLogsWidget />
                         }

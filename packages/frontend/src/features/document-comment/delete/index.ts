@@ -1,0 +1,1 @@
+export { DeleteDocumentComment } from './ui'; 

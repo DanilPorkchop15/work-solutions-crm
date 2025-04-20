@@ -1,11 +1,16 @@
 import React from "react";
 import { useTitle } from "react-use";
-import { DocumentLogsTableModuleProvider, DocumentVersionTableModuleProvider } from "@frontend/entities/document";
+import { 
+  DocumentCommentsTableModuleProvider,
+  DocumentLogsTableModuleProvider, 
+  DocumentVersionTableModuleProvider 
+} from "@frontend/entities/document";
 import { DocumentDetailsProvider, DocumentsTableModuleProvider } from "@frontend/entities/document/model/document";
-import { Flex, Splitter, Typography } from "antd";
+import { Flex, Splitter, Tabs, Typography } from "antd";
 
 import { AppTitles } from "../../../shared/model/services";
 import { Layout } from "../../../shared/ui/layout";
+import { DocumentCommentsWidget } from "../../../widgets/document/comments";
 import { DocumentDetailsWidget } from "../../../widgets/document/details";
 import { DocumentLogsWidget } from "../../../widgets/document/logs/index";
 import { DocumentVersionsWidget } from "../../../widgets/document/versions/index";
@@ -19,30 +24,40 @@ export function DocumentDetailsPage() {
         <DocumentDetailsProvider>
           <DocumentVersionTableModuleProvider>
             <DocumentLogsTableModuleProvider>
-              <Splitter layout="vertical">
-                <Splitter.Panel resizable={true} collapsible={{ end: true }} defaultSize="50%">
-                  <Splitter>
-                    <Splitter.Panel resizable={false} defaultSize="40%">
-                      <Flex vertical gap={24} className="pr-8">
-                        <Typography.Title level={3}>Информация о документе</Typography.Title>
-                        <DocumentDetailsWidget />
-                      </Flex>
-                    </Splitter.Panel>
-                    <Splitter.Panel resizable={false}>
-                      <Flex vertical gap={24} className="pl-8">
-                        <Typography.Title level={3}>История изменений</Typography.Title>
-                        <DocumentLogsWidget />
-                      </Flex>
-                    </Splitter.Panel>
-                  </Splitter>
-                </Splitter.Panel>
-                <Splitter.Panel resizable={true} collapsible={{ start: true }}>
-                  <Flex vertical gap={24} className="pt-8">
+              <DocumentCommentsTableModuleProvider>
+                <Splitter>
+                  <Splitter.Panel resizable={false} defaultSize="40%">
+                    <Flex vertical gap={24} className="pr-8">
+                      <Typography.Title level={3}>Информация о документе</Typography.Title>
+                      <DocumentDetailsWidget />
+                    </Flex>
+                  </Splitter.Panel>
+                  <Splitter.Panel resizable={false}>
+                    <Flex vertical gap={24} className="pl-8">
+                      <Tabs
+                        items={[
+                          {
+                            label: "Комментарии",
+                            key: "comments",
+                            children: <DocumentCommentsWidget />
+                          },
+                          {
+                            label: "История изменений",
+                            key: "logs",
+                            children: <DocumentLogsWidget />
+                          }
+                        ]}
+                      />
+                    </Flex>
+                  </Splitter.Panel>
+                </Splitter>
+                <Splitter.Panel resizable={false} defaultSize="100%">
+                  <Flex vertical gap={24} className="mt-8">
                     <Typography.Title level={3}>Версии документа</Typography.Title>
                     <DocumentVersionsWidget />
                   </Flex>
                 </Splitter.Panel>
-              </Splitter>
+              </DocumentCommentsTableModuleProvider>
             </DocumentLogsTableModuleProvider>
           </DocumentVersionTableModuleProvider>
         </DocumentDetailsProvider>
