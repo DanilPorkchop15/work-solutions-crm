@@ -30,4 +30,4 @@ export class ProjectLogsTableModule extends TableModule<ProjectLog, never, never
   protected async _getData(): Promise<TableDto<ProjectLog>> {
     return this._api.getProjectLogs({ urlParams: { projectId: this.pathParams.state.projectId } });
   }
-} 
+}

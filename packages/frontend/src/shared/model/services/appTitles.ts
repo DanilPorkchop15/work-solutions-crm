@@ -1,29 +1,29 @@
 export class AppTitles {
-  public static getRootTitle = () => "Work Solutions CRM";
+  public static getRootTitle = () => "CRM | Главная";
 
-  public static getUsersTitle = () => "Пользователи";
+  public static getUsersTitle = () => "CRM | Пользователи";
 
-  public static getUserTitle = () => "Пользователь";
+  public static getUserTitle = () => "CRM | Пользователь";
 
-  public static getAuthTitle = () => "Авторизация";
+  public static getAuthTitle = () => "CRM | Авторизация";
 
-  public static getProfileTitle = () => "Профиль";
+  public static getProfileTitle = () => "CRM | Профиль";
 
-  public static getProjectsTitle = () => "Проекты";
+  public static getProjectsTitle = () => "CRM | Проекты";
 
-  public static getProjectTitle = () => "Проект";
+  public static getProjectTitle = () => "CRM | Проект";
 
-  public static getTasksTitle = () => "Задачи";
+  public static getTasksTitle = () => "CRM | Задачи";
 
-  public static getTaskTitle = () => "Задача";
+  public static getTaskTitle = () => "CRM | Задача";
 
-  public static getDocumentsTitle = () => "Документы";
+  public static getDocumentsTitle = () => "CRM | Документы";
 
-  public static getDocumentTitle = () => "Документ";
+  public static getDocumentTitle = () => "CRM | Документ";
 
-  public static getCustomersTitle = () => "Заказчики";
+  public static getCustomersTitle = () => "CRM | Заказчики";
 
-  public static getCustomerTitle = () => "Заказчик";
+  public static getCustomerTitle = () => "CRM | Заказчик";
 
-  public static getNotFoundTitle = () => "Страница не найдена | 404";
+  public static getNotFoundTitle = () => "CRM | 404";
 }

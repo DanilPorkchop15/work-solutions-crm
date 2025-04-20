@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { UserPreview } from "@frontend/entities/@common/user";
-import { AppRoutes } from "@frontend/shared/model/services";
-import { Table, type TableProps, Typography } from "antd";
+import { UserView } from "@frontend/entities/@common/user";
+import { Flex, Table, type TableProps, Typography } from "antd";
 
 import { formatToLocalDate } from "../../../../shared/lib/isoDateUtils";
+import { AppRoutes } from "../../../../shared/model/services/appRoutes";
 import { DocumentPreview } from "../../interfaces";
 
 const columns: TableProps<DocumentPreview>["columns"] = [
@@ -18,13 +18,15 @@ const columns: TableProps<DocumentPreview>["columns"] = [
     title: "Создатель",
     dataIndex: "userCreated",
     key: "userCreated",
-    render: (user: UserPreview) => (
-      <Typography.Link>
-        <Link to={AppRoutes.getUserUrl(true, user.id)}>
-          {user.fullName}
-          {user.position && ` (${user.position})`}
-        </Link>
-      </Typography.Link>
+    render: (user: DocumentPreview["userCreated"]) => (
+      <Link to={AppRoutes.getUserUrl(true, user.id)}>
+        <Flex gap={12} align="center">
+          <UserView.Preview user={user} />
+          <div>
+            {user.fullName} - <Typography.Link disabled={user.deletedAt !== null}>{user.email}</Typography.Link>
+          </div>
+        </Flex>
+      </Link>
     )
   },
   {

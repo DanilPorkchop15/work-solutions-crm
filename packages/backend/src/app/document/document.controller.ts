@@ -70,7 +70,7 @@ export class DocumentController implements DocumentApi {
   @ApiCreatedResponse({ type: DocumentResponseDTO })
   async create(@Body() dto: DocumentCreateValidationDTO, @CurrentUser() user: User): Promise<DocumentDTO> {
     const documentDto: DocumentDTO = await this.documentsService.create(dto, user);
-    await this.loggerService.logByType(LogType.DOCUMENT, "создан", `Создан новый документ (${documentDto})`, {
+    await this.loggerService.logByType(LogType.DOCUMENT, "создан", `Создан новый документ (${documentDto.id})`, {
       document_id: documentDto.id,
       user_id: user.user_id
     });
