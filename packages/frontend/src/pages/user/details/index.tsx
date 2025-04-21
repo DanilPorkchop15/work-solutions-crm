@@ -5,8 +5,10 @@ import {
   UserLogsTableModuleProvider,
   UsersTableModuleProvider
 } from "@frontend/entities/@common/user/model";
+import { Action, Subject } from "@work-solutions-crm/libs/shared/auth/auth.dto";
 import { Flex, Splitter, Typography } from "antd";
 
+import { AccessCheck } from "../../../entities/viewer/ui/accessCheck";
 import { AppTitles } from "../../../shared/model/services/appTitles";
 import { Layout } from "../../../shared/ui/layout/index";
 import { UserDetailsWidget } from "../../../widgets/user/details/index";
