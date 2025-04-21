@@ -4,6 +4,7 @@ services:
     image: node:20.11.0-slim
     environment:
       - HOME=/tmp
+      - NODE_ENV=development
     volumes:
       - .:/app
       - .npmrc:/tmp/.npmrc
@@ -13,11 +14,13 @@ services:
       - sh
       - -c
       - |
-        apt-get update &&
-        apt-get install -y sudo &&
-        chown ${UID:-0}:${GID:-0} ./.nx &&
-        sudo --preserve-env -u \#${UID:-0} -g \#${GID:-0} npm install --legacy-peer-deps &&
-        sudo --preserve-env -u \#${UID:-0} -g \#${GID:-0} npm run serve
+        apt-get update -qq &&
+        apt-get install -y --no-install-recommends sudo &&
+        chown -R ${UID:-0}:${GID:-0} ./.nx &&
+        sudo --preserve-env -u \#${UID:-0} -g \#${GID:-0} sh -c "
+          npm install --legacy-peer-deps &&
+          npm run serve
+        "
   frontend:
     image: node:20.11.0-slim
     volumes:
