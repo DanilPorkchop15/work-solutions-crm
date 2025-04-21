@@ -4,10 +4,10 @@ import { useTitle } from "react-use";
 import { HomeOutlined, MailOutlined, ReloadOutlined } from "@ant-design/icons";
 import { Button, Card, Result, Space, Typography } from "antd";
 
-import { AppRoutes } from "../../../shared/model/services/appRoutes";
-import { AppTitles } from "../../../shared/model/services/appTitles";
-import { Layout } from "../../../shared/ui/layout/index";
-import { useTheme } from "../../../shared/ui/theme/index";
+import { AppRoutes } from "../../../../shared/model/services/appRoutes";
+import { AppTitles } from "../../../../shared/model/services/appTitles";
+import { Layout } from "../../../../shared/ui/layout";
+import { useTheme } from "../../../../shared/ui/theme";
 
 function NotFoundPage() {
   useTitle(AppTitles.getNotFoundTitle());

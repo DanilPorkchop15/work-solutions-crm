@@ -63,6 +63,8 @@ export abstract class AppRoutes {
   public static getCreateProjectForCustomerUrl = (withPrefix = false, id = ":id") =>
     `${AppRoutes._calculatePrefix(AppRoutes.getCustomerUrl(true, id), withPrefix)}create-project`;
 
+  public static getForbiddenUrl = () => "/forbidden";
+
   private static readonly _calculatePrefix = (prefix: string, withPrefix: boolean) =>
     !withPrefix ? "" : prefix !== "/" ? `${prefix}/` : prefix;
 }

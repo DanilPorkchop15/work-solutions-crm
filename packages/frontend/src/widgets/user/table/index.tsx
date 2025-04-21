@@ -3,12 +3,12 @@ import { NavigateFunction, useNavigate } from "react-router-dom";
 import { useAsyncFn } from "react-use";
 import { DeleteFilled } from "@ant-design/icons";
 import { User, UsersTableModule, UserView, useUsersTableModule } from "@frontend/entities/@common/user";
-import { AccessCheck } from "@frontend/entities/viewer/ui";
 import { Role } from "@work-solutions-crm/libs/shared/user/user.dto";
 import { paginationLocale, tableLocale } from "@worksolutions/antd-react-components";
 import { Flex, Input, Row, Switch, type TableProps } from "antd";
 import { observer } from "mobx-react-lite";
 
+import { AccessCheck } from "../../../entities/viewer/ui/accessCheck";
 import { UserDeleteFeature } from "../../../features/user/delete";
 import { UserRestoreFeature } from "../../../features/user/restore";
 import { UserUpdateFeature } from "../../../features/user/update";
@@ -119,7 +119,10 @@ export const UsersTableWidget: React.FC<UsersTableWidgetProps> = observer(functi
           onChange: (_, rows, __) => setSelectedRows(rows),
           hideSelectAll: true,
           selectedRowKeys: selectedRows.map(user => user.id),
-          columnTitle: selectedRowColumnTitleOptions?.(selectedRows, loadFn)
+          columnTitle: selectedRowColumnTitleOptions?.(selectedRows, async () => {
+            await loadFn();
+            setSelectedRows([]);
+          })
         }}
         {...props}
       />

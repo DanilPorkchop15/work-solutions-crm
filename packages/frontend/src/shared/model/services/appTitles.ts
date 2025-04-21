@@ -26,4 +26,6 @@ export class AppTitles {
   public static getCustomerTitle = () => "CRM | Заказчик";
 
   public static getNotFoundTitle = () => "CRM | 404";
+
+  public static getForbiddenTitle = () => "CRM | 403";
 }

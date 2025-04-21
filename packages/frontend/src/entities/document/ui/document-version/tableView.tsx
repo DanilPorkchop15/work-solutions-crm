@@ -1,12 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { DownloadOutlined } from "@ant-design/icons";
-import { UserPreview } from "@frontend/entities/@common/user";
-import { BASE_API_HOST } from "@frontend/shared/config/const";
-import { AppRoutes } from "@frontend/shared/model/services";
+import { UserPreview, UserView } from "@frontend/entities/@common/user";
 import { Button, Divider, Flex, Table, type TableProps, Tooltip, Typography } from "antd";
 
+import { BASE_API_HOST } from "../../../../shared/config/const";
 import { formatToLocalDate } from "../../../../shared/lib/isoDateUtils";
+import { AppRoutes } from "../../../../shared/model/services/appRoutes";
 import { DocumentVersion } from "../../interfaces";
 
 const columns: TableProps<DocumentVersion>["columns"] = [
@@ -73,12 +73,14 @@ const columns: TableProps<DocumentVersion>["columns"] = [
     dataIndex: "userCreated",
     key: "userCreated",
     render: (user: UserPreview) => (
-      <Typography.Link>
-        <Link to={AppRoutes.getUserUrl(true, user.id)}>
-          {user.fullName}
-          {user.position && ` (${user.position})`}
-        </Link>
-      </Typography.Link>
+      <Link to={AppRoutes.getUserUrl(true, user.id)}>
+        <Flex gap={12} align="center">
+          <UserView.Preview user={user} />
+          <div>
+            {user.fullName} - <Typography.Link disabled={user.deletedAt !== null}>{user.email}</Typography.Link>
+          </div>
+        </Flex>
+      </Link>
     )
   },
   {

@@ -80,6 +80,5 @@ export class AuthController implements AuthApi {
   @UseGuards(AuthGuard)
   async changePassword(@Body() dto: UserChangePasswordValidationDTO, @CurrentUser() user: User): Promise<void> {
     await this.authService.changePassword(user.user_id, dto.new_password, dto.old_password);
-    return this.loggerService.logByType(LogType.USER, "password changed", "user", { user_id: user.user_id });
   }
 }
