@@ -9,4 +9,4 @@ export interface UserCreateFormValues {
   role: Role;
 }
 
-export type UserUpdateFormValues = Omit<UserCreateFormValues, "password" | "role">;
+export type UserUpdateFormValues = Omit<UserCreateFormValues, "password">;

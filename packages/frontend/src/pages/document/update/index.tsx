@@ -1,13 +1,18 @@
 import React from "react";
-import { DocumentDetailsProvider } from "@frontend/entities/document/model/document";
+import { DocumentLogsTableModuleProvider } from "@frontend/entities/document";
+import { DocumentDetailsProvider, DocumentsTableModuleProvider } from "@frontend/entities/document/model/document";
 
 import { DocumentUpdateFeature } from "../../../features/document/update";
 
 function DocumentUpdatePage() {
   return (
-    <DocumentDetailsProvider>
-      <DocumentUpdateFeature.Modal />
-    </DocumentDetailsProvider>
+    <DocumentLogsTableModuleProvider>
+      <DocumentsTableModuleProvider>
+        <DocumentDetailsProvider>
+          <DocumentUpdateFeature.Modal />
+        </DocumentDetailsProvider>
+      </DocumentsTableModuleProvider>
+    </DocumentLogsTableModuleProvider>
   );
 }
 

@@ -1,13 +1,21 @@
 import React from "react";
-import { UserDetailsProvider } from "@frontend/entities/@common/user/model";
+import {
+  UserDetailsProvider,
+  UserLogsTableModuleProvider,
+  UsersTableModuleProvider
+} from "@frontend/entities/@common/user/model";
 
 import { UserUpdateFeature } from "../../../features/user/update";
 
 function UserUpdatePage() {
   return (
-    <UserDetailsProvider>
-      <UserUpdateFeature.Modal />
-    </UserDetailsProvider>
+    <UserLogsTableModuleProvider>
+      <UsersTableModuleProvider>
+        <UserDetailsProvider>
+          <UserUpdateFeature.Modal />
+        </UserDetailsProvider>
+      </UsersTableModuleProvider>
+    </UserLogsTableModuleProvider>
   );
 }
 
