@@ -2,7 +2,6 @@ import React from "react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { useAsyncFn } from "react-use";
 import { DeleteFilled } from "@ant-design/icons";
-import { AccessCheck } from "@frontend/entities/viewer";
 import { Role } from "@work-solutions-crm/libs/shared/user/user.dto";
 import { paginationLocale, tableLocale } from "@worksolutions/antd-react-components";
 import { Flex, Input, Row, Switch, type TableProps } from "antd";
@@ -14,6 +13,7 @@ import {
   CustomerView,
   useCustomersTableModule
 } from "../../../entities/customer";
+import { AccessCheck } from "../../../entities/viewer/ui/accessCheck";
 import { CustomerDeleteFeature } from "../../../features/customer/delete";
 import { CustomerRestoreFeature } from "../../../features/customer/restore";
 import { CustomerUpdateFeature } from "../../../features/customer/update";
@@ -116,7 +116,10 @@ export const CustomersTableWidget: React.FC<CustomersTableWidgetProps> = observe
           onChange: (_, rows, __) => setSelectedRows(rows),
           hideSelectAll: true,
           selectedRowKeys: selectedRows.map(customer => customer.id),
-          columnTitle: selectedRowColumnTitleOptions?.(selectedRows, loadFn)
+          columnTitle: selectedRowColumnTitleOptions?.(selectedRows, async () => {
+            await loadFn();
+            setSelectedRows([]);
+          })
         }}
         {...props}
       />

@@ -1,6 +1,3 @@
-import { unlink } from "fs/promises";
-import { join } from "path";
-
 import { BadRequestException, Global, Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import {
@@ -9,19 +6,14 @@ import {
   UserCreateRequestDTO,
   UserUpdateRequestDTO
 } from "@work-solutions-crm/libs/shared/user/user.api";
-import { Role, UserDTO, UserPreviewDTO } from "@work-solutions-crm/libs/shared/user/user.dto";
+import { Role, UserDTO } from "@work-solutions-crm/libs/shared/user/user.dto";
 import * as bcrypt from "bcryptjs";
 import { DeepPartial, In, Repository } from "typeorm";
 
 import { User } from "../../models/entities/user.entity";
 import { ConfigService } from "../config/config.service";
 
-import {
-  mapCreateRequestDTOToUser,
-  mapUpdateRequestDTOToUser,
-  mapUserToDTO,
-  mapUserToPreviewDTO
-} from "./user.mappers";
+import { mapCreateRequestDTOToUser, mapUpdateRequestDTOToUser, mapUserToDTO } from "./user.mappers";
 
 @Global()
 @Injectable()
@@ -115,7 +107,11 @@ export class UserService {
     if (!user) {
       throw new NotFoundException("User not found");
     }
-    const isPasswordValid: boolean = await bcrypt.compare(oldPassword, user.password);
+
+    const isPasswordValid: boolean =
+      (await bcrypt.compare(oldPassword, user.password)) ||
+      (user.password === oldPassword && user.password === this.configService.admin.password);
+
     if (!isPasswordValid) {
       throw new BadRequestException("Invalid password");
     }

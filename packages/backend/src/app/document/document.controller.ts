@@ -77,53 +77,6 @@ export class DocumentController implements DocumentApi {
     return documentDto;
   }
 
-  @Patch(DOCUMENTS_ROUTES.update(":documentId"))
-  @UseGuards(AuthGuard, DocumentPermissionGuard, CaslGuard)
-  @CheckPolicies(ability => ability.can(Action.UPDATE, Subject.DOCUMENTS))
-  @ApiOperation({ summary: "Update document" })
-  @ApiOkResponse({ type: DocumentResponseDTO })
-  @ApiNotFoundResponse({ description: "Document not found" })
-  async update(
-    @Param("documentId") documentId: string,
-    @Body() dto: DocumentUpdateValidationDTO,
-    @CurrentUser() user: User
-  ): Promise<DocumentDTO> {
-    const documentDto: DocumentDTO = await this.documentsService.update(documentId, dto);
-    await this.loggerService.logByType(LogType.DOCUMENT, "обновлен", `Документ был обновлен (${documentId})`, {
-      document_id: documentId,
-      user_id: user.user_id
-    });
-    return documentDto;
-  }
-
-  @UseGuards(AuthGuard, CaslGuard, DocumentPermissionGuard)
-  @CheckPolicies(ability => ability.can(Action.DELETE, Subject.DOCUMENTS))
-  @Delete(DOCUMENTS_ROUTES.delete(":documentId"))
-  @ApiOperation({ summary: "Delete document" })
-  @ApiResponse({ status: 200 })
-  @ApiNotFoundResponse({ description: "Document not found" })
-  async delete(@Param("documentId") documentId: string, @CurrentUser() user: User): Promise<void> {
-    await this.documentsService.delete(documentId);
-    await this.loggerService.logByType(LogType.DOCUMENT, "удален", `Документ был удален (${documentId})`, {
-      document_id: documentId,
-      user_id: user.user_id
-    });
-  }
-
-  @Patch(DOCUMENTS_ROUTES.restore(":documentId"))
-  @UseGuards(AuthGuard, DocumentPermissionGuard, CaslGuard)
-  @CheckPolicies(ability => ability.can(Action.UPDATE, Subject.DOCUMENTS))
-  @ApiOperation({ summary: "Restore document" })
-  @ApiResponse({ status: 200 })
-  @ApiNotFoundResponse({ description: "Document not found" })
-  async restore(@Param("documentId") documentId: string, @CurrentUser() user: User): Promise<void> {
-    await this.documentsService.restore(documentId);
-    await this.loggerService.logByType(LogType.DOCUMENT, "восстановлен", `Документ был восстановлен (${documentId})`, {
-      document_id: documentId,
-      user_id: user.user_id
-    });
-  }
-
   @Delete(DOCUMENTS_ROUTES.bulkDelete())
   @UseGuards(AuthGuard, CaslGuard)
   @CheckPolicies(ability => ability.can(Action.DELETE, Subject.DOCUMENTS))
@@ -164,5 +117,52 @@ export class DocumentController implements DocumentApi {
         }
       );
     }
+  }
+
+  @UseGuards(AuthGuard, CaslGuard, DocumentPermissionGuard)
+  @CheckPolicies(ability => ability.can(Action.DELETE, Subject.DOCUMENTS))
+  @Delete(DOCUMENTS_ROUTES.delete(":documentId"))
+  @ApiOperation({ summary: "Delete document" })
+  @ApiResponse({ status: 200 })
+  @ApiNotFoundResponse({ description: "Document not found" })
+  async delete(@Param("documentId") documentId: string, @CurrentUser() user: User): Promise<void> {
+    await this.documentsService.delete(documentId);
+    await this.loggerService.logByType(LogType.DOCUMENT, "удален", `Документ был удален (${documentId})`, {
+      document_id: documentId,
+      user_id: user.user_id
+    });
+  }
+
+  @Patch(DOCUMENTS_ROUTES.restore(":documentId"))
+  @UseGuards(AuthGuard, DocumentPermissionGuard, CaslGuard)
+  @CheckPolicies(ability => ability.can(Action.UPDATE, Subject.DOCUMENTS))
+  @ApiOperation({ summary: "Restore document" })
+  @ApiResponse({ status: 200 })
+  @ApiNotFoundResponse({ description: "Document not found" })
+  async restore(@Param("documentId") documentId: string, @CurrentUser() user: User): Promise<void> {
+    await this.documentsService.restore(documentId);
+    await this.loggerService.logByType(LogType.DOCUMENT, "восстановлен", `Документ был восстановлен (${documentId})`, {
+      document_id: documentId,
+      user_id: user.user_id
+    });
+  }
+
+  @Patch(DOCUMENTS_ROUTES.update(":documentId"))
+  @UseGuards(AuthGuard, DocumentPermissionGuard, CaslGuard)
+  @CheckPolicies(ability => ability.can(Action.UPDATE, Subject.DOCUMENTS))
+  @ApiOperation({ summary: "Update document" })
+  @ApiOkResponse({ type: DocumentResponseDTO })
+  @ApiNotFoundResponse({ description: "Document not found" })
+  async update(
+    @Param("documentId") documentId: string,
+    @Body() dto: DocumentUpdateValidationDTO,
+    @CurrentUser() user: User
+  ): Promise<DocumentDTO> {
+    const documentDto: DocumentDTO = await this.documentsService.update(documentId, dto);
+    await this.loggerService.logByType(LogType.DOCUMENT, "обновлен", `Документ был обновлен (${documentId})`, {
+      document_id: documentId,
+      user_id: user.user_id
+    });
+    return documentDto;
   }
 }

@@ -12,3 +12,7 @@ authentication:
   algorithm: HS256 # Optional, default: HS256
 
 uploadsDir: uploads # Optional, default: ./uploads
+
+admin:
+  email: admin@worksolutions.ru # Optional, default: process.env.ADMIN_EMAIL ?? "admin@worksolutions.ru"
+  password: worksolutions # Optional, default: process.env.ADMIN_PASSWORD ?? "worksolutions"
