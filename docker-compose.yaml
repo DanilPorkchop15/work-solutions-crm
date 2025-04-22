@@ -28,7 +28,7 @@ services:
     environment:
       - HOME=/tmp
       - REACT_APP_BACKEND_URL=http://localhost:${BE_APP_PORT:-3000}
-      - VITE_APP_BACKEND=http://localhost:${BE_APP_PORT:-3000}
+      - VITE_APP_BACKEND=${VITE_APP_BACKEND:-http://localhost:${BE_APP_PORT:-3000}}
       - FE_PORT=${FE_PORT:-4000}
     ports:
       - ${FE_PORT:-4000}:${FE_PORT:-4000}
