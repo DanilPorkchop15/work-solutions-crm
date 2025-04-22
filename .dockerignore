@@ -16,3 +16,5 @@
 /packages/frontend/**/*.styles.scss.d.ts
 /Dockerfile
 /docker-compose.yaml
+!packages/backend/config.yaml
+!packages/backend/config.yml
