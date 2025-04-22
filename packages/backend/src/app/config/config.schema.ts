@@ -2,6 +2,7 @@ import { Type } from "class-transformer";
 import {
   IsBoolean,
   IsDefined,
+  IsEmail,
   IsInt,
   IsNotEmpty,
   IsOptional,
@@ -43,6 +44,16 @@ export class AuthenticationConfig {
   readonly algorithm: string = "HS256";
 }
 
+export class AdminConfig {
+  @IsString()
+  @IsOptional()
+  readonly email: string = process.env.ADMIN_EMAIL ?? "admin@worksolutions.ru";
+
+  @IsString()
+  @IsOptional()
+  readonly password: string = process.env.ADMIN_PASSWORD ?? "worksolutions";
+}
+
 export class ApplicationConfig {
   @IsDefined()
   @ValidateNested()
@@ -61,6 +72,11 @@ export class ApplicationConfig {
   @ValidateNested()
   @Type(() => AuthenticationConfig)
   readonly authentication: AuthenticationConfig;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => AdminConfig)
+  readonly admin: AdminConfig;
 }
 
 export interface Version {

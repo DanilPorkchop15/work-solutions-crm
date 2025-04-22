@@ -1,13 +1,21 @@
 import React from "react";
-import { ProjectDetailsProvider } from "@frontend/entities/project/model";
+import {
+  ProjectDetailsProvider,
+  ProjectLogsTableModuleProvider,
+  ProjectsTableModuleProvider
+} from "@frontend/entities/project/model";
 
 import { ProjectUpdateFeature } from "../../../features/project/update";
 
 function ProjectUpdatePage() {
   return (
-    <ProjectDetailsProvider>
-      <ProjectUpdateFeature.Modal />
-    </ProjectDetailsProvider>
+    <ProjectLogsTableModuleProvider>
+      <ProjectsTableModuleProvider>
+        <ProjectDetailsProvider>
+          <ProjectUpdateFeature.Modal />
+        </ProjectDetailsProvider>
+      </ProjectsTableModuleProvider>
+    </ProjectLogsTableModuleProvider>
   );
 }
 

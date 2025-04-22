@@ -14,6 +14,8 @@ import { pipe } from "ramda";
 import { useInjectService } from "../../../../shared/lib/useInjectService";
 import { UserUpdateService } from "../../services/UserUpdateService";
 import { UserUpdateFormValues } from "../interfaces";
+import { Role } from "@work-solutions-crm/libs/shared/user/user.dto";
+import { UserService } from "@frontend/features/user/services";
 
 interface UserUpdateFormProps {
   additionalOnFinish?: () => void | Promise<void>;
@@ -29,12 +31,17 @@ export const UserUpdateForm = observer(function UserUpdateFeature({ additionalOn
 
   const updateUserService: UserUpdateService = useInjectService(UserUpdateService);
 
+  const userService: UserService = useInjectService(UserService);
+
   const userLogsTableModule = useUserLogsTableModule();
 
   const antdServices: AntdServices = useInjectService(AntdServices);
 
   const [{ error, loading }, onSubmit] = useAsyncFn(
-    async (body: UserUpdateRequestDTO) => {
+    async ({ role, ...body }: UserUpdateRequestDTO & { role: Role }) => {
+      if (updateUserService.userDetails.role !== role) {
+        await userService.changeRole(updateUserService.userDetails.id, role);
+      }
       await updateUserService.update(body);
       await usersTableModule.load();
       await userLogsTableModule.load();
@@ -59,7 +66,9 @@ export const UserUpdateForm = observer(function UserUpdateFeature({ additionalOn
     >
       <UserInput.FullName error={error} initialValue={updateUserService.userDetails.fullName} disabled={isDisabled} />
       <UserInput.Email error={error} initialValue={updateUserService.userDetails.email} disabled={isDisabled} />
-      <UserInput.Role error={error} initialValue={updateUserService.userDetails.role} disabled={true} />
+      <AccessCheck type="disable" roles={[Role.ADMIN]}>
+        <UserInput.Role error={error} initialValue={updateUserService.userDetails.role} />
+      </AccessCheck>
       <UserInput.Position
         error={error}
         initialValue={updateUserService.userDetails.position ?? undefined}

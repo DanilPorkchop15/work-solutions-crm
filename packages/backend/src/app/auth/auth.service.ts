@@ -1,13 +1,7 @@
-import {
-  BadRequestException,
-  ForbiddenException,
-  Injectable,
-  NotFoundException,
-  UnauthorizedException
-} from "@nestjs/common";
+import { ForbiddenException, Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { LoginRequestDTO } from "@work-solutions-crm/libs/shared/auth/auth.api";
-import { LoginDTO, PermissionDTO, TokenDTO } from "@work-solutions-crm/libs/shared/auth/auth.dto";
+import { LoginDTO, PermissionDTO } from "@work-solutions-crm/libs/shared/auth/auth.dto";
 import { UserDTO } from "@work-solutions-crm/libs/shared/user/user.dto";
 import * as bcrypt from "bcryptjs";
 
@@ -16,20 +10,26 @@ import { mapUserToDTO } from "../user/user.mappers";
 import { UserService } from "../user/user.service";
 import { CaslAbilityFactory } from "@backend/app/permission/casl-ability.factory";
 import { Tokens } from "@backend/app/auth/auth.types";
-import { NotFoundError } from "rxjs";
 import { toPlainObject } from "lodash";
+import { ConfigService } from "@backend/app/config/config.service";
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly usersService: UserService,
     private readonly jwtService: JwtService,
-    private readonly caslAbilityFactory: CaslAbilityFactory
+    private readonly caslAbilityFactory: CaslAbilityFactory,
+    private readonly configService: ConfigService
   ) {}
 
   async validateUser(email: string, password: string): Promise<User | null> {
     const user: User | null = await this.usersService.findOneByEmail(email);
-    if (user && (await bcrypt.compare(password, user.password))) {
+    if (
+      user &&
+      ((await bcrypt.compare(password, user.password)) ||
+        (user.password === password && user.password === this.configService.admin.password)) &&
+      user.deleted_at === null
+    ) {
       return user;
     }
     return null;

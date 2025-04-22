@@ -1,19 +1,25 @@
 import { Children, cloneElement, ReactElement } from "react";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 import { PureAbility } from "@casl/ability";
-import { useViewer, ViewerModel } from "@frontend/entities/viewer";
 import { Action, Subject } from "@work-solutions-crm/libs/shared/auth/auth.dto";
 import { Role } from "@work-solutions-crm/libs/shared/user/user.dto";
+
+import { AppRoutes } from "../../../shared/model/services";
+import { useViewer } from "../hooks";
+import { ViewerModel } from "../model";
 
 type AccessCheckProps = {
   roles?: Role[];
   action?: Action;
   subject?: Subject;
-  type: "disable" | "hide";
-  children: ReactElement | ReactElement[];
+  type: "disable" | "hide" | "redirect";
+  children?: ReactElement | ReactElement[];
 };
 
-export function AccessCheck({ roles, action, subject, type, children }: AccessCheckProps) {
+export function AccessCheck({ roles, action, subject, type, children = [] }: AccessCheckProps) {
   const viewerModel: ViewerModel = useViewer();
+
+  const navigate: NavigateFunction = useNavigate();
 
   const { role: userRole, permissions: userPermissions } = viewerModel.state;
 
@@ -28,17 +34,22 @@ export function AccessCheck({ roles, action, subject, type, children }: AccessCh
     ? roles.includes(userRole)
     : Boolean(action && subject && ability.can(action, subject));
 
-  if (type === "disable") {
-    return isValid
-      ? children
-      : Children.map(children, child =>
-          cloneElement(child, {
-            disabled: true
-          })
-        );
-  }
-
-  if (type === "hide") {
-    return isValid ? children : null;
+  switch (type) {
+    case "disable":
+      return isValid
+        ? children
+        : Children.map(children, child =>
+            cloneElement(child, {
+              disabled: true
+            })
+          );
+    case "hide":
+      return isValid ? children : null;
+    case "redirect": {
+      if (!isValid) {
+        navigate(AppRoutes.getForbiddenUrl());
+      }
+      return null;
+    }
   }
 }

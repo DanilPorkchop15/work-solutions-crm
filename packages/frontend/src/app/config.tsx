@@ -9,7 +9,11 @@ import { Sidebar } from "../widgets/sidebar";
 export const browserRouter = createBrowserRouter([
   {
     path: "*",
-    lazy: async () => import("@frontend/pages/common/not-found")
+    lazy: async () => import("@frontend/pages/common/errors/not-found")
+  },
+  {
+    path: AppRoutes.getForbiddenUrl(),
+    lazy: async () => import("@frontend/pages/common/errors/forbidden")
   },
   {
     path: "/",

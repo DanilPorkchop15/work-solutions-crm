@@ -1,4 +1,3 @@
-import { Role, User } from "@backend/models/entities/user.entity";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import {
@@ -10,6 +9,7 @@ import { DocumentDTO, DocumentPreviewDTO } from "@work-solutions-crm/libs/shared
 import { Repository } from "typeorm";
 
 import { Document } from "../../models/entities/document.entity";
+import { Role, User } from "../../models/entities/user.entity";
 import { DocumentPermissionService } from "../document-permission/document-permission.service";
 
 import { mapDocumentToDTO, mapDocumentToPreviewDTO } from "./document.mappers";
@@ -62,9 +62,14 @@ export class DocumentService {
   async create({ roles, ...dto }: DocumentCreateRequestDTO, user: User): Promise<DocumentDTO> {
     const document: Document = await this.documentRepository.save({
       ...dto,
-      user_created: { user_id: user.user_id },
-      document_permissions: roles.map(role => ({ role }))
+      user_created: { user_id: user.user_id }
     });
+
+    if (roles) {
+      for (const role of roles) {
+        await this.documentPermissionService.create(document.document_id, role);
+      }
+    }
 
     return this.findOne(document.document_id);
   }

@@ -7,7 +7,7 @@ import { validateSync, ValidationError } from "class-validator";
 import { EventEmitter2 } from "eventemitter2";
 import { load } from "js-yaml";
 
-import { ApplicationConfig, AuthenticationConfig, DatabaseConfig, Version } from "./config.schema";
+import { AdminConfig, ApplicationConfig, AuthenticationConfig, DatabaseConfig, Version } from "./config.schema";
 
 @Injectable()
 export class ConfigService implements ApplicationConfig {
@@ -24,6 +24,10 @@ export class ConfigService implements ApplicationConfig {
 
   get corsEnabled(): boolean {
     return this.config.corsEnabled;
+  }
+
+  get admin(): AdminConfig {
+    return this.config.admin;
   }
 
   get uploadsDir(): string {

@@ -3,13 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { useAsyncFn } from "react-use";
 import { DeleteFilled } from "@ant-design/icons";
 import { ProjectPreview, useProjectsTableModule } from "@frontend/entities/project";
-import { AccessCheck } from "@frontend/entities/viewer";
 import { Role } from "@work-solutions-crm/libs/shared/user/user.dto";
 import { paginationLocale, tableLocale } from "@worksolutions/antd-react-components";
 import { Flex, Input, Row, Switch, type TableProps } from "antd";
 import { observer } from "mobx-react-lite";
 
 import { ProjectView } from "../../../entities/project/ui";
+import { AccessCheck } from "../../../entities/viewer/ui/accessCheck";
 import { ProjectDeleteFeature } from "../../../features/project/delete";
 import { ProjectRestoreFeature } from "../../../features/project/restore";
 import { ProjectUpdateFeature } from "../../../features/project/update";
@@ -108,7 +108,10 @@ export const ProjectsTableWidget: React.FC<ProjectsTableWidgetProps> = observer(
           onChange: (_, rows) => setSelectedRows(rows),
           hideSelectAll: true,
           selectedRowKeys: selectedRows.map(project => project.id),
-          columnTitle: selectedRowColumnTitleOptions?.(selectedRows, loadFn)
+          columnTitle: selectedRowColumnTitleOptions?.(selectedRows, async () => {
+            await loadFn();
+            setSelectedRows([]);
+          })
         }}
         {...props}
       />

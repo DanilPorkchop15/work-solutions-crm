@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { UploadOutlined, UserOutlined } from "@ant-design/icons";
 import { UsersApi } from "@frontend/entities/@common/user";
-import { BASE_API_HOST } from "@frontend/shared/config/const";
-import { useInjectService } from "@frontend/shared/lib/useInjectService";
 import { AntdServices } from "@frontend/shared/model/services";
 import { Role } from "@work-solutions-crm/libs/shared/user/user.dto";
-import { Avatar, Button, Flex, Form, Input, Select, Spin, Upload, UploadProps } from "antd";
+import { Avatar, Button, Flex, Form, Input, Select, SelectProps, Spin, Upload, UploadProps } from "antd";
 import { RcFile } from "antd/es/upload";
+
+import { BASE_API_HOST } from "../../../../../../shared/config/const";
+import { useInjectService } from "../../../../../../shared/lib/useInjectService";
 
 import { validationRules } from "./config";
 
@@ -178,7 +179,7 @@ interface UserRolesProps {
   disabled?: boolean;
 }
 
-const UserRoleInput = ({ initialValue, error, disabled, ...props }: UserRolesProps) => (
+const UserRoleInput = ({ initialValue, error, disabled, ...props }: UserRolesProps & SelectProps) => (
   <Form.Item
     initialValue={initialValue}
     label="Роль"

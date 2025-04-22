@@ -63,13 +63,7 @@ export const ProjectDatesInput = ({ error, disabled, initialValues }: ProjectDat
       validateStatus={error ? "error" : undefined}
       initialValue={initialValues?.start_date}
     >
-      <DatePicker
-        disabled={disabled}
-        style={{ width: "100%" }}
-        format="DD.MM.YYYY"
-        disabledDate={current => current && current < dayjs().startOf("day")}
-        placeholder="Дата начала"
-      />
+      <DatePicker disabled={disabled} style={{ width: "100%" }} format="DD.MM.YYYY" placeholder="Дата начала" />
     </Form.Item>
     <Form.Item
       label="Дата окончания"
