@@ -5,6 +5,8 @@ WORKDIR /app
 RUN touch ~/.npmrc
 COPY . .
 RUN npm ci --include=dev --legacy-peer-deps
+ARG VITE_APP_BACKEND
+ENV VITE_APP_BACKEND=$VITE_APP_BACKEND
 
 FROM base as build
 WORKDIR /app
@@ -25,8 +27,9 @@ ARG app_version
 ARG app_source_branch
 ARG app_source_commit
 ARG app_build_time
+COPY packages/backend/config.y*ml /app/config.yaml
 COPY --from=build /app/node_modules /app/node_modules
-COPY --from=build /app/dist/packages/backend /app/
+COPY --from=build /app/dist/packages/backend /app
 ENV NODE_ENV=production \
     APP_VERSION=$app_version \
     APP_SOURCE_BRANCH=$app_source_branch \
