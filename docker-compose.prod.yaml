@@ -5,10 +5,13 @@ services:
     build:
       context: .
       target: frontend
+      args:
+        - VITE_APP_BACKEND=${VITE_APP_BACKEND:-http://localhost:3000}
     ports:
       - "8080:80"
     environment:
-      - VITE_APP_BACKEND=${VITE_APP_BACKEND:-http://backend:3000}
+      - VITE_APP_BACKEND=${VITE_APP_BACKEND:-http://localhost:3000}
+
     depends_on:
       - backend
     restart: unless-stopped
