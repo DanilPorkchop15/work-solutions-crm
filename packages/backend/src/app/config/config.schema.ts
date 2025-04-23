@@ -76,7 +76,7 @@ export class ApplicationConfig {
   @IsOptional()
   @ValidateNested()
   @Type(() => AdminConfig)
-  readonly admin: AdminConfig;
+  readonly admin: AdminConfig = new AdminConfig();
 }
 
 export interface Version {
