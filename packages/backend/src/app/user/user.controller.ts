@@ -78,7 +78,8 @@ export class UserController implements UserApi {
   async create(@Body() dto: UserCreateValidationDTO, @CurrentUser() user: User): Promise<UserDTO> {
     const userDto: UserDTO = await this.usersService.create(dto);
     await this.loggerService.logByType(LogType.USER, "создан", `Новый пользователь создан (${userDto.id})`, {
-      user_id: user.user_id
+      user_id: user.user_id,
+      affected_user_id: userDto.id
     });
     return userDto;
   }
