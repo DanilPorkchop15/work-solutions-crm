@@ -8,7 +8,7 @@
 ### 1. Конфигурация
 #### 1.1 Backend (packages/backend/config.yaml):
 ```bash
-cp packages/backend/config.example.yaml packages/backend/config.example.yaml packages/backend/config.example.yaml packages/backend/config.yaml
+cp packages/backend/config.example.yaml packages/backend/config.yaml
 ```
 ##### Файл `config.yaml` после копирования:
 ```yaml
