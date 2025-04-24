@@ -15,7 +15,6 @@ cp packages/backend/config.example.yaml packages/backend/config.example.yaml pac
 database:
   host: database
   port: 5432 # Optional
-  #  database: postgres      # Optional
   username: postgres
   password: postgres
 
