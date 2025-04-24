@@ -7,7 +7,7 @@
 
 ### 1. Конфигурация
 #### 1.1 Backend (packages/backend/config.yaml):
-```sh
+```bash
 cp packages/backend/config.example.yaml packages/backend/config.example.yaml packages/backend/config.example.yaml packages/backend/config.yaml
 ```
 ##### Файл `config.yaml` после копирования:
@@ -28,11 +28,11 @@ uploadsDir: uploads # Optional, default: ./uploads
 ```
 
 #### 1.2 `.env`:
-```sh
+```bash
 cp .env.example .env
 ```
 ##### Файл `.env` после копирования:
-```
+```dotenv
 # Порт хоста, на котором будет доступен сервер разработки frontend (по умолчанию 4000)
 FE_PORT=4002
 
@@ -49,7 +49,7 @@ ADMIN_PASSWORD=worksolutions
 
 ### 2. Сборка
 #### 2.1 Разработка:
-```sh
+```bash
 docker compose up -d
 ```
 #### 2.2 Продакшен:
