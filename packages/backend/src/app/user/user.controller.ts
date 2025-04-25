@@ -192,8 +192,6 @@ export class UserController implements UserApi {
 
   @Post(USERS_ROUTES.uploadAvatar())
   @UseInterceptors(FileInterceptor("avatar"))
-  @UseGuards(AuthGuard, CaslGuard)
-  @CheckPolicies(ability => ability.can(Action.UPDATE, Subject.USERS))
   @ApiOperation({ summary: "Upload user avatar" })
   @ApiResponse({ status: 200 })
   async uploadAvatar(@UploadedFile() file: Express.Multer.File): Promise<string> {
