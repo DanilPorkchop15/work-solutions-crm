@@ -7,7 +7,8 @@ export enum Role {
 
 export interface UserDTO {
   id: string;
-  full_name: string;
+  first_name: string;
+  last_name: string;
   email: string;
   position?: string;
   avatar_url?: string;

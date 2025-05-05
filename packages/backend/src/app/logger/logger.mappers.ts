@@ -33,7 +33,8 @@ export function mapLogEntityToLogDTO(logEntity: LogEntity): LogDTO {
     comment: logEntity.comment ?? "",
     user: {
       id: logEntity.user.user_id,
-      full_name: logEntity.user.full_name,
+      first_name: logEntity.user.first_name,
+      last_name: logEntity.user.last_name,
       email: logEntity.user.email
     },
     created_at: new Date(logEntity.created_at).toISOString(),

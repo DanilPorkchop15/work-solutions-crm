@@ -15,7 +15,8 @@ export const UserPreviewTooltip: React.FC<{ user: UserPreview }> = ({ user }) =>
           size="small"
           bordered={false}
           dataSource={[
-            `Имя: ${user.fullName}`,
+            `Имя: ${user.firstName}`,
+            `Фамилия: ${user.lastName}`,
             `Email: ${user.email}`,
             `Должность: ${user.position ?? "-"}`,
             `Архивирован: ${user.deletedAt ? "Да" : "Нет"}`

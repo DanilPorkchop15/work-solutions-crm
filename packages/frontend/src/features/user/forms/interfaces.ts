@@ -1,7 +1,8 @@
 import { Role } from "@work-solutions-crm/libs/shared/user/user.dto";
 
 export interface UserCreateFormValues {
-  full_name: string;
+  first_name: string;
+  last_name: string;
   email: string;
   password: string;
   position?: string;

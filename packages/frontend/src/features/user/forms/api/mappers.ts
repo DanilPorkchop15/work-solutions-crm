@@ -4,7 +4,8 @@ import { Role } from "@work-solutions-crm/libs/shared/user/user.dto";
 import type { UserCreateFormValues, UserUpdateFormValues } from "../interfaces";
 
 export const mapUserCreateFormValuesToCreateUserDto = (values: UserCreateFormValues): UserCreateRequestDTO => ({
-  full_name: values.full_name,
+  first_name: values.first_name,
+  last_name: values.last_name,
   email: values.email,
   role: values.role,
   password: values.password,
@@ -15,7 +16,8 @@ export const mapUserCreateFormValuesToCreateUserDto = (values: UserCreateFormVal
 export const mapUserUpdateFormValuesToUpdateUserDto = (
   values: UserUpdateFormValues
 ): UserUpdateRequestDTO & { role: Role } => ({
-  full_name: values.full_name,
+  first_name: values.first_name,
+  last_name: values.last_name,
   email: values.email,
   position: values.position,
   avatar_url: values.avatar_url,

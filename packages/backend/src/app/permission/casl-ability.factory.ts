@@ -85,15 +85,16 @@ export class CaslAbilityFactory {
         can(Action.DELETE, Subject.PROJECTS);
         break;
       case Role.USER:
+        can(Action.READ, Subject.USERS);
         can(Action.READ, Subject.CUSTOMERS);
         can(Action.READ, Subject.DOCUMENTS);
         can(Action.READ, Subject.TASKS);
         can(Action.READ, Subject.PROJECTS);
 
-        can(Action.UPDATE, Subject.CUSTOMERS);
-        can(Action.UPDATE, Subject.DOCUMENTS);
-        can(Action.UPDATE, Subject.TASKS);
-        can(Action.UPDATE, Subject.PROJECTS);
+        cannot(Action.UPDATE, Subject.CUSTOMERS);
+        cannot(Action.UPDATE, Subject.DOCUMENTS);
+        cannot(Action.UPDATE, Subject.TASKS);
+        cannot(Action.UPDATE, Subject.PROJECTS);
 
         cannot(Action.CREATE, Subject.CUSTOMERS);
         cannot(Action.CREATE, Subject.DOCUMENTS);

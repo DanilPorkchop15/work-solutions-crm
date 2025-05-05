@@ -11,7 +11,8 @@ export function mapUserToPreviewDTO(user: User): UserPreviewDTO {
     id: user.user_id,
     avatar_url: user.avatar_url,
     email: user.email,
-    full_name: user.full_name,
+    first_name: user.first_name,
+    last_name: user.last_name,
     position: user.position,
     deleted_at: typeormNullableDateToIsoString(user.deleted_at)
   };
@@ -22,7 +23,8 @@ export function mapUserToDTO(user: User): UserDTO {
     id: user.user_id,
     avatar_url: user.avatar_url,
     email: user.email,
-    full_name: user.full_name,
+    first_name: user.first_name,
+    last_name: user.last_name,
     position: user.position,
     role: user.role,
     created_at: typeormDateToIsoString(user.created_at),
@@ -35,7 +37,8 @@ export function mapUpdateRequestDTOToUser(dto: UserUpdateRequestDTO): DeepPartia
   return {
     avatar_url: dto.avatar_url,
     email: dto.email,
-    full_name: dto.full_name,
+    first_name: dto.first_name,
+    last_name: dto.last_name,
     position: dto.position
   };
 }
@@ -45,7 +48,8 @@ export async function mapCreateRequestDTOToUser(dto: UserCreateRequestDTO): Prom
     avatar_url: dto.avatar_url,
     email: dto.email,
     password: await bcrypt.hash(dto.password, 10),
-    full_name: dto.full_name,
+    first_name: dto.first_name,
+    last_name: dto.last_name,
     position: dto.position,
     role: dto.role
   };

@@ -20,9 +20,14 @@ const columns: TableProps<User>["columns"] = [
     )
   },
   {
-    title: "Полное имя",
-    dataIndex: "fullName",
-    key: "fullName"
+    title: "Имя",
+    dataIndex: "firstName",
+    key: "firstName"
+  },
+  {
+    title: "Фамилия",
+    dataIndex: "lastName",
+    key: "lastName"
   },
   {
     title: "Email",

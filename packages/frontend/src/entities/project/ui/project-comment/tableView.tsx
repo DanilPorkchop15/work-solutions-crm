@@ -20,7 +20,9 @@ const columns: TableProps<ProjectComment>["columns"] = [
         <Flex gap={12} align="center">
           <UserView.Avatar user={user} showTooltip={true} />
           <Flex vertical>
-            <Text strong>{user.fullName}</Text>
+            <Text strong>
+              {user.firstName} {user.lastName}
+            </Text>
             <Text type={user.deletedAt ? "danger" : "secondary"} italic={user.deletedAt !== null}>
               {user.email}
             </Text>

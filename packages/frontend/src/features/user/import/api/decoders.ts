@@ -5,7 +5,8 @@ import Decoder, { field, string, succeed } from "jsonous";
 import { ImportedUserRow } from "../interfaces";
 
 export const importedUserRowDecoder: Decoder<ImportedUserRow> = succeed({})
-  .assign("fullName", field("fullName", string))
+  .assign("firstName", field("firstName", string))
+  .assign("lastName", field("lastName", string))
   .assign("email", field("email", string))
   .assign("password", fieldOrFallback("password", string))
   .assign("position", fieldOrFallback("position", string))

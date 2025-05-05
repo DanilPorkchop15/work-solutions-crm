@@ -64,7 +64,8 @@ export const UserUpdateForm = observer(function UserUpdateFeature({ additionalOn
       validateTrigger="onSubmit"
       onFinish={pipe(mapUserUpdateFormValuesToUpdateUserDto, onSubmit)}
     >
-      <UserInput.FullName error={error} initialValue={updateUserService.userDetails.fullName} disabled={isDisabled} />
+      <UserInput.FirstName error={error} initialValue={updateUserService.userDetails.firstName} disabled={isDisabled} />
+      <UserInput.LastName error={error} initialValue={updateUserService.userDetails.lastName} disabled={isDisabled} />
       <UserInput.Email error={error} initialValue={updateUserService.userDetails.email} disabled={isDisabled} />
       <AccessCheck type="disable" roles={[Role.ADMIN]}>
         <UserInput.Role error={error} initialValue={updateUserService.userDetails.role} />
@@ -82,7 +83,7 @@ export const UserUpdateForm = observer(function UserUpdateFeature({ additionalOn
       <FormErrorMessage error={error} />
       {!isDisabled && (
         <Form.Item style={{ textAlign: "right" }}>
-          <AccessCheck type="disable" action={Action.UPDATE} subject={Subject.USERS}>
+          <AccessCheck type="hide" action={Action.UPDATE} subject={Subject.USERS}>
             <Button htmlType="submit" loading={loading} type="primary">
               Сохранить
             </Button>

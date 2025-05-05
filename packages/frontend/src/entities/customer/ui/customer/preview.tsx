@@ -13,7 +13,7 @@ export const CustomerPreviewTooltip: React.FC<{ customer: CustomerPreview }> = (
         dataSource={[
           `Название: ${customer.name}`,
           `Почта: ${customer.email ?? "Не указана"}`,
-          `Создатель: ${customer.userCreated.fullName}`,
+          `Создатель: ${customer.userCreated.firstName} ${customer.userCreated.lastName}`,
           `Архивирован: ${customer.deletedAt ? "Да" : "Нет"}`
         ]}
         renderItem={item => <List.Item>{item}</List.Item>}

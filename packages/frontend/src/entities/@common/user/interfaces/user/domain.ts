@@ -11,7 +11,8 @@ export interface User extends UserPreview {
 
 export interface UserPreview extends UniqueEntity {
   avatarUrl: string | null;
-  fullName: string;
+  firstName: string;
+  lastName: string;
   email: string;
   position: string | null;
   deletedAt: string | null;

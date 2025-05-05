@@ -43,7 +43,7 @@ export const UsersTableWidget: React.FC<UsersTableWidgetProps> = observer(functi
     data
       .filter(
         user =>
-          user.fullName.toLowerCase().includes(searchValue.toLowerCase()) ||
+          `${user.firstName.toLowerCase()} ${user.lastName.toLowerCase()}`.includes(searchValue.toLowerCase()) ||
           user.email.toLowerCase().includes(searchValue.toLowerCase())
       )
       .filter(user => showDeleted || user.deletedAt === null);
@@ -81,7 +81,7 @@ export const UsersTableWidget: React.FC<UsersTableWidgetProps> = observer(functi
             onChange={e => setSearchValue(e.target.value)}
             placeholder="Поиск по имени и почте"
           />
-          <AccessCheck type="hide" roles={[Role.ADMIN, Role.MODERATOR]}>
+          <AccessCheck type="disable" roles={[Role.ADMIN, Role.MODERATOR]}>
             <Switch
               checked={showDeleted}
               onChange={setShowDeleted}

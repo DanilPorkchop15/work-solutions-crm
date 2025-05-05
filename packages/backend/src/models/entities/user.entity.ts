@@ -36,7 +36,10 @@ export class User {
   user_id: string;
 
   @Column({ type: "varchar", length: 255 })
-  full_name: string;
+  first_name: string;
+
+  @Column({ type: "varchar", length: 255 })
+  last_name: string;
 
   @Column({ type: "varchar", length: 255, unique: true })
   email: string;

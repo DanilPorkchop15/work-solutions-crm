@@ -48,7 +48,7 @@ export const UserSelectView: React.FC<UserSelectViewProps & SelectProps> = ({
     if (!users) return [];
     if (!searchValue) return users;
 
-    return users.filter(user => user.fullName.toLowerCase().includes(searchValue.toLowerCase()));
+    return users.filter(user => user.firstName.toLowerCase().includes(searchValue.toLowerCase()));
   }, [users, searchValue]);
 
   return (
@@ -72,7 +72,8 @@ export const UserSelectView: React.FC<UserSelectViewProps & SelectProps> = ({
           <Flex gap={12} align="center">
             <UserView.Preview user={user} />
             <div>
-              {user.fullName} - <Typography.Link disabled={user.deletedAt !== null}>{user.email}</Typography.Link>
+              {user.firstName} {user.lastName} -{" "}
+              <Typography.Link disabled={user.deletedAt !== null}>{user.email}</Typography.Link>
             </div>
           </Flex>
         </Option>

@@ -1,12 +1,12 @@
 import React from "react";
 import { DeleteFilled } from "@ant-design/icons";
 import { User } from "@frontend/entities/@common/user";
-import { AccessCheck } from "@frontend/entities/viewer";
 import { AntdServices } from "@frontend/shared/model/services";
 import { Action, Subject } from "@work-solutions-crm/libs/shared/auth/auth.dto";
 import { useConfirmationModal } from "@worksolutions/antd-react-components";
 import { Button, ButtonProps, Tooltip, Typography } from "antd";
 
+import { AccessCheck } from "../../../entities/viewer/ui/accessCheck";
 import { useInjectService } from "../../../shared/lib/useInjectService";
 import { UserService } from "../services/UserService";
 
@@ -46,7 +46,9 @@ const UserDeleteFeatureBase = React.memo(function ArchiveTariffFeature({
         subtitle={
           <Typography.Text>
             Вы уверены, что хотите архивировать пользователя —{" "}
-            <Typography.Text type="danger">{user.fullName}</Typography.Text>
+            <Typography.Text type="danger">
+              {user.firstName} {user.lastName}
+            </Typography.Text>
           </Typography.Text>
         }
         title="Архивировать пользователя"

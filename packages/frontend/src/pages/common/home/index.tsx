@@ -73,7 +73,7 @@ export function HomePage() {
 
   useHeader(
     <Typography.Title level={2}>
-      Добро пожаловать в систему, <Link to={AppRoutes.getProfileUrl(true)}>{viewer.state.fullName}</Link>!
+      Добро пожаловать в систему, <Link to={AppRoutes.getProfileUrl(true)}>{viewer.state.firstName}</Link>!
     </Typography.Title>
   );
 

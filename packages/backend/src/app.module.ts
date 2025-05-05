@@ -1,7 +1,7 @@
-import { StatsModule } from "@backend/app/stats/stats.module";
 import { Module } from "@nestjs/common";
 import { EventEmitterModule } from "@nestjs/event-emitter";
 import { ServeStaticModule } from "@nestjs/serve-static";
+import { ThrottlerModule } from "@nestjs/throttler";
 import { TypeOrmModule, TypeOrmModuleOptions } from "@nestjs/typeorm";
 
 import { AuthModule } from "./app/auth/auth.module";
@@ -19,6 +19,7 @@ import { PermissionModule } from "./app/permission/permission.module";
 import { ProjectModule } from "./app/project/project.module";
 import { ProjectCommentModule } from "./app/project-comment/project-comment.module";
 import { ProjectLogModule } from "./app/project-log/project-log.module";
+import { StatsModule } from "./app/stats/stats.module";
 import { TaskModule } from "./app/task/task.module";
 import { TaskCommentModule } from "./app/task-comment/task-comment.module";
 import { TaskLogModule } from "./app/task-log/task-log.module";
@@ -77,6 +78,14 @@ import { entitiesAndMigrations } from "./app.migrations";
             immutable: true,
             dotfiles: "ignore"
           }
+        }
+      ]
+    }),
+    ThrottlerModule.forRoot({
+      throttlers: [
+        {
+          limit: 100,
+          ttl: 60000
         }
       ]
     })

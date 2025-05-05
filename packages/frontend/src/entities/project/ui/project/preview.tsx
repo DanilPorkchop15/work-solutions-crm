@@ -18,7 +18,10 @@ export const ProjectPreviewTooltip: React.FC<{ project: ProjectPreview }> = ({ p
           { title: "Дата окончания", value: formatToLocalDate(project.endDate) },
           { title: "Бюджет", value: project.budget ?? "Не указан" },
           { title: "Клиент", value: project.customer.name },
-          { title: "Ответственные", value: project.usersAccountable.map(u => u.fullName).join(", ") },
+          {
+            title: "Ответственные",
+            value: project.usersAccountable.map(u => `${u.firstName} ${u.lastName}`).join(", ")
+          },
           { title: "Архивирован", value: project.deletedAt ? "Да" : "Нет" }
         ]}
         renderItem={item => (

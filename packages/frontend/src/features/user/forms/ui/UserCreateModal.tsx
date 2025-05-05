@@ -50,7 +50,8 @@ export const UserCreateModal = observer(function CreateUserModal() {
         validateTrigger="onSubmit"
         onFinish={pipe(mapUserCreateFormValuesToCreateUserDto, onSubmit)}
       >
-        <UserInput.FullName error={error} />
+        <UserInput.FirstName error={error} />
+        <UserInput.LastName error={error} />
         <UserInput.Email error={error} />
         <UserInput.Role error={error} />
         <UserInput.Password error={error} />

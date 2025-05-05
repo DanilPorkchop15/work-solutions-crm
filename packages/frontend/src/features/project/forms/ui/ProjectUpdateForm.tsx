@@ -101,7 +101,7 @@ export const ProjectUpdateForm = observer(function ProjectUpdateForm({
       <FormErrorMessage error={error} />
       {!isDisabled && (
         <Form.Item style={{ textAlign: "right" }}>
-          <AccessCheck type="disable" action={Action.UPDATE} subject={Subject.PROJECTS}>
+          <AccessCheck type="hide" action={Action.UPDATE} subject={Subject.PROJECTS}>
             <Button htmlType="submit" loading={loading} type="primary">
               Сохранить
             </Button>

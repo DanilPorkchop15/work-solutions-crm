@@ -2,7 +2,7 @@ import React from "react";
 import { Role } from "@work-solutions-crm/libs/shared/user/user.dto";
 import { Select, SelectProps } from "antd";
 
-export const UserRoleSelect = (props: SelectProps) => (
+export const UserRoleSelect = ({ showAdmin, ...props }: SelectProps & { showAdmin?: boolean }) => (
   <Select placeholder="Роль" {...props}>
     <Select.Option key={Role.USER} value={Role.USER}>
       Пользователь
@@ -13,8 +13,10 @@ export const UserRoleSelect = (props: SelectProps) => (
     <Select.Option key={Role.MODERATOR} value={Role.MODERATOR}>
       Модератор
     </Select.Option>
-    <Select.Option key={Role.ADMIN} value={Role.ADMIN}>
-      Администратор
-    </Select.Option>
+    {showAdmin && (
+      <Select.Option key={Role.ADMIN} value={Role.ADMIN}>
+        Администратор
+      </Select.Option>
+    )}
   </Select>
 );

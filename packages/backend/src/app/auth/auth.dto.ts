@@ -103,7 +103,7 @@ export class UserWithPermissionsResponseDTO implements UserWithPermissionsDTO {
     description: "The full name of the user",
     required: true
   })
-  full_name: string;
+  first_name: string;
 
   @ApiProperty({
     example: "user@example.com",
@@ -153,6 +153,13 @@ export class UserWithPermissionsResponseDTO implements UserWithPermissionsDTO {
     required: false
   })
   deleted_at?: string | undefined;
+
+  @ApiProperty({
+    example: "Doe",
+    description: "The last name of the user",
+    required: true
+  })
+  last_name: string;
 }
 
 export class LoginResponseDTO implements LoginDTO {

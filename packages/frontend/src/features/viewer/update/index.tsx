@@ -58,7 +58,8 @@ export const ViewerUpdateFeature = observer(function UserUpdateFeature({
         validateTrigger="onSubmit"
         onFinish={pipe(mapViewerUpdateFormValuesToUpdateUserDto, onSubmit)}
       >
-        <UserInput.FullName error={error} initialValue={updateViewerService.viewer.fullName} disabled={isDisabled} />
+        <UserInput.FirstName error={error} initialValue={updateViewerService.viewer.firstName} disabled={isDisabled} />
+        <UserInput.LastName error={error} initialValue={updateViewerService.viewer.lastName} disabled={isDisabled} />
         <UserInput.Email error={error} initialValue={updateViewerService.viewer.email} disabled={isDisabled} />
         <UserInput.Role error={error} initialValue={updateViewerService.viewer.role} disabled={true} />
         <UserInput.Position

@@ -32,7 +32,8 @@ const columns: TableProps<Log>["columns"] = [
         <Flex gap={12} align="center">
           <UserView.Preview user={user} />
           <div>
-            {user.fullName} - <Typography.Link disabled={user.deletedAt !== null}>{user.email}</Typography.Link>
+            {user.firstName} {user.lastName} -{" "}
+            <Typography.Link disabled={user.deletedAt !== null}>{user.email}</Typography.Link>
           </div>
         </Flex>
       </Link>

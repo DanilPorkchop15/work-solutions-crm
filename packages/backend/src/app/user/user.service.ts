@@ -1,4 +1,4 @@
-import { BadRequestException, Global, Injectable, Logger, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Global, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import {
   UserBulkDeleteRequestDTO,
@@ -18,8 +18,6 @@ import { mapCreateRequestDTOToUser, mapUpdateRequestDTOToUser, mapUserToDTO } fr
 @Global()
 @Injectable()
 export class UserService {
-  private readonly logger = new Logger(UserService.name);
-
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,

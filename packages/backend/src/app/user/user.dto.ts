@@ -28,12 +28,12 @@ export class UserCreateValidationDTO implements UserCreateRequestDTO {
   email: string;
 
   @ApiProperty({
-    description: "The full name of the user",
+    description: "The first name of the user",
     example: "John Doe"
   })
   @IsString()
   @Length(1, 255)
-  full_name: string;
+  first_name: string;
 
   @ApiProperty({
     description: "The password of the user",
@@ -57,6 +57,14 @@ export class UserCreateValidationDTO implements UserCreateRequestDTO {
   })
   @IsEnum(Role)
   role: Role;
+
+  @ApiProperty({
+    description: "The last name of the user",
+    example: "Doe"
+  })
+  @IsString()
+  @Length(1, 255)
+  last_name: string;
 }
 
 export class UserUpdateValidationDTO implements UserUpdateRequestDTO {
@@ -75,15 +83,6 @@ export class UserUpdateValidationDTO implements UserUpdateRequestDTO {
   @IsOptional()
   @IsEmail()
   email?: string;
-
-  @ApiPropertyOptional({
-    description: "The full name of the user",
-    example: "John Doe"
-  })
-  @IsOptional()
-  @IsString()
-  @Length(1, 255)
-  fullName?: string;
 
   @ApiPropertyOptional({
     description: "The position of the user",
@@ -110,10 +109,10 @@ export class UserResponseDTO implements UserDTO {
   id: string;
 
   @ApiProperty({
-    description: "The full name of the user",
+    description: "The first name of the user",
     example: "John Doe"
   })
-  full_name: string;
+  first_name: string;
 
   @ApiProperty({
     description: "The email of the user",
@@ -156,6 +155,12 @@ export class UserResponseDTO implements UserDTO {
     example: "2022-01-01T12:00:00.000Z"
   })
   deleted_at?: string | undefined;
+
+  @ApiProperty({
+    description: "The last name of the user",
+    example: "Doe"
+  })
+  last_name: string;
 }
 
 export class UserPreviewResponseDTO implements UserPreviewDTO {
@@ -177,12 +182,6 @@ export class UserPreviewResponseDTO implements UserPreviewDTO {
   })
   id: string;
 
-  @ApiProperty({
-    description: "The full name of the user",
-    example: "John Doe"
-  })
-  full_name: string;
-
   @ApiPropertyOptional({
     description: "The avatar URL of the user",
     example: "https://example.com/avatar.jpg"
@@ -194,6 +193,18 @@ export class UserPreviewResponseDTO implements UserPreviewDTO {
     example: "2022-01-01T12:00:00.000Z"
   })
   deleted_at?: string | undefined;
+
+  @ApiProperty({
+    description: "The first name of the user",
+    example: "John"
+  })
+  first_name: string;
+
+  @ApiProperty({
+    description: "The last name of the user",
+    example: "Doe"
+  })
+  last_name: string;
 }
 
 export class UserChangePasswordValidationDTO implements AuthChangePasswordRequestDTO {

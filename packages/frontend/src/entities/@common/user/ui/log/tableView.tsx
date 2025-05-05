@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { UserView } from "@frontend/entities/@common/user";
 import { Flex, Table, type TableProps, Typography } from "antd";
 
-import { formatToLocalDate, formatToLocalDateTime } from "../../../../../shared/lib/isoDateUtils";
+import { formatToLocalDateTime } from "../../../../../shared/lib/isoDateUtils";
 import { AppRoutes } from "../../../../../shared/model/services/appRoutes";
 import { UserLog } from "../../interfaces";
 
@@ -27,7 +27,8 @@ const columns: TableProps<UserLog>["columns"] = [
         <Flex gap={12} align="center">
           <UserView.Preview user={user} />
           <div>
-            {user.fullName} - <Typography.Link disabled={user.deletedAt !== null}>{user.email}</Typography.Link>
+            {user.firstName} {user.lastName} -{" "}
+            <Typography.Link disabled={user.deletedAt !== null}>{user.email}</Typography.Link>
           </div>
         </Flex>
       </Link>

@@ -17,15 +17,27 @@ interface UserTitleProps {
   disabled?: boolean;
 }
 
-const UserFullNameInput = ({ initialValue, error, disabled }: UserTitleProps) => (
+const UserFirstNameInput = ({ initialValue, error, disabled }: UserTitleProps) => (
   <Form.Item
     initialValue={initialValue}
     label="Имя"
-    name="full_name"
-    rules={validationRules.full_name}
+    name="first_name"
+    rules={validationRules.first_name}
     validateStatus={error ? "error" : undefined}
   >
     <Input maxLength={100} placeholder="Имя" disabled={disabled} />
+  </Form.Item>
+);
+
+const UserLastNameInput = ({ initialValue, error, disabled }: UserTitleProps) => (
+  <Form.Item
+    initialValue={initialValue}
+    label="Фамилия"
+    name="last_name"
+    rules={validationRules.last_name}
+    validateStatus={error ? "error" : undefined}
+  >
+    <Input maxLength={100} placeholder="Фамилия" disabled={disabled} />
   </Form.Item>
 );
 
@@ -197,7 +209,8 @@ const UserRoleInput = ({ initialValue, error, disabled, ...props }: UserRolesPro
 );
 
 export const UserInput = {
-  FullName: UserFullNameInput,
+  FirstName: UserFirstNameInput,
+  LastName: UserLastNameInput,
   Email: UserEmailInput,
   Password: UserPasswordInput,
   Position: UserPositionInput,

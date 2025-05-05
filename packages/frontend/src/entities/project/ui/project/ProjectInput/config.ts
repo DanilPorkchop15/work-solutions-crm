@@ -28,5 +28,5 @@ export const validationRules: ValidationRules<ProjectCreateRequestDTO> = {
     { required: true, message: "Выберите статус" },
     { type: "enum", enum: Object.values(ProjectStatus) }
   ],
-  budget: [{ type: "number", message: "Введите бюджет в числовом формате" }]
+  budget: [{ type: "number", message: "Введите бюджет в числовом формате", required: true }]
 };

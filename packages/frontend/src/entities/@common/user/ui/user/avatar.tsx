@@ -61,7 +61,7 @@ export const UserAvatar = memo(function UserAvatar({
         onClick={handlePreview}
         {...props}
       >
-        {user.fullName?.[0]?.toUpperCase()}
+        {user.firstName?.[0]?.toUpperCase()}
       </Avatar>
       {showOnlineStatus && <span style={onlineStatusStyle} />}
       {previewable && user.avatarUrl && (
@@ -83,7 +83,7 @@ export const UserAvatar = memo(function UserAvatar({
   const wrappedContent = <div style={avatarContainerStyle}>{avatarContent}</div>;
 
   return showTooltip ? (
-    <Tooltip title={user.fullName} placement="top">
+    <Tooltip title={user.email} placement="top">
       {wrappedContent}
     </Tooltip>
   ) : (

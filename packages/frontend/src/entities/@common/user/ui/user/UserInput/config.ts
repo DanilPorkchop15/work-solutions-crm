@@ -3,7 +3,8 @@ import { UserCreateRequestDTO } from "@work-solutions-crm/libs/shared/user/user.
 import { ValidationRules } from "../../../../../../shared/lib/types";
 
 export const validationRules: ValidationRules<UserCreateRequestDTO> = {
-  full_name: [{ required: true, message: "Пожалуйста, введите ваше имя" }],
+  first_name: [{ required: true, message: "Пожалуйста, введите ваше имя" }],
+  last_name: [{ required: true, message: "Пожалуйста, введите вашу фамилию" }],
   email: [
     {
       type: "email",

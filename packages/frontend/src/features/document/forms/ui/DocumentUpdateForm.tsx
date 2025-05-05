@@ -85,7 +85,7 @@ export const DocumentUpdateForm = observer(function DocumentUpdateFeature({
       <FormErrorMessage error={error} />
       {!isDisabled && (
         <Form.Item style={{ textAlign: "right" }}>
-          <AccessCheck type="disable" action={Action.UPDATE} subject={Subject.DOCUMENTS}>
+          <AccessCheck type="hide" action={Action.UPDATE} subject={Subject.DOCUMENTS}>
             <Button htmlType="submit" loading={loading} type="primary">
               Сохранить
             </Button>

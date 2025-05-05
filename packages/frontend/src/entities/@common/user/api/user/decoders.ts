@@ -8,7 +8,8 @@ import { Permission, type User, UserPreview, UserWithPermissions } from "../../i
 export const userPreviewDecoder: Decoder<UserPreview> = succeed({})
   .assign("id", field("id", string))
   .assign("avatarUrl", fieldOrFallback("avatar_url", string))
-  .assign("fullName", field("full_name", string))
+  .assign("firstName", field("first_name", string))
+  .assign("lastName", field("last_name", string))
   .assign("email", field("email", string))
   .assign("position", fieldOrFallback("position", string))
   .assign("deletedAt", fieldOrFallback("deleted_at", string));

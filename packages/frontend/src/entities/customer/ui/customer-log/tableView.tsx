@@ -27,7 +27,8 @@ const columns: TableProps<CustomerLog>["columns"] = [
         <Flex gap={12} align="center">
           <UserView.Preview user={user} />
           <div>
-            {user.fullName} - <Typography.Link disabled={user.deletedAt !== null}>{user.email}</Typography.Link>
+            {user.firstName} {user.lastName} -{" "}
+            <Typography.Link disabled={user.deletedAt !== null}>{user.email}</Typography.Link>
           </div>
         </Flex>
       </Link>
@@ -48,4 +49,4 @@ export const CustomerLogTableView = React.memo(function CustomerLogTableView({
   ...props
 }: TableProps<CustomerLog>) {
   return <Table<CustomerLog> columns={[...columns, ...propsColumns]} {...props} />;
-}); 
+});

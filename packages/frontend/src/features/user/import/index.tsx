@@ -56,8 +56,12 @@ export const UserImportModal = observer(function UserImportModal() {
 
         headers.forEach(header => {
           const normalized = normalizeHeader(header);
-          if (normalized.includes("фио") || normalized.includes("fullname")) {
-            columnMap.fullName = header;
+          if (normalized.includes("имя") || normalized.includes("firstName")) {
+            columnMap.firstName = header;
+          } else if (normalized.includes("фамилия") || normalized.includes("lastName")) {
+            columnMap.lastName = header;
+          } else if (normalized.includes("пароль") || normalized.includes("password")) {
+            columnMap.password = header;
           } else if (normalized.includes("email")) {
             columnMap.email = header;
           } else if (normalized.includes("должность") || normalized.includes("position")) {
@@ -70,7 +74,8 @@ export const UserImportModal = observer(function UserImportModal() {
         const errors: { row: number; message: string }[] = [];
         const validatedData = jsonData.map((row, index) => {
           const rowData = {
-            fullName: row[columnMap.fullName],
+            firstName: row[columnMap.firstName],
+            lastName: row[columnMap.lastName],
             email: row[columnMap.email],
             password: columnMap.password ? row[columnMap.password] : generatePassword(),
             position: columnMap.position ? row[columnMap.position] : undefined,
@@ -115,14 +120,17 @@ export const UserImportModal = observer(function UserImportModal() {
     return emailRegex.test(email);
   };
 
-  const validateFullName = (fullName: string): boolean => {
-    return fullName.trim().length > 0;
+  const validateName = (name: string): boolean => {
+    return name.trim().length > 0;
   };
 
   const validateRow = (row: any, index: number): { row: number; message: string }[] => {
     const errors = [];
-    if (!validateFullName(row.fullName)) {
-      errors.push({ row: index + 1, message: "Недопустимое ФИО" });
+    if (!validateName(row.firstName)) {
+      errors.push({ row: index + 1, message: "Недопустимое имя" });
+    }
+    if (!validateName(row.lastName)) {
+      errors.push({ row: index + 1, message: "Недопустимая фамилия" });
     }
     if (!validateEmail(row.email)) {
       errors.push({ row: index + 1, message: "Недопустимый Email" });
@@ -143,7 +151,8 @@ export const UserImportModal = observer(function UserImportModal() {
     }
 
     const newRow = {
-      fullName: "",
+      firstName: "",
+      lastName: "",
       email: "",
       password: generatePassword(),
       position: "",
@@ -194,27 +203,58 @@ export const UserImportModal = observer(function UserImportModal() {
 
   const columns = [
     {
-      title: "ФИО",
-      dataIndex: "fullName",
-      key: "fullName",
-      width: 200,
+      title: "Имя",
+      dataIndex: "firstName",
+      key: "firstName",
+      width: 100,
       render: (value: any, record: any, index: number) => (
         <Input
           value={value}
-          status={validationErrors.some(e => e.row === index + 1 && e.message === "Недопустимое ФИО") ? "error" : ""}
+          status={validationErrors.some(e => e.row === index + 1 && e.message === "Недопустимое имя") ? "error" : ""}
           onChange={e => {
             const newValue = e.target.value;
-            const isValid = validateFullName(newValue);
-            setFileData(fileData.map((item, i) => (i === index ? { ...item, fullName: newValue } : item)));
+            const isValid = validateName(newValue);
+            setFileData(fileData.map((item, i) => (i === index ? { ...item, firstName: newValue } : item)));
 
             if (!isValid) {
               setValidationErrors(prev =>
-                prev.some(e => e.row === index + 1 && e.message === "Недопустимое ФИО")
+                prev.some(e => e.row === index + 1 && e.message === "Недопустимое имя")
                   ? prev
-                  : [...prev, { row: index + 1, message: "Недопустимое ФИО" }]
+                  : [...prev, { row: index + 1, message: "Недопустимое имя" }]
               );
             } else {
-              setValidationErrors(prev => prev.filter(e => !(e.row === index + 1 && e.message === "Недопустимое ФИО")));
+              setValidationErrors(prev => prev.filter(e => !(e.row === index + 1 && e.message === "Недопустимое имя")));
+            }
+          }}
+        />
+      )
+    },
+    {
+      title: "Фамилия",
+      dataIndex: "lastName",
+      key: "lastName",
+      width: 100,
+      render: (value: any, record: any, index: number) => (
+        <Input
+          value={value}
+          status={
+            validationErrors.some(e => e.row === index + 1 && e.message === "Недопустимая фамилия") ? "error" : ""
+          }
+          onChange={e => {
+            const newValue = e.target.value;
+            const isValid = validateName(newValue);
+            setFileData(fileData.map((item, i) => (i === index ? { ...item, lastName: newValue } : item)));
+
+            if (!isValid) {
+              setValidationErrors(prev =>
+                prev.some(e => e.row === index + 1 && e.message === "Недопустимая фамилия")
+                  ? prev
+                  : [...prev, { row: index + 1, message: "Недопустимая фамилия" }]
+              );
+            } else {
+              setValidationErrors(prev =>
+                prev.filter(e => !(e.row === index + 1 && e.message === "Недопустимая фамилия"))
+              );
             }
           }}
         />

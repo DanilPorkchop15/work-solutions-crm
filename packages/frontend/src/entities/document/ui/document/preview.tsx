@@ -10,7 +10,9 @@ export const DocumentPreviewTooltip: React.FC<{ document: DocumentPreview }> = (
     title={
       <>
         <Typography.Text>Название: {document.name}</Typography.Text>
-        <Typography.Text>Создатель: {document.userCreated.fullName}</Typography.Text>
+        <Typography.Text>
+          Создатель: {`${document.userCreated.firstName} ${document.userCreated.lastName}`}
+        </Typography.Text>
         <Typography.Text>Дата создания: {formatToLocalDate(document.createdAt)}</Typography.Text>
         <Typography.Text>Архивирован: {document.deletedAt ? "Да" : "Нет"}</Typography.Text>
       </>

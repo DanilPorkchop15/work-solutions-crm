@@ -3,7 +3,8 @@ import { APIRoutes } from "../api-routes";
 import { Role, UserDTO, UserPreviewDTO } from "./user.dto";
 
 export interface UserCreateRequestDTO {
-  full_name: string;
+  first_name: string;
+  last_name: string;
   email: string;
   password: string;
   position?: string;

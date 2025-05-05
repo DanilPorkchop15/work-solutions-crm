@@ -1,12 +1,12 @@
 import React from "react";
 import { DeleteFilled } from "@ant-design/icons";
 import { CustomerPreview } from "@frontend/entities/customer";
-import { AccessCheck } from "@frontend/entities/viewer";
 import { AntdServices } from "@frontend/shared/model/services";
 import { Action, Subject } from "@work-solutions-crm/libs/shared/auth/auth.dto";
 import { useConfirmationModal } from "@worksolutions/antd-react-components";
 import { Button, ButtonProps, Tooltip, Typography } from "antd";
 
+import { AccessCheck } from "../../../entities/viewer/ui/accessCheck";
 import { useInjectService } from "../../../shared/lib/useInjectService";
 import { CustomerService } from "../services/CustomerService";
 
@@ -51,7 +51,7 @@ const CustomerDeleteFeatureBase = React.memo(function ArchiveTariffFeature({
         }
         title="Архивировать клиента"
       />
-      <AccessCheck type="hide" action={Action.DELETE} subject={Subject.CUSTOMERS}>
+      <AccessCheck type="disable" action={Action.DELETE} subject={Subject.CUSTOMERS}>
         <Button danger disabled={disabled} onClick={withConfirmation(customerDeleteFn)} {...props}>
           {children}
         </Button>
